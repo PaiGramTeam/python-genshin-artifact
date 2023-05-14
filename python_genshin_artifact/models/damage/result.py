@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class DamageResult(BaseModel):
     critical: float
     non_critical: float

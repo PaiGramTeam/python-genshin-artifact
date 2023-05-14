@@ -10,7 +10,7 @@ class DamageAnalysis(BaseModel):
     atk_ratio: Dict[str, float]
     hp: Dict[str, float]
     hp_ratio: Dict[str, float]
-    def_: Dict[str, float] = Field(alias='def')
+    def_: Dict[str, float] = Field(alias="def")
     def_ratio: Dict[str, float]
     em: Dict[str, float]
     em_ratio: Dict[str, float]
