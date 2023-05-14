@@ -1,0 +1,15 @@
+[package]
+name = "genshin_artifact_function"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "genshin_artifact_function"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.18.3", features = ["extension-module"] }
+mona_wasm = { path = "../genshin_artifact/mona_wasm" }
+mona = { path = "../genshin_artifact/mona_core" }
+serde="1.0"
+serde_json = "1.0"
