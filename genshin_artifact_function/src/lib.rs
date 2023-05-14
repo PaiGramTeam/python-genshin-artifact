@@ -81,13 +81,13 @@ pub fn get_damage_analysis(value_str: String) -> PyResult<String> {
 
     let artifact_config = match input.artifact_config {
         Some(x) => x,
-        None => Default::default()
+        None => ArtifactEffectConfig::default()
     };
 
     let enemy = if let Some(x) = input.enemy {
         x.to_enemy()
     } else {
-        Default::default()
+        Enemy::default()
     };
 
     let result = CalculatorInterface::get_damage_analysis_internal(
@@ -119,13 +119,13 @@ pub fn get_transformative_damage(value_str: String) -> PyResult<String> {
 
     let artifact_config = match input.artifact_config {
         Some(x) => x,
-        None => Default::default()
+        None => ArtifactEffectConfig::default()
     };
 
     let enemy = if let Some(x) = input.enemy {
         x.to_enemy()
     } else {
-        Default::default()
+        Enemy::default()
     };
 
     let attribute = AttributeUtils::create_attribute_from_big_config(
