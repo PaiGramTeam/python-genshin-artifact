@@ -1,3 +1,5 @@
+from typing import Union
+
 from pydantic import BaseModel
 
 
@@ -6,4 +8,4 @@ class WeaponInfo(BaseModel):
     level: int
     ascend: bool
     refine: int
-    params: str
+    params: Union[str, dict] = "NoConfig"

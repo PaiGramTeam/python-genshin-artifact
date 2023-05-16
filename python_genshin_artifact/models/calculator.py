@@ -14,7 +14,7 @@ class CalculatorConfig(BaseModel):
     character: CharacterInfo
     weapon: WeaponInfo
     buffs: List[BuffInfo] = []
-    artifact: List[ArtifactInfo] = []
+    artifacts: List[ArtifactInfo] = []
     artifact_config: Optional[str] = None
     skill: SkillInfo
     enemy: Optional[EnemyInfo] = None

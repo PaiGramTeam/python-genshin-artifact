@@ -1,6 +1,7 @@
+from typing import Union
 from pydantic import BaseModel
 
 
 class SkillInfo(BaseModel):
-    index: str
-    config: str = "NoConfig"
+    index: int
+    config: Union[str, dict] = "NoConfig"

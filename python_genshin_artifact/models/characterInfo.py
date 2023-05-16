@@ -1,3 +1,5 @@
+from typing import Union
+
 from pydantic import BaseModel
 
 
@@ -9,4 +11,4 @@ class CharacterInfo(BaseModel):
     skill1: int
     skill2: int
     skill3: int
-    params: str = "NoConfig"
+    params: Union[str, dict] = "NoConfig"
