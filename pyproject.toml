@@ -1,10 +1,13 @@
 [tool.poetry]
-name = "Python-Genshin-Aartifact"
+name = "Python-Genshin-Artifact"
 version = "0.1.0"
 description = "A Python library that binds to Genshin Artifact damage calculation and analysis engine."
 authors = ["luoshuijs"]
 license = "MIT license"
 readme = "README.md"
+packages = [
+    { include = "python_genshin_artifact" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
