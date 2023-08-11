@@ -1,4 +1,4 @@
-from genshin_artifact_function import get_damage_analysis as _get_damage_analysis
+from genshin_artifact_core import get_damage_analysis as _get_damage_analysis
 
 from python_genshin_artifact.models.calculator import CalculatorConfig
 from python_genshin_artifact.models.damage.analysis import DamageAnalysis

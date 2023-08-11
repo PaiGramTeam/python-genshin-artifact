@@ -1,10 +1,10 @@
 [package]
-name = "genshin_artifact_function"
+name = "genshin_artifact_core"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "genshin_artifact_function"
+name = "genshin_artifact_core"
 crate-type = ["cdylib"]
 
 [dependencies]
