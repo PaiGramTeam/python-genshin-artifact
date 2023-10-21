@@ -8,7 +8,7 @@ name = "genshin_artifact_core"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.18.3", features = ["extension-module"] }
+pyo3 = { version = "0.19.2", features = ["extension-module"] }
 mona_wasm = { path = "../genshin_artifact/mona_wasm" }
 mona = { path = "../genshin_artifact/mona_core" }
 mona_generate = { path = "../genshin_artifact/mona_generate" }
