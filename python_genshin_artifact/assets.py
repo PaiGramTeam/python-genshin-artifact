@@ -28,11 +28,23 @@ class Assets:
 
     def __load_assets_data(self) -> None:
         character_meta = gen_character_meta_as_json()
-        self.character = json.loads(character_meta)
+        _characters = json.loads(character_meta)
+        for _character in _characters:
+            name = _character.get("name")
+            if name is not None:
+                self.character.setdefault(name, _character)
         weapon_meta = gen_weapon_meta_as_json()
-        self.weapon = json.loads(weapon_meta)
+        _weapons = json.loads(weapon_meta)
+        for _weapon in _weapons:
+            name = _weapon.get("name")
+            if name is not None:
+                self.weapon.setdefault(name, _weapon)
         artifact_meta = gen_artifact_meta_as_json()
-        self.artifact = json.loads(artifact_meta)
+        _artifacts = json.loads(artifact_meta)
+        for _artifact in _artifacts:
+            name = _artifact.get("name")
+            if name is not None:
+                self.artifact.setdefault(name, _artifact)
         for loc in self.langs:
             locale = gen_generate_locale_as_json(loc)
-            self.locale[loc] = json.loads(locale)
+            self.locale.setdefault(loc, json.loads(locale))
