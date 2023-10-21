@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-core:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -72,7 +72,36 @@ jobs:
 
     - name: Upload Artifact
       if: github.ref == 'refs/heads/main'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
         path: python_genshin_artifact_core/genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
+
+
+  build-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.11
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Build wheel
+        run: poetry build
+
+      - name: Publish artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: dist/*.whl
