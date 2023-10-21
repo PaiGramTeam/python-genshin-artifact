@@ -1,0 +1,78 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.11']
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+        
+    - name: Install Rust toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+          target: ${{ matrix.target }}
+          toolchain: nightly
+          override: true
+
+    - name: Set nightly as default Rust toolchain
+      run: |
+        rustup default nightly
+        
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Create and start virtual environment
+      shell: bash
+      run: |
+        python3 -m venv venv
+        
+        if [[ ${{ matrix.os }} == windows* ]]
+        then
+            echo source venv/Scripts/activate
+        else
+            echo source venv/bin/activate
+        fi > activate_env.sh
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        source activate_env.sh
+        python -m pip install --upgrade pip
+        python -m pip install maturin
+
+    - name: Build
+      shell: bash
+      run: |
+        source activate_env.sh
+        cd python_genshin_artifact_core
+        maturin develop
+
+    - name: Export install file
+      shell: bash
+      if: github.ref == 'refs/heads/main'
+      run: |
+        source activate_env.sh
+        cd python_genshin_artifact_core
+        maturin build
+        mv target/wheels/*.whl genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
+
+    - name: Upload Artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v2
+      with:
+        name: genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
+        path: python_genshin_artifact_core/genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
