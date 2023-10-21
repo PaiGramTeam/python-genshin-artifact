@@ -131,7 +131,7 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
             weapon_name = weapon_name_map.get(weapon_id)
             if weapon_name is None:
                 raise RuntimeError
-            _level = _weapon["level"] - 1
+            _level = _weapon["level"]
             refinement_level = next(iter(_weapon["affixMap"].values())) + 1
             _promote_level = _weapon["promoteLevel"]
             ascend = is_ascend(_level, _promote_level)
