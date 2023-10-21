@@ -51,7 +51,7 @@ def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, 
     for _index, _value in enumerate(character_info["ProudMap"]):
         _level = _skill_level_map.get(str(_value))
         _key_name = "skill" + str(_index + 1)
-        skill_info[_key_name] = _level
+        skill_info[_key_name] = _level - 1  # mona 的角色等级是从 0 开始并非 1 估计是使用了List导致的
     for _index, _value in enumerate(character_info["Consts"]):
         if "UI_Talent_U_" in _value and len(talent_id_list) > _index:
             if _value.endswith("01"):
