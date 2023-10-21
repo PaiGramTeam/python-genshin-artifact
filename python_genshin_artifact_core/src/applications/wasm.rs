@@ -1,4 +1,4 @@
-use mona::artifacts::effect_config::ArtifactEffectConfig;
+use mona::artifacts::effect_config::{ArtifactConfigInterface, ArtifactEffectConfig};
 use mona::artifacts::{Artifact, ArtifactList};
 use mona::attribute::{AttributeUtils, ComplicatedAttributeGraph, SimpleAttributeGraph2};
 use mona::buffs::Buff;
@@ -20,7 +20,7 @@ pub struct CalculatorConfigInterface {
     pub weapon: WeaponInterface,
     pub buffs: Vec<BuffInterface>,
     pub artifacts: Vec<Artifact>,
-    pub artifact_config: Option<ArtifactEffectConfig>,
+    pub artifact_config: Option<ArtifactConfigInterface>,
     pub skill: SkillInterface,
     pub enemy: Option<EnemyInterface>,
 }
@@ -74,7 +74,7 @@ pub fn get_damage_analysis(value_str: String) -> PyResult<String> {
     let artifacts: Vec<&Artifact> = input.artifacts.iter().collect();
 
     let artifact_config = match input.artifact_config {
-        Some(x) => x,
+        Some(x) => x.to_config(),
         None => ArtifactEffectConfig::default(),
     };
 
@@ -112,7 +112,7 @@ pub fn get_transformative_damage(value_str: String) -> PyResult<String> {
     let artifacts: Vec<&Artifact> = input.artifacts.iter().collect();
 
     let artifact_config = match input.artifact_config {
-        Some(x) => x,
+        Some(x) => x.to_config(),
         None => ArtifactEffectConfig::default(),
     };
 
