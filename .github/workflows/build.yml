@@ -67,15 +67,14 @@ jobs:
       run: |
         source activate_env.sh
         cd python_genshin_artifact_core
-        maturin build
-        mv target/wheels/*.whl genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
+        maturin build --out ./dist
 
     - name: Upload Artifact
       if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v3
       with:
-        name: genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
-        path: python_genshin_artifact_core/genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}.whl
+        name: genshin_artifact_core-${{ matrix.python-version }}-${{ matrix.os }}
+        path: python_genshin_artifact_core/dist/*.whl
 
 
   build-artifact:
