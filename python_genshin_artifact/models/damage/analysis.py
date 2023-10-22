@@ -38,3 +38,19 @@ class DamageAnalysis(BaseModel):
     vaporize: Optional[DamageResult]
     spread: Optional[DamageResult]
     aggravate: Optional[DamageResult]
+
+
+class TransformativeDamage(BaseModel):
+    swirl_cryo: float
+    swirl_hydro: float
+    swirl_pyro: float
+    swirl_electro: float
+    overload: float
+    electro_charged: float
+    shatter: float
+    super_conduct: float = Field(alias="superconduct")
+    bloom: float
+    hyper_bloom: float = Field(alias="hyperbloom")
+    burgeon: float
+    burning: float
+    crystallize: float
