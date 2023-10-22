@@ -2,7 +2,7 @@
 
 ## 类定义
 
-DamageAnalysis 是一个主要用于存放剧变反应伤害。它具有以下属性：
+DamageAnalysis 是一个主要用于存放剧变反应伤害的类。它具有以下属性：
 
 - `swirl_cryo`：扩散（冰）伤害值。
 - `swirl_hydro`：扩散（水）伤害值。

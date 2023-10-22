@@ -2,15 +2,15 @@
 
 ## 类定义
 
-CharacterInfo 是一个主要用于存放角色数据。它具有以下属性：
+CharacterInfo 是一个主要用于存放角色数据的类。它具有以下属性：
 
 - `name`：角色名称。
 - `level`：角色等级。
 - `ascend`：是否为突破等级，如80级突破时该选项为 `true`。
 - `constellation`：命座。
-- `skill1`：A技能等级。
-- `skill2`：E技能等级。
-- `skill3`：Q技能等级。
+- `skill1`：A 技能等级。
+- `skill2`：E 技能等级。
+- `skill3`：Q 技能等级。
 - `params`：角色参数。
 
 ## skill 等级说明 
