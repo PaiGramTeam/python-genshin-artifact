@@ -23,7 +23,7 @@
 - Navigate to core -> run cargo build
   ```
   python_genshin_artifact_core
-  go build
+  cargo build
   ...
   ```
 - Use maturin to install the rust library into a python library
