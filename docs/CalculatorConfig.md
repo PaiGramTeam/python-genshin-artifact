@@ -4,19 +4,19 @@
 
 DamageAnalysis 是一个主要用于存放剧变反应伤害。它具有以下属性：
 
-- `swirl_cryo`：扩散（冰）伤害值，浮点型。
-- `swirl_hydro`：扩散（水）伤害值，浮点型。
-- `swirl_pyro`：扩散（火）伤害值，浮点型。
-- `swirl_electro`：扩散（雷）伤害值，浮点型。
-- `overload`：超载伤害值，浮点型。
-- `electro_charged`：感电伤害值，浮点型。
-- `shatter`：碎冰伤害值，浮点型。
-- `super_conduct`：超导伤害值，浮点型。
-- `bloom`：绽放伤害值，浮点型。
-- `hyper_bloom`：烈绽放伤害值，浮点型。
-- `burgeon`：超绽放伤害值，浮点型。
-- `burning`：燃烧伤害值，浮点型。
-- `crystallize`：结晶盾伤害值，浮点型。
+- `swirl_cryo`：扩散（冰）伤害值。
+- `swirl_hydro`：扩散（水）伤害值。
+- `swirl_pyro`：扩散（火）伤害值。
+- `swirl_electro`：扩散（雷）伤害值。
+- `overload`：超载伤害值。
+- `electro_charged`：感电伤害值。
+- `shatter`：碎冰伤害值。
+- `super_conduct`：超导伤害值。
+- `bloom`：绽放伤害值。
+- `hyper_bloom`：烈绽放伤害值。
+- `burgeon`：超绽放伤害值。
+- `burning`：燃烧伤害值。
+- `crystallize`：结晶盾伤害值。
 
 ## JSON
 
