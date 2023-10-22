@@ -16,11 +16,10 @@ assets = Assets()
 def is_ascend(level: int, promote_level: int) -> bool:
     if level < 20:
         return False
-    elif 20 <= level < 40:
+    if 20 <= level < 40:
         return promote_level >= 1
-    else:
-        expected_promote_level = level // 10 - 2
-        return promote_level >= expected_promote_level
+    expected_promote_level = level // 10 - 2
+    return promote_level >= expected_promote_level
 
 
 def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, List[ArtifactInfo]]:
