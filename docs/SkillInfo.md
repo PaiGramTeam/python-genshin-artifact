@@ -43,7 +43,7 @@ SkillInfo 是一个主要用于存放所需要分析的技能的类。它具有�
 ```
 
 从代码可以看出，如果我们需要获得胡桃在开启大招是低血量时技能伤害，
-我们锁定其 `HuTaoDamageEnum::ElementalBurstLow1` 从上往下数，这是第 13 个，因为索引是从 0 开始，故赋值的时候需要减去 1 。
+我们锁定其 `HuTaoDamageEnum::ElementalBurstLow1` 从上往下数，这是第 13 个，因为索引是从 0 开始，故赋值的时候需要减去 1。
 
 ```python
 index = 12
@@ -54,7 +54,7 @@ index = 12
 
 ## config 技能配置
 
-这个参数设定了一些角色当前的状态，比如说胡桃是否E技能是否开启，如果开启伤害会提高。
+这个参数设定了一些角色当前的状态，比如说胡桃 E 技能是否开启，如果开启会基于生命值获得额外攻击力，打出更高的伤害。
 
 在 `genshin_artifact/mona_core/src/character/skill_config.rs` 文件我们可以看见各个角色的技能参数
 
@@ -97,7 +97,7 @@ pub enum CharacterSkillConfig {
 }
 ```
 
-以胡桃为例，如果要设置当前E技能状态生效，我们传入的参数是
+以胡桃为例，如果要设置当前 E 技能状态生效，我们传入的参数是
 
 ```python
 params = {"after_e": True}

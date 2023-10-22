@@ -2,7 +2,7 @@
 
 ## 类定义
 
-DamageAnalysis 是一个主要用于存放剧变反应伤害的类。它具有以下属性：
+TransformativeDamage 是一个主要用于存放剧变反应伤害的类。它具有以下属性，且均为浮点数：
 
 - `swirl_cryo`：扩散（冰）伤害值。
 - `swirl_hydro`：扩散（水）伤害值。
@@ -16,7 +16,9 @@ DamageAnalysis 是一个主要用于存放剧变反应伤害的类。它具有�
 - `hyper_bloom`：烈绽放伤害值。
 - `burgeon`：超绽放伤害值。
 - `burning`：燃烧伤害值。
-- `crystallize`：结晶盾伤害值。
+- `crystallize`：结晶盾伤害吸收量。
+
+此处伤害不考虑扩散反应引发的增幅/激化反应等次生反应。
 
 ## JSON
 

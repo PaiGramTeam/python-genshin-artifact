@@ -6,11 +6,11 @@ CalculatorConfig 是一个主要用于存放计算所需要的数据的类，给
 
 - `index`：角色信息。
 - `weapon`：武器信息。
-- `buffs`：BUFF，如角色引发的BUFF、武器引发的BUFF、圣遗物引发的BUFF、元素共鸣、自定义BUFF。
+- `buffs`：BUFF，如角色自身的 BUFF、武器的 BUFF、圣遗物的 BUFF、元素共鸣、自定义 BUFF。
 - `artifacts`：圣遗物列表。
 - `artifact_config`：圣遗物效果配置，如魔女四件套的效果。
 - `skill`：需要计算的技能。
-- `enemy`：怪物信息。
+- `enemy`：敌人信息。
 
 ## artifact_config 
 
