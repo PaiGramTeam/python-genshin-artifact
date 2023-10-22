@@ -1,3 +1,4 @@
+use anyhow::Context;
 use mona::artifacts::artifact_trait::ArtifactMetaData;
 use mona::artifacts::ArtifactSetName;
 use mona::common::item_config_type::ItemConfig;
@@ -132,6 +133,6 @@ pub fn gen_artifact_meta_as_json() -> PyResult<String> {
         })
     }
 
-    let result_str = serde_json::to_string(&data).unwrap();
+    let result_str = serde_json::to_string(&data).context("Failed to serialize json")?;
     Ok(result_str)
 }

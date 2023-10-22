@@ -1,3 +1,4 @@
+use anyhow::Context;
 use mona::common::item_config_type::ItemConfig;
 use mona::weapon::weapon_name::WeaponName;
 use mona::weapon::weapon_static_data::WeaponStaticData;
@@ -16,7 +17,6 @@ struct WeaponMetaDataForJS {
     effect: Option<usize>,
     configs: Vec<String>,
 }
-
 
 #[pyfunction]
 pub fn gen_weapon_meta_as_json() -> PyResult<String> {
@@ -53,7 +53,6 @@ pub fn gen_weapon_meta_as_json() -> PyResult<String> {
         data.push(my_data);
     }
 
-
-    let result_str = serde_json::to_string(&data).unwrap();
+    let result_str = serde_json::to_string(&data).context("Failed to serialize json")?;
     Ok(result_str)
 }
