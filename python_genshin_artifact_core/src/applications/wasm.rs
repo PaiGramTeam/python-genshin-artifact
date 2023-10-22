@@ -1,3 +1,4 @@
+use crate::JSONDecodeError;
 use anyhow::Context;
 use mona::artifacts::effect_config::{ArtifactConfigInterface, ArtifactEffectConfig};
 use mona::artifacts::{Artifact, ArtifactList};
@@ -65,7 +66,8 @@ impl From<TransformativeDamage> for TransformativeDamageBridge {
 
 #[pyfunction]
 pub fn get_damage_analysis(value_str: String) -> PyResult<String> {
-    let input: CalculatorConfigInterface = serde_json::from_str(&value_str).context("Failed to deserialize json")?;
+    let input: CalculatorConfigInterface = serde_json::from_str(&value_str)
+        .map_err(|e| JSONDecodeError::new_err((e.to_string(), value_str.to_owned(), 0)))?;
 
     let character: Character<ComplicatedAttributeGraph> = input.character.to_character();
     let weapon = input.weapon.to_weapon(&character);
@@ -104,7 +106,8 @@ pub fn get_damage_analysis(value_str: String) -> PyResult<String> {
 #[pyfunction]
 pub fn get_transformative_damage(value_str: String) -> PyResult<String> {
     utils::set_panic_hook();
-    let input: CalculatorConfigInterface = serde_json::from_str(&*value_str).context("Failed to deserialize json")?;
+    let input: CalculatorConfigInterface = serde_json::from_str(&value_str)
+        .map_err(|e| JSONDecodeError::new_err((e.to_string(), value_str.to_owned(), 0)))?;
 
     let character: Character<SimpleAttributeGraph2> = input.character.to_character();
     let weapon = input.weapon.to_weapon(&character);
