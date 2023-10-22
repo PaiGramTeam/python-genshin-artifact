@@ -2,7 +2,7 @@
 
 ## 类定义
 
-DamageAnalysis 是一个基于 BaseModel 的类，主要用于分析和计算伤害。它具有以下属性：
+DamageAnalysis 是一个主要用于存放计算伤害。它具有以下属性：
 
 - `atk`：攻击力相关的加成。
 - `atk_ratio`：攻击力比例加成。
