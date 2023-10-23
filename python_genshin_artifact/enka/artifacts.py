@@ -1,4 +1,6 @@
-from typing import Dict
+from typing import Dict, Final
+
+__version__: Final[str] = "4.1"
 
 equip_type_map: Dict[str, str] = {
     "EQUIP_BRACER": "Flower",
@@ -54,4 +56,6 @@ artifacts_name_map: Dict[int, str] = {
     15028: "FlowerOfParadiseLost",
     15029: "NymphsDream",
     15030: "VourukashasGlow",
+    15031: "MarechausseeHunter",
+    15032: "GoldenTroupe",
 }
