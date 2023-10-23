@@ -1,3 +1,5 @@
+use crate::JSONDecodeError;
+use anyhow::Context;
 use mona::artifacts::effect_config::{ArtifactConfigInterface, ArtifactEffectConfig};
 use mona::artifacts::{Artifact, ArtifactList};
 use mona::attribute::{AttributeUtils, ComplicatedAttributeGraph, SimpleAttributeGraph2};
@@ -64,7 +66,8 @@ impl From<TransformativeDamage> for TransformativeDamageBridge {
 
 #[pyfunction]
 pub fn get_damage_analysis(value_str: String) -> PyResult<String> {
-    let input: CalculatorConfigInterface = serde_json::from_str(&*value_str).unwrap();
+    let input: CalculatorConfigInterface = serde_json::from_str(&value_str)
+        .map_err(|e| JSONDecodeError::new_err((e.to_string(), value_str.to_owned(), 0)))?;
 
     let character: Character<ComplicatedAttributeGraph> = input.character.to_character();
     let weapon = input.weapon.to_weapon(&character);
@@ -96,14 +99,15 @@ pub fn get_damage_analysis(value_str: String) -> PyResult<String> {
         None,
     );
 
-    let result_str = serde_json::to_string(&result).unwrap();
+    let result_str = serde_json::to_string(&result).context("Failed to serialize json")?;
     Ok(result_str)
 }
 
 #[pyfunction]
 pub fn get_transformative_damage(value_str: String) -> PyResult<String> {
     utils::set_panic_hook();
-    let input: CalculatorConfigInterface = serde_json::from_str(&*value_str).unwrap();
+    let input: CalculatorConfigInterface = serde_json::from_str(&value_str)
+        .map_err(|e| JSONDecodeError::new_err((e.to_string(), value_str.to_owned(), 0)))?;
 
     let character: Character<SimpleAttributeGraph2> = input.character.to_character();
     let weapon = input.weapon.to_weapon(&character);
@@ -140,6 +144,6 @@ pub fn get_transformative_damage(value_str: String) -> PyResult<String> {
 
     let result = context.transformative();
     let bridge = TransformativeDamageBridge::from(result);
-    let result_str = serde_json::to_string(&bridge).unwrap();
+    let result_str = serde_json::to_string(&bridge).context("Failed to serialize json")?;
     Ok(result_str)
 }

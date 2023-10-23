@@ -1,0 +1,185 @@
+{
+  "character": {
+    "name": "HuTao",
+    "level": 81,
+    "ascend": false,
+    "constellation": 1,
+    "skill1": 9,
+    "skill2": 8,
+    "skill3": 7,
+    "params": {
+      "HuTao": {
+        "le_50": true
+      }
+    }
+  },
+  "weapon": {
+    "name": "DragonSBane",
+    "level": 90,
+    "ascend": false,
+    "refine": 4,
+    "params": "NoConfig"
+  },
+  "buffs": [],
+  "artifacts": [
+    {
+      "set_name": "WandererSTroupe",
+      "slot": "Flower",
+      "level": 20,
+      "star": 5,
+      "sub_stats": [
+        [
+          "CriticalRate",
+          0.14800000000000002
+        ],
+        [
+          "Recharge",
+          5.8
+        ],
+        [
+          "HPPercentage",
+          0.111
+        ],
+        [
+          "CriticalDamage",
+          0.14800000000000002
+        ]
+      ],
+      "main_stat": [
+        "HPFixed",
+        4780.0
+      ],
+      "id": 15003
+    },
+    {
+      "set_name": "CrimsonWitchOfFlames",
+      "slot": "Feather",
+      "level": 20,
+      "star": 5,
+      "sub_stats": [
+        [
+          "CriticalRate",
+          0.113
+        ],
+        [
+          "ATKPercentage",
+          0.099
+        ],
+        [
+          "CriticalDamage",
+          0.132
+        ],
+        [
+          "DEFFixed",
+          19.0
+        ]
+      ],
+      "main_stat": [
+        "ATKFixed",
+        311.0
+      ],
+      "id": 15006
+    },
+    {
+      "set_name": "CrimsonWitchOfFlames",
+      "slot": "Sand",
+      "level": 20,
+      "star": 5,
+      "sub_stats": [
+        [
+          "DEFPercentage",
+          0.11699999999999999
+        ],
+        [
+          "CriticalRate",
+          0.039
+        ],
+        [
+          "CriticalDamage",
+          0.19399999999999998
+        ],
+        [
+          "Recharge",
+          14.9
+        ]
+      ],
+      "main_stat": [
+        "HPPercentage",
+        0.466
+      ],
+      "id": 15006
+    },
+    {
+      "set_name": "EmblemOfSeveredFate",
+      "slot": "Goblet",
+      "level": 20,
+      "star": 5,
+      "sub_stats": [
+        [
+          "DEFFixed",
+          21.0
+        ],
+        [
+          "CriticalDamage",
+          0.225
+        ],
+        [
+          "HPFixed",
+          209.0
+        ],
+        [
+          "CriticalRate",
+          0.113
+        ]
+      ],
+      "main_stat": [
+        "PyroBonus",
+        0.466
+      ],
+      "id": 15020
+    },
+    {
+      "set_name": "WandererSTroupe",
+      "slot": "Head",
+      "level": 20,
+      "star": 5,
+      "sub_stats": [
+        [
+          "HPPercentage",
+          0.122
+        ],
+        [
+          "DEFFixed",
+          21.0
+        ],
+        [
+          "CriticalDamage",
+          0.21
+        ],
+        [
+          "HPFixed",
+          418.0
+        ]
+      ],
+      "main_stat": [
+        "CriticalRate",
+        0.311
+      ],
+      "id": 15003
+    }
+  ],
+  "artifact_config": {
+    "config_crimson_witch_of_flames": {
+      "level": 1
+    }
+  },
+  "skill": {
+    "index": 7,
+    "config": {
+      "HuTao": {
+        "after_e": true
+      }
+    }
+  },
+  "enemy": null
+}
