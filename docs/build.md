@@ -22,9 +22,13 @@
 
 - Navigate to core -> run cargo build
   ```
-  python_genshin_artifact_core
-  cargo build
-  ...
+  $ cd python_genshin_artifact_core
+  $ cargo build
+     ...
+     Compiling pyo3-ffi v0.19.2
+     Compiling pyo3 v0.19.2
+     Compiling genshin_artifact_core v0.1.1 (/home/kotori/projects/python/python-genshin-artifact/python_genshin_artifact_core)
+      Finished dev [unoptimized + debuginfo] target(s) in 3.12s
   ```
 - Use maturin to install the rust library into a python library
   ```
