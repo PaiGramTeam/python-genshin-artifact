@@ -1,53 +1,41 @@
-# CalculatorConfig 类说明文档
+# TransformativeDamage 类说明文档
 
 ## 类定义
 
-CalculatorConfig 是一个主要用于存放计算所需要的数据的类，给伤害计算器进行分析。它具有以下属性：
+TransformativeDamage 是一个主要用于存放剧变反应伤害的类。它具有以下属性，且均为浮点数：
 
-- `index`：角色信息。
-- `weapon`：武器信息。
-- `buffs`：BUFF，如角色自身的 BUFF、武器的 BUFF、圣遗物的 BUFF、元素共鸣、自定义 BUFF。
-- `artifacts`：圣遗物列表。
-- `artifact_config`：圣遗物效果配置，如魔女四件套的效果。
-- `skill`：需要计算的技能。
-- `enemy`：敌人信息。
+- `swirl_cryo`：扩散（冰）伤害值。
+- `swirl_hydro`：扩散（水）伤害值。
+- `swirl_pyro`：扩散（火）伤害值。
+- `swirl_electro`：扩散（雷）伤害值。
+- `overload`：超载伤害值。
+- `electro_charged`：感电伤害值。
+- `shatter`：碎冰伤害值。
+- `super_conduct`：超导伤害值。
+- `bloom`：绽放伤害值。
+- `hyper_bloom`：烈绽放伤害值。
+- `burgeon`：超绽放伤害值。
+- `burning`：燃烧伤害值。
+- `crystallize`：结晶盾伤害吸收量。
 
-## artifact_config 
+此处伤害不考虑扩散反应引发的增幅/激化反应等次生反应。
 
-圣遗物遗器效果来源于 
-`genshin_artifact/mona_core/src/artifacts/effect_config.rs`
-在 `ArtifactEffectConfig` 结构体中表示了各个圣遗物的效果配置
+## JSON
 
-```rust
-#[derive(Default, Debug, Clone)]
-#[derive(Serialize, Deserialize)]
-pub struct ArtifactEffectConfig {
-    pub config_archaic_petra: ConfigArchaicPetra,
-    pub config_berserker: ConfigRate,
-    pub config_blizzard_strayer: ConfigBlizzardStrayer,
-    pub config_bloodstained_chivalry: ConfigRate,
-    pub config_brave_heart: ConfigRate,
-    pub config_crimson_witch_of_flames: ConfigLevel,
-    pub config_heart_of_depth: ConfigRate,
-    pub config_husk_of_opulent_dreams: ConfigLevel,
-    pub config_instructor: ConfigRate,
-    pub config_lavawalker: ConfigRate,
-    pub config_martial_artist: ConfigRate,
-    pub config_noblesse_oblige: ConfigRate,
-    pub config_pale_flame: ConfigPaleFlame,
-    pub config_retracing_bolide: ConfigRate,
-    pub config_shimenawas_reminiscence: ConfigRate,
-    pub config_tenacity_of_the_millelith: ConfigRate,
-    pub config_thundersoother: ConfigRate,
-    pub config_vermillion_hereafter: ConfigVermillionHereafter,
-    pub config_echoes_of_an_offering: ConfigEchoesOfAnOffering,
-    pub config_deepwood_memories: ConfigRate,
-    pub config_gilded_dreams: ConfigGildedDreams,
-    pub config_desert_pavilion_chronicle: ConfigRate,
-    pub config_flower_of_paradise_lost: ConfigFlowerOfParadiseLost,
-    pub config_nymphs_dream: ConfigNymphsDream,
-    pub config_vourukashas_glow: ConfigVourukashasGlow,
-    pub config_marechaussee_hunter: ConfigMarechausseeHunter,
-    pub config_golden_troupe: ConfigRate,
+```json
+{
+    "swirl_cryo": 1348.1636027931086,
+    "swirl_hydro": 1348.1636027931086,
+    "swirl_pyro": 1348.1636027931086,
+    "swirl_electro": 1348.1636027931086,
+    "overload": 5535.613207227028,
+    "electro_charged": 2696.327205586217,
+    "shatter": 3370.4090069827716,
+    "super_conduct": 1123.469668994257,
+    "bloom": 4493.878675977028,
+    "hyper_bloom": 6740.818013965543,
+    "burgeon": 8303.419810840544,
+    "burning": 691.9516509033785,
+    "crystallize": 2373.8421050673833
 }
 ```
