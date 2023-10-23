@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 fight_map: Dict[str, str] = {
     "FIGHT_PROP_ATTACK": "ATKFixed",
@@ -21,3 +21,13 @@ fight_map: Dict[str, str] = {
     "FIGHT_PROP_ROCK_ADD_HURT": "GeoBonus",
     "FIGHT_PROP_GRASS_ADD_HURT": "DendroBonus",
 }
+
+fixed: List[str] = {
+    "FIGHT_PROP_ATTACK",
+    "FIGHT_PROP_DEFENSE",
+    "FIGHT_PROP_HP",
+    "FIGHT_PROP_ELEMENT_MASTERY",
+}
+
+def toFloat(prop_id: str, pc: float) -> float:
+    return pc if prop_id in fixed else (pc / 100)
