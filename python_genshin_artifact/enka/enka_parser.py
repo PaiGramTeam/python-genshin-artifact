@@ -4,7 +4,7 @@ from typing import Tuple, List, Optional
 from python_genshin_artifact.enka.artifacts import artifacts_name_map, equip_type_map
 from python_genshin_artifact.enka.assets import Assets
 from python_genshin_artifact.enka.characters import characters_map
-from python_genshin_artifact.enka.fight import fight_map
+from python_genshin_artifact.enka.fight import fight_map, toFloat
 from python_genshin_artifact.enka.weapon import weapon_name_map
 from python_genshin_artifact.models.artifact import ArtifactInfo
 from python_genshin_artifact.models.characterInfo import CharacterInfo
@@ -82,26 +82,12 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
             _reliquary_main_stat = _flat["reliquaryMainstat"]
             _main_prop_id = _reliquary_main_stat["mainPropId"]
             stat_name = fight_map[_main_prop_id]
-            stat_value = _reliquary_main_stat["statValue"]
-            if "_PERCENT" in _main_prop_id:
-                stat_value /= 100
-            elif "FIGHT_PROP_CRITICAL" in _main_prop_id:
-                stat_value /= 100
-            elif "FIGHT_PROP_CRITICAL_HURT" in _main_prop_id:
-                stat_value /= 100
-            elif "_ADD_HURT" in _main_prop_id:
-                stat_value /= 100
+            stat_value = toFloat(_main_prop_id, _reliquary_main_stat["statValue"])
             _main_stat = (stat_name, stat_value)
             for _reliquary_sub_stats in _flat["reliquarySubstats"]:
                 _append_prop_id = _reliquary_sub_stats["appendPropId"]
                 stat_name = fight_map[_append_prop_id]
-                stat_value = _reliquary_sub_stats["statValue"]
-                if "_PERCENT" in _append_prop_id:
-                    stat_value /= 100
-                elif "FIGHT_PROP_CRITICAL" in _append_prop_id:
-                    stat_value /= 100
-                elif "FIGHT_PROP_CRITICAL_HURT" in _append_prop_id:
-                    stat_value /= 100
+                stat_value = toFloat(_append_prop_id, _reliquary_sub_stats["statValue"])
                 _sub_stats = (stat_name, stat_value)
                 sub_stats.append(_sub_stats)
             slot = equip_type_map[_flat["equipType"]]
