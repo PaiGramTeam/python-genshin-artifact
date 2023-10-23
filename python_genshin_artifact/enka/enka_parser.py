@@ -27,16 +27,6 @@ def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, 
     if character_info is None:
         raise RuntimeError
     _avatar_info_list = data["avatarInfoList"]
-    _player_info = data["playerInfo"]
-    _show_avatar_info_list = _player_info["showAvatarInfoList"]
-    level: int = 0
-    for _show_avatar_info in _show_avatar_info_list:
-        if _show_avatar_info["avatarId"] == avatar_id:
-            level = _show_avatar_info["level"]
-            break
-    else:
-        raise ValueError(f"avatarId={avatar_id} is not found")
-    _avatar_info_list = data["avatarInfoList"]
     _avatar_info: dict = {}
     for _value in _avatar_info_list:
         if _value["avatarId"] == avatar_id:
@@ -44,6 +34,8 @@ def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, 
             break
     else:
         raise ValueError(f"avatarId={avatar_id} is not found")
+    _prop_map = _avatar_info.get("propMap", {})
+    level = int(_prop_map["4001"].get("ival", 0)) if "4001" in _prop_map else 0
     talent_id_list = _avatar_info.get("talentIdList", [])  # 命之座 ID 列 如果未解锁任何命之座则此数据不存在
     _skill_level_map: "dict" = _avatar_info["skillLevelMap"]
     skill_info = {"skill1": 1, "skill2": 1, "skill3": 1}

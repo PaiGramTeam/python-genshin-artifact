@@ -1,4 +1,4 @@
-pub mod character;
-pub mod weapon;
 pub mod artifact;
+pub mod character;
 pub mod locale;
+pub mod weapon;

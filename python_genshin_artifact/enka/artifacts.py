@@ -1,4 +1,6 @@
-from typing import Dict
+from typing import Dict, Final
+
+__version__: Final[str] = "4.1"
 
 equip_type_map: Dict[str, str] = {
     "EQUIP_BRACER": "Flower",
@@ -11,7 +13,7 @@ equip_type_map: Dict[str, str] = {
 artifacts_name_map: Dict[int, str] = {
     10001: "ResolutionOfSojourner",
     10002: "BraveHeart",
-    10003: "DefenderSWill",
+    10003: "DefendersWill",
     10004: "TinyMiracle",
     10005: "Berserker",
     10006: "MartialArtist",
@@ -26,9 +28,9 @@ artifacts_name_map: Dict[int, str] = {
     14002: "Thundersoother",
     14003: "Lavawalker",
     14004: "MaidenBeloved",
-    15001: "GladiatorSFinale",
+    15001: "GladiatorsFinale",
     15002: "ViridescentVenerer",
-    15003: "WandererSTroupe",
+    15003: "WanderersTroupe",
     15005: "ThunderingFury",
     15006: "CrimsonWitchOfFlames",
     15007: "NoblesseOblige",
@@ -45,13 +47,15 @@ artifacts_name_map: Dict[int, str] = {
     15019: "ShimenawasReminiscence",
     15020: "EmblemOfSeveredFate",
     15021: "HuskOfOpulentDreams",
-    15022: "Ocean-HuedClam",
+    15022: "OceanHuedClam",
     15023: "VermillionHereafter",
     15024: "EchoesOfAnOffering",
     15025: "DeepwoodMemories",
     15026: "GildedDreams",
     15027: "DesertPavilionChronicle",
     15028: "FlowerOfParadiseLost",
-    15029: "NymphSDream",
-    15030: "VourukashaSGlow",
+    15029: "NymphsDream",
+    15030: "VourukashasGlow",
+    15031: "MarechausseeHunter",
+    15032: "GoldenTroupe",
 }
