@@ -29,5 +29,6 @@ fixed: List[str] = {
     "FIGHT_PROP_ELEMENT_MASTERY",
 }
 
+
 def toFloat(prop_id: str, pc: float) -> float:
     return pc if prop_id in fixed else (pc / 100)
