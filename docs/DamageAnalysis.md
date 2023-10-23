@@ -20,8 +20,8 @@ DamageAnalysis 是一个主要用于存放计算伤害结果的类。它具有�
 - `vaporize_enhance`：蒸发反应伤害提高。
 - `healing_bonus`：治疗效果加成。
 - `shield_strength`：护盾强效加成。
-- `spread_compose`：扩散反应加成。
-- `aggravate_compose`：剧变反应加成。
+- `spread_compose`：蔓激化伤害提升效果提高。
+- `aggravate_compose`：超激化伤害提升效果提高。
 - `def_minus`：百分比减防。
 - `def_penetration`：无视防御。
 - `res_minus`：减抗。
@@ -31,8 +31,8 @@ DamageAnalysis 是一个主要用于存放计算伤害结果的类。它具有�
 - `normal`：普通伤害结果，DamageResult 类型。
 - `melt`：融化伤害结果，DamageResult 类型，可选。
 - `vaporize`：蒸发伤害结果，DamageResult 类型，可选。
-- `spread`：扩散伤害结果，DamageResult 类型，可选。
-- `aggravate`：加剧伤害结果，DamageResult 类型，可选。
+- `spread`：蔓激化伤害结果，DamageResult 类型，可选。
+- `aggravate`：超激化伤害结果，DamageResult 类型，可选。
 
 每个面板数值的键值对的形式，键为加成的描述，值为加成的数值，如无特别说明，则为浮点数类型，百分比加成基准为 1。
 
