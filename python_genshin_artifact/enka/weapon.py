@@ -83,7 +83,7 @@ weapon_name_map: Dict[int, str] = {
     13301: "WhiteTassel",
     13302: "Halberd",
     13303: "BlackTassel",
-    13401: "DragonSBane",
+    13401: "DragonsBane",
     13402: "PrototypeStarglitter",
     13403: "CrescentPike",
     13404: "BlackcliffPole",
