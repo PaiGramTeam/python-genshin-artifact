@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 from genshin_artifact_core import (
     gen_character_meta_as_json,
@@ -14,7 +14,7 @@ class Assets:
     character: Dict[str, dict] = {}
     weapon: Dict[str, dict] = {}
     artifact: Dict[str, dict] = {}
-    locale: Dict[str, dict] = {}
+    locale: Dict[str, List[str]] = {}
     langs: Tuple[str] = ("zh-cn", "en")
 
     def __new__(cls):
