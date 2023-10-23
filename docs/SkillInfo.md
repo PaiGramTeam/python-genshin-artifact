@@ -9,41 +9,34 @@ SkillInfo 是一个主要用于存放所需要分析的技能的类。它具有�
 
 ## index 技能索引
 
-可以通过 `genshin_artifact/mona_core/src/character/characters` 寻找角色索引，索引是从 0 开始。
+可以运行 `genshin_genshin_artifact/tools/get_character_skill_index.py` 寻找角色索引。
 
-以胡桃为例，改角色的配置文件在
-`genshin_artifact/mona_core/src/character/characters/pyro/hu_tao.rs` 中。
+```
+K:\PycharmProjects\python_genshin_artifact\venv\Scripts\python.exe K:\PycharmProjects\python_genshin_artifact\tools\get_character_skill_index.py 
+Enter character name: HuTao
+Character name 胡桃
+Skill A 普通攻击·往生秘传枪法
+index 0 一段伤害
+index 1 二段伤害
+index 2 三段伤害
+index 3 四段伤害
+index 4 五段伤害-1
+index 5 五段伤害-2
+index 6 六段伤害
+index 7 重击伤害
+index 8 下坠期间伤害
+index 9 低空坠地冲击伤害
+index 10 高空坠地冲击伤害
+Skill E 蝶引来生
+index 11 血梅香伤害
+Skill Q 安神秘法
+index 12 技能伤害
+index 13 低血量时技能伤害
 
-其中 `SKILL_MAP` 定义了**能够计算**技能的相关数据。
-
-```rust
-    #[cfg(not(target_family = "wasm"))]
-    const SKILL_MAP: CharacterSkillMap = CharacterSkillMap {
-        skill1: Some(&[
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Normal1 as usize, text: hit_n_dmg!(1) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Normal2 as usize, text: hit_n_dmg!(2) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Normal3 as usize, text: hit_n_dmg!(3) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Normal4 as usize, text: hit_n_dmg!(4) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Normal51 as usize, text: hit_n_dmg!(5, 1) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Normal52 as usize, text: hit_n_dmg!(5, 2) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Normal6 as usize, text: hit_n_dmg!(6) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Charged as usize, text: charged_dmg!() },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Plunging1 as usize, text: plunging_dmg!(1) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Plunging2 as usize, text: plunging_dmg!(2) },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::Plunging3 as usize, text: plunging_dmg!(3) },
-        ]),
-        skill2: Some(&[
-            CharacterSkillMapItem { index: HuTaoDamageEnum::ElementalSkillBloodBlossom as usize, text: locale!(zh_cn: "血梅香伤害", en: "Blood Blossom DMG") }
-        ]),
-        skill3: Some(&[
-            CharacterSkillMapItem { index: HuTaoDamageEnum::ElementalBurst1 as usize, text: locale!(zh_cn: "技能伤害", en: "Skill DMG") },
-            CharacterSkillMapItem { index: HuTaoDamageEnum::ElementalBurstLow1 as usize, text: locale!(zh_cn: "低血量时技能伤害", en: "Low HP Skill DMG") },
-        ]),
-    };
+Process finished with exit code 0
 ```
 
-从代码可以看出，如果我们需要获得胡桃在开启大招是低血量时技能伤害，
-我们锁定其 `HuTaoDamageEnum::ElementalBurstLow1` 从上往下数，这是第 13 个，因为索引是从 0 开始，故赋值的时候需要减去 1。
+从输出可以看出，如果我们需要获得胡桃在开启大招是低血量时技能伤害，索引应该设置为 13。
 
 ```python
 index = 12
