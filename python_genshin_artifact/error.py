@@ -8,5 +8,3 @@ class JsonParseException(GenshinArtifactException):
 
 class EnkaParseException(GenshinArtifactException):
     """EnkaParse 解析错误"""
-
-
