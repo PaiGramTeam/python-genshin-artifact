@@ -51,7 +51,7 @@ characters_map: Dict[int, str] = {
     10000061: "Kirara",
     10000062: "Aloy",
     10000063: "Shenhe",
-    10000064: "YunJin",
+    10000064: "Yunjin",
     10000065: "KukiShinobu",
     10000066: "KamisatoAyato",
     10000067: "Collei",
