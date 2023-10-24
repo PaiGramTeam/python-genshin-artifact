@@ -6,6 +6,7 @@ from python_genshin_artifact.enka.assets import Assets
 from python_genshin_artifact.enka.characters import characters_map
 from python_genshin_artifact.enka.fight import fight_map
 from python_genshin_artifact.enka.weapon import weapon_name_map
+from python_genshin_artifact.error import EnkaParseException
 from python_genshin_artifact.models.artifact import ArtifactInfo
 from python_genshin_artifact.models.characterInfo import CharacterInfo
 from python_genshin_artifact.models.weapon import WeaponInfo
@@ -25,7 +26,7 @@ def is_ascend(level: int, promote_level: int) -> bool:
 def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, List[ArtifactInfo]]:
     character_info = assets.get_character(avatar_id)
     if character_info is None:
-        raise RuntimeError
+        raise EnkaParseException(f"avatarId={avatar_id} is not found in assets")
     _avatar_info_list = data["avatarInfoList"]
     _avatar_info: dict = {}
     for _value in _avatar_info_list:
@@ -33,7 +34,7 @@ def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, 
             _avatar_info = _value
             break
     else:
-        raise ValueError(f"avatarId={avatar_id} is not found")
+        raise EnkaParseException(f"avatarId={avatar_id} is not found")
     _prop_map = _avatar_info.get("propMap", {})
     level = int(_prop_map["4001"].get("ival", 0)) if "4001" in _prop_map else 0
     talent_id_list = _avatar_info.get("talentIdList", [])  # 命之座 ID 列 如果未解锁任何命之座则此数据不存在
@@ -74,10 +75,13 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
         if _reliquary:
             sub_stats: List[Tuple[str, float]] = []
             _flat = _equip["flat"]
-            artifact_id = int(re.findall(r"\d+", _flat["icon"])[0])
+            try:
+                artifact_id = int(re.findall(r"\d+", _flat["icon"])[0])
+            except IndexError:
+                raise EnkaParseException(f"artifact_id is not found in {_flat['icon']}")
             set_name = artifacts_name_map.get(artifact_id)
             if set_name is None:
-                raise RuntimeError
+                raise EnkaParseException(f"artifact_id={artifact_id} is not found")
             _level = _reliquary["level"] - 1
             _reliquary_main_stat = _flat["reliquaryMainstat"]
             _main_prop_id = _reliquary_main_stat["mainPropId"]
@@ -121,10 +125,12 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
             weapon_id = _equip["itemId"]
             weapon_name = weapon_name_map.get(weapon_id)
             if weapon_name is None:
-                raise RuntimeError
+                raise EnkaParseException(f"weapon_id={weapon_id} is not found in assets")
             _level = _weapon["level"]
             refinement_level = next(iter(_weapon["affixMap"].values())) + 1
-            _promote_level = _weapon["promoteLevel"]
-            ascend = is_ascend(_level, _promote_level)
+            _promote_level = _weapon.get("promoteLevel")
+            ascend = False
+            if _promote_level is not None:
+                ascend = is_ascend(_level, _promote_level)
             weapon = WeaponInfo(level=_level, refine=refinement_level, ascend=ascend, name=weapon_name)
     return weapon, artifacts
