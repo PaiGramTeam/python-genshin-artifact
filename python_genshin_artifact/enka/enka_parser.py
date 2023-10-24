@@ -81,7 +81,7 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
                 raise EnkaParseException(f"artifact_id is not found in {_flat['icon']}")
             set_name = artifacts_name_map.get(artifact_id)
             if set_name is None:
-                raise EnkaParseException(f"artifact_id={artifact_id} is not found")
+                raise EnkaParseException(f"artifact_id={artifact_id} is not found in assets")
             _level = _reliquary["level"] - 1
             _reliquary_main_stat = _flat["reliquaryMainstat"]
             _main_prop_id = _reliquary_main_stat["mainPropId"]
