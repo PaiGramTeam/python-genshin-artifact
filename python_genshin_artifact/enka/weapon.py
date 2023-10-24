@@ -103,7 +103,7 @@ weapon_name_map: Dict[int, str] = {
     13501: "StaffOfHoma",
     13502: "SkywardSpine",
     13504: "VortexVanquisher",
-    13505: "PrimordialJadeWinged-Spear",
+    13505: "PrimordialJadeWingedSpear",
     13507: "CalamityQueller",
     13509: "EngulfingLightning",
     13511: "StaffOfTheScarletSands",
