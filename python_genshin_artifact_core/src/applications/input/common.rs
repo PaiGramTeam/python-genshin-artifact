@@ -1,8 +1,9 @@
-use std::str::FromStr;
+use anyhow::Context;
 use mona::character::{CharacterConfig, CharacterName};
 use mona_wasm::applications::common::CharacterInterface as MonaCharacterInterface;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
+use std::str::FromStr;
 
 #[pyclass(name = "CharacterInterface")]
 #[derive(Clone)]
@@ -14,6 +15,7 @@ pub struct PyCharacterInterface {
     pub skill1: usize,
     pub skill2: usize,
     pub skill3: usize,
+    // todo : 自定义 CharacterConfig 并用 proc macro 实现 Into<Mona::character::CharacterInfo>
     pub params: Option<Py<PyDict>>,
 }
 
@@ -43,12 +45,19 @@ impl PyCharacterInterface {
     }
 }
 
-impl PyCharacterInterface {
+impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
+    type Error = anyhow::Error;
 
-    pub fn to_mona(&self) -> MonaCharacterInterface {
-        let name = CharacterName::from_str(&self.name).unwrap();
-        // todo : params 转换为 CharacterConfig::NoConfig
-        MonaCharacterInterface {
+    fn try_into(self) -> Result<MonaCharacterInterface, Self::Error> {
+        let name = CharacterName::from_str(&self.name).context("Failed to deserialize json")?;
+        if let Some(params) = self.params {
+            Python::with_gil(|py| {
+                // PyDict 无法转换为 CharacterConfig 类
+                // todo : 自定义 CharacterConfig 并用 proc macro 实现 Into<Mona::character::CharacterConfig>
+                let _dict: &PyDict = params.as_ref(py);
+            })
+        }
+        Ok(MonaCharacterInterface {
             name,
             level: self.level,
             ascend: self.ascend,
@@ -56,9 +65,7 @@ impl PyCharacterInterface {
             skill1: self.skill1,
             skill2: self.skill2,
             skill3: self.skill3,
-            params: CharacterConfig::NoConfig
-        }
+            params: CharacterConfig::NoConfig,
+        })
     }
 }
-
-
