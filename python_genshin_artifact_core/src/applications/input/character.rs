@@ -1,10 +1,11 @@
 use anyhow::Context;
-use mona::character::{CharacterConfig, CharacterName};
-use mona_wasm::applications::common::CharacterInterface as MonaCharacterInterface;
-use pyo3::prelude::*;
 use pythonize::depythonize;
 use std::str::FromStr;
 use pyo3::types::PyDict;
+use pyo3::prelude::*;
+
+use mona::character::{CharacterConfig, CharacterName};
+use mona_wasm::applications::common::CharacterInterface as MonaCharacterInterface;
 
 #[pyclass(name = "CharacterInterface")]
 #[derive(Clone)]
@@ -54,7 +55,8 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
         if let Some(value) = self.params {
             Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
-                params = depythonize(_dict).unwrap();;
+                params = depythonize(_dict).unwrap();
+                ;
             })
         }
         Ok(MonaCharacterInterface {
