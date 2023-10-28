@@ -44,6 +44,78 @@ impl PyCharacterInterface {
             params,
         })
     }
+
+    pub fn get_name(&self) -> PyResult<String> {
+        Ok(self.name.clone())
+    }
+
+    pub fn get_level(&self) -> PyResult<usize> {
+        Ok(self.level)
+    }
+
+    pub fn get_ascend(&self) -> PyResult<bool> {
+        Ok(self.ascend)
+    }
+
+    pub fn get_constellation(&self) -> PyResult<i32> {
+        Ok(self.constellation)
+    }
+
+    pub fn get_skill1(&self) -> PyResult<usize> {
+        Ok(self.skill1)
+    }
+
+    pub fn get_skill2(&self) -> PyResult<usize> {
+        Ok(self.skill2)
+    }
+
+    pub fn get_skill3(&self) -> PyResult<usize> {
+        Ok(self.skill3)
+    }
+
+    pub fn get_params(&self) -> PyResult<Option<Py<PyDict>>> {
+        Ok(self.params.clone())
+    }
+
+    pub fn set_name(&mut self, name: String) -> PyResult<()> {
+        self.name = name;
+        Ok(())
+    }
+
+    pub fn set_level(&mut self, level: usize) -> PyResult<()> {
+        self.level = level;
+        Ok(())
+    }
+
+    pub fn set_ascend(&mut self, ascend: bool) -> PyResult<()> {
+        self.ascend = ascend;
+        Ok(())
+    }
+
+    pub fn set_constellation(&mut self, constellation: i32) -> PyResult<()> {
+        self.constellation = constellation;
+        Ok(())
+    }
+
+    pub fn set_skill1(&mut self, skill1: usize) -> PyResult<()> {
+        self.skill1 = skill1;
+        Ok(())
+    }
+
+    pub fn set_skill2(&mut self, skill2: usize) -> PyResult<()> {
+        self.skill2 = skill2;
+        Ok(())
+    }
+
+    pub fn set_skill3(&mut self, skill3: usize) -> PyResult<()> {
+        self.skill3 = skill3;
+        Ok(())
+    }
+
+    pub fn set_params(&mut self, params: Option<Py<PyDict>>) -> PyResult<()> {
+        self.params = params;
+        Ok(())
+    }
 }
 
 impl TryInto<MonaCharacterInterface> for PyCharacterInterface {

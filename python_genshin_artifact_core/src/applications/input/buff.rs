@@ -27,6 +27,26 @@ impl PyBuffInterface {
             config,
         })
     }
+
+    #[getter]
+    pub fn get_name(&self) -> PyResult<Py<PyString>> {
+        Ok(self.name.clone())
+    }
+
+    #[setter]
+    pub fn set_name(&mut self, name: Py<PyString>) {
+        self.name = name;
+    }
+
+    #[getter]
+    pub fn get_config(&self) -> PyResult<Option<Py<PyDict>>> {
+        Ok(self.config.clone())
+    }
+
+    #[setter]
+    pub fn set_config(&mut self, config: Option<Py<PyDict>>) {
+        self.config = config;
+    }
 }
 
 impl TryInto<MonaBuffInterface> for PyBuffInterface {

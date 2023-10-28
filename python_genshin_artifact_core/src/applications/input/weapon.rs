@@ -33,6 +33,56 @@ impl PyWeaponInterface {
             params,
         })
     }
+
+    #[getter]
+    pub fn get_name(&self) -> PyResult<Py<PyString>> {
+        Ok(self.name.clone())
+    }
+
+    #[setter]
+    pub fn set_name(&mut self, name: Py<PyString>) {
+        self.name = name;
+    }
+
+    #[getter]
+    pub fn get_level(&self) -> PyResult<i32> {
+        Ok(self.level)
+    }
+
+    #[setter]
+    pub fn set_level(&mut self, level: i32) {
+        self.level = level;
+    }
+
+    #[getter]
+    pub fn get_ascend(&self) -> PyResult<bool> {
+        Ok(self.ascend)
+    }
+
+    #[setter]
+    pub fn set_ascend(&mut self, ascend: bool) {
+        self.ascend = ascend;
+    }
+
+    #[getter]
+    pub fn get_refine(&self) -> PyResult<i32> {
+        Ok(self.refine)
+    }
+
+    #[setter]
+    pub fn set_refine(&mut self, refine: i32) {
+        self.refine = refine;
+    }
+
+    #[getter]
+    pub fn get_params(&self) -> PyResult<Option<Py<PyDict>>> {
+        Ok(self.params.clone())
+    }
+
+    #[setter]
+    pub fn set_params(&mut self, params: Option<Py<PyDict>>) {
+        self.params = params;
+    }
 }
 
 
