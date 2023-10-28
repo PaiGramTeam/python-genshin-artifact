@@ -112,3 +112,80 @@ impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
         })
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use mona::attribute::ComplicatedAttributeGraph;
+    use mona::character::{Character, CharacterConfig, CharacterName};
+    use mona::weapon::Weapon;
+    use super::*;
+
+
+    #[test]
+    fn test_weapon_interface() {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| {
+            let inner_dict = PyDict::new(py);
+            inner_dict.set_item("be50_rate", 1.0).unwrap();
+
+            let params_dict = PyDict::new(py);
+            params_dict.set_item("StaffOfHoma", inner_dict).unwrap();
+
+            let name = PyString::new(py, "StaffOfHoma");
+
+            let py_weapon_interface = PyWeaponInterface {
+                name: Py::from(name),
+                level: 90,
+                ascend: true,
+                refine: 5,
+                params: Some(Py::from(params_dict)),
+            };
+
+            assert_eq!(py_weapon_interface.get_name().as_ref().unwrap().to_string(), "StaffOfHoma");
+            assert_eq!(py_weapon_interface.get_level().unwrap(), 90);
+            assert_eq!(py_weapon_interface.get_ascend().unwrap(), true);
+            assert_eq!(py_weapon_interface.get_refine().unwrap(), 5);
+
+            let params = py_weapon_interface.get_params().unwrap();
+            match params {
+                Some(value) => {
+                    let py_dict = value.as_ref(py);
+                    let params_dict = py_dict.get_item("StaffOfHoma").unwrap().downcast::<PyDict>().unwrap();
+                    assert_eq!(params_dict.get_item("be50_rate").unwrap().extract::<f64>().unwrap(), 1.0);
+                }
+                None => panic!("Expected PyDict, got None"),
+            };
+
+            let mona_weapon_interface: MonaWeaponInterface = py_weapon_interface.try_into().unwrap();
+
+
+            let character: Character<ComplicatedAttributeGraph> = Character::new(
+                CharacterName::HuTao,
+                90,
+                true,
+                6,
+                12,
+                12,
+                12,
+                &CharacterConfig::HuTao { le_50: true },
+            );
+
+
+            let weapon: Weapon<ComplicatedAttributeGraph> = mona_weapon_interface.to_weapon(&character);
+
+            assert_eq!(weapon.common_data.name, WeaponName::StaffOfHoma);
+
+            match weapon.effect {
+                Some(effect) => {
+                    let mut attribute = ComplicatedAttributeGraph::default();
+                    effect.apply(&weapon.common_data, &mut attribute);
+                    assert!(attribute.edges.iter().any(|item| item.key == "护摩之杖被动"), "Expected to find key '护摩之杖被动'");
+                    assert!(attribute.edges.iter().any(|item| item.key == "护摩之杖被动等效"), "Expected to find key '护摩之杖被动等效'");
+                }
+                None => panic!("Expected weapon.effect, got None"),
+            }
+            println!("PyWeaponInterface 测试成功 遥遥领先！");
+        });
+    }
+}

@@ -128,7 +128,6 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
             Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
                 params = depythonize(_dict).unwrap();
-                ;
             })
         }
         Ok(MonaCharacterInterface {
@@ -143,3 +142,68 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
         })
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+
+    use mona::attribute::{Attribute, AttributeName, ComplicatedAttributeGraph};
+    use mona::character::Character;
+    use super::*;
+
+    #[test]
+    fn test_character_interface() {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| {
+            let inner_dict = PyDict::new(py);
+            inner_dict.set_item("le_50", "true").unwrap();
+
+            let outer_dict = PyDict::new(py);
+            outer_dict.set_item("HuTao", inner_dict).unwrap();
+
+            let py_character_interface = PyCharacterInterface {
+                name: "HuTao".to_string(),
+                level: 90,
+                ascend: true,
+                constellation: 6,
+                skill1: 12,
+                skill2: 12,
+                skill3: 12,
+                params: Some(Py::from(outer_dict)),
+            };
+
+            assert_eq!(py_character_interface.get_name().unwrap(), "HuTao");
+            assert_eq!(py_character_interface.get_level().unwrap(), 90);
+            assert_eq!(py_character_interface.get_ascend().unwrap(), true);
+            assert_eq!(py_character_interface.get_constellation().unwrap(), 6);
+            assert_eq!(py_character_interface.get_skill1().unwrap(), 12);
+            assert_eq!(py_character_interface.get_skill2().unwrap(), 12);
+            assert_eq!(py_character_interface.get_skill3().unwrap(), 12);
+
+            let params = py_character_interface.get_params().unwrap();
+            match params {
+                Some(value) => {
+                    let py_dict = value.as_ref(py);
+                    let hutao_dict = py_dict.get_item("HuTao").unwrap().downcast::<PyDict>().unwrap();
+                    assert_eq!(hutao_dict.get_item("le_50").unwrap().extract::<&str>().unwrap(), "true");
+                }
+                None => panic!("Expected PyDict, got None"),
+            };
+
+            let mona_character_interface: MonaCharacterInterface = py_character_interface.try_into().unwrap();
+            let character: Character<ComplicatedAttributeGraph> = mona_character_interface.to_character();
+            assert_eq!(character.common_data.name, CharacterName::HuTao);
+            match character.character_effect {
+                Some(effect) => {
+                    let mut attribute = ComplicatedAttributeGraph::default();
+                    effect.change_attribute(&mut attribute);
+                    let value = attribute.get_value(AttributeName::BonusPyro);
+                    assert_eq!(value, 0.33);
+                }
+                None => panic!("Expected character.character_effect, got None"),
+            }
+            println!("PyCharacterInterface 测试成功 遥遥领先！");
+        });
+    }
+}
+
