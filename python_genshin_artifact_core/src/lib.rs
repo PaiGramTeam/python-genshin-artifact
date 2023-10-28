@@ -14,6 +14,7 @@ use crate::applications::input::calculator::CalculatorConfig;
 use crate::applications::input::buff::PyBuffInterface;
 use crate::applications::input::character::PyCharacterInterface;
 use crate::applications::input::weapon::PyWeaponInterface;
+use crate::applications::output::transformative_damage::PyTransformativeDamage;
 
 import_exception!(json, JSONDecodeError);
 
@@ -30,5 +31,6 @@ fn genshin_artifact_core(py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<PyCharacterInterface>()?;
     m.add_class::<PyBuffInterface>()?;
     m.add_class::<PyWeaponInterface>()?;
+    m.add_class::<PyTransformativeDamage>()?;
     Ok(())
 }
