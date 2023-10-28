@@ -144,7 +144,7 @@ mod tests {
 
             assert_eq!(py_weapon_interface.get_name().as_ref().unwrap().to_string(), "StaffOfHoma");
             assert_eq!(py_weapon_interface.get_level().unwrap(), 90);
-            assert_eq!(py_weapon_interface.get_ascend().unwrap(), true);
+            assert!(py_weapon_interface.get_ascend().unwrap());
             assert_eq!(py_weapon_interface.get_refine().unwrap(), 5);
 
             let params = py_weapon_interface.get_params().unwrap();

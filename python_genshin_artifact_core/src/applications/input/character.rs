@@ -174,7 +174,7 @@ mod tests {
 
             assert_eq!(py_character_interface.get_name().unwrap(), "HuTao");
             assert_eq!(py_character_interface.get_level().unwrap(), 90);
-            assert_eq!(py_character_interface.get_ascend().unwrap(), true);
+            assert!(py_character_interface.get_ascend().unwrap());
             assert_eq!(py_character_interface.get_constellation().unwrap(), 6);
             assert_eq!(py_character_interface.get_skill1().unwrap(), 12);
             assert_eq!(py_character_interface.get_skill2().unwrap(), 12);
