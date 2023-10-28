@@ -11,7 +11,9 @@ use mona_wasm::applications::common::BuffInterface as MonaBuffInterface;
 #[pyclass(name = "BuffInterface")]
 #[derive(Clone)]
 pub struct PyBuffInterface {
+    #[pyo3(get, set)]
     pub name: Py<PyString>,
+    #[pyo3(get, set)]
     pub config: Option<Py<PyDict>>,
 }
 
@@ -26,26 +28,6 @@ impl PyBuffInterface {
             name,
             config,
         })
-    }
-
-    #[getter]
-    pub fn get_name(&self) -> PyResult<Py<PyString>> {
-        Ok(self.name.clone())
-    }
-
-    #[setter]
-    pub fn set_name(&mut self, name: Py<PyString>) {
-        self.name = name;
-    }
-
-    #[getter]
-    pub fn get_config(&self) -> PyResult<Option<Py<PyDict>>> {
-        Ok(self.config.clone())
-    }
-
-    #[setter]
-    pub fn set_config(&mut self, config: Option<Py<PyDict>>) {
-        self.config = config;
     }
 }
 

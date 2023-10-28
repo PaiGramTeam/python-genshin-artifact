@@ -10,13 +10,21 @@ use mona_wasm::applications::common::CharacterInterface as MonaCharacterInterfac
 #[pyclass(name = "CharacterInterface")]
 #[derive(Clone)]
 pub struct PyCharacterInterface {
+    #[pyo3(get, set)]
     pub name: String,
+    #[pyo3(get, set)]
     pub level: usize,
+    #[pyo3(get, set)]
     pub ascend: bool,
+    #[pyo3(get, set)]
     pub constellation: i32,
+    #[pyo3(get, set)]
     pub skill1: usize,
+    #[pyo3(get, set)]
     pub skill2: usize,
+    #[pyo3(get, set)]
     pub skill3: usize,
+    #[pyo3(get, set)]
     pub params: Option<Py<PyDict>>,
 }
 
@@ -43,94 +51,6 @@ impl PyCharacterInterface {
             skill3,
             params,
         })
-    }
-
-    #[getter]
-    pub fn get_name(&self) -> PyResult<String> {
-        Ok(self.name.clone())
-    }
-
-    #[getter]
-    pub fn get_level(&self) -> PyResult<usize> {
-        Ok(self.level)
-    }
-
-    #[getter]
-    pub fn get_ascend(&self) -> PyResult<bool> {
-        Ok(self.ascend)
-    }
-
-    #[getter]
-    pub fn get_constellation(&self) -> PyResult<i32> {
-        Ok(self.constellation)
-    }
-
-    #[getter]
-    pub fn get_skill1(&self) -> PyResult<usize> {
-        Ok(self.skill1)
-    }
-
-    #[getter]
-    pub fn get_skill2(&self) -> PyResult<usize> {
-        Ok(self.skill2)
-    }
-
-    #[getter]
-    pub fn get_skill3(&self) -> PyResult<usize> {
-        Ok(self.skill3)
-    }
-
-    #[getter]
-    pub fn get_params(&self) -> PyResult<Option<Py<PyDict>>> {
-        Ok(self.params.clone())
-    }
-
-    #[setter]
-    pub fn set_name(&mut self, name: String) -> PyResult<()> {
-        self.name = name;
-        Ok(())
-    }
-
-    #[setter]
-    pub fn set_level(&mut self, level: usize) -> PyResult<()> {
-        self.level = level;
-        Ok(())
-    }
-
-    #[setter]
-    pub fn set_ascend(&mut self, ascend: bool) -> PyResult<()> {
-        self.ascend = ascend;
-        Ok(())
-    }
-
-    #[setter]
-    pub fn set_constellation(&mut self, constellation: i32) -> PyResult<()> {
-        self.constellation = constellation;
-        Ok(())
-    }
-
-    #[setter]
-    pub fn set_skill1(&mut self, skill1: usize) -> PyResult<()> {
-        self.skill1 = skill1;
-        Ok(())
-    }
-
-    #[setter]
-    pub fn set_skill2(&mut self, skill2: usize) -> PyResult<()> {
-        self.skill2 = skill2;
-        Ok(())
-    }
-
-    #[setter]
-    pub fn set_skill3(&mut self, skill3: usize) -> PyResult<()> {
-        self.skill3 = skill3;
-        Ok(())
-    }
-
-    #[setter]
-    pub fn set_params(&mut self, params: Option<Py<PyDict>>) -> PyResult<()> {
-        self.params = params;
-        Ok(())
     }
 }
 
@@ -188,16 +108,15 @@ mod tests {
                 params: Some(Py::from(outer_dict)),
             };
 
-            assert_eq!(py_character_interface.get_name().unwrap(), "HuTao");
-            assert_eq!(py_character_interface.get_level().unwrap(), 90);
-            assert!(py_character_interface.get_ascend().unwrap());
-            assert_eq!(py_character_interface.get_constellation().unwrap(), 6);
-            assert_eq!(py_character_interface.get_skill1().unwrap(), 12);
-            assert_eq!(py_character_interface.get_skill2().unwrap(), 12);
-            assert_eq!(py_character_interface.get_skill3().unwrap(), 12);
+            assert_eq!(py_character_interface.name, "HuTao");
+            assert_eq!(py_character_interface.level, 90);
+            assert!(py_character_interface.ascend);
+            assert_eq!(py_character_interface.constellation, 6);
+            assert_eq!(py_character_interface.skill1, 12);
+            assert_eq!(py_character_interface.skill2, 12);
+            assert_eq!(py_character_interface.skill3, 12);
 
-            let params = py_character_interface.get_params().unwrap();
-            match params {
+            match &py_character_interface.params {
                 Some(value) => {
                     let py_dict = value.as_ref(py);
                     let hutao_dict = py_dict.get_item("HuTao").unwrap().downcast::<PyDict>().unwrap();
@@ -209,6 +128,7 @@ mod tests {
             let mona_character_interface: MonaCharacterInterface = py_character_interface.try_into().unwrap();
             let character: Character<ComplicatedAttributeGraph> = mona_character_interface.to_character();
             assert_eq!(character.common_data.name, CharacterName::HuTao);
+
             match character.character_effect {
                 Some(effect) => {
                     let mut attribute = ComplicatedAttributeGraph::default();

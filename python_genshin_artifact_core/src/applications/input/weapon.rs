@@ -8,10 +8,15 @@ use pyo3::types::{PyDict, PyString};
 #[pyclass(name = "WeaponInterface")]
 #[derive(Clone)]
 pub struct PyWeaponInterface {
+    #[pyo3(get, set)]
     pub name: Py<PyString>,
+    #[pyo3(get, set)]
     pub level: i32,
+    #[pyo3(get, set)]
     pub ascend: bool,
+    #[pyo3(get, set)]
     pub refine: i32,
+    #[pyo3(get, set)]
     pub params: Option<Py<PyDict>>,
 }
 
@@ -32,56 +37,6 @@ impl PyWeaponInterface {
             refine,
             params,
         })
-    }
-
-    #[getter]
-    pub fn get_name(&self) -> PyResult<Py<PyString>> {
-        Ok(self.name.clone())
-    }
-
-    #[setter]
-    pub fn set_name(&mut self, name: Py<PyString>) {
-        self.name = name;
-    }
-
-    #[getter]
-    pub fn get_level(&self) -> PyResult<i32> {
-        Ok(self.level)
-    }
-
-    #[setter]
-    pub fn set_level(&mut self, level: i32) {
-        self.level = level;
-    }
-
-    #[getter]
-    pub fn get_ascend(&self) -> PyResult<bool> {
-        Ok(self.ascend)
-    }
-
-    #[setter]
-    pub fn set_ascend(&mut self, ascend: bool) {
-        self.ascend = ascend;
-    }
-
-    #[getter]
-    pub fn get_refine(&self) -> PyResult<i32> {
-        Ok(self.refine)
-    }
-
-    #[setter]
-    pub fn set_refine(&mut self, refine: i32) {
-        self.refine = refine;
-    }
-
-    #[getter]
-    pub fn get_params(&self) -> PyResult<Option<Py<PyDict>>> {
-        Ok(self.params.clone())
-    }
-
-    #[setter]
-    pub fn set_params(&mut self, params: Option<Py<PyDict>>) {
-        self.params = params;
     }
 }
 
@@ -142,13 +97,12 @@ mod tests {
                 params: Some(Py::from(params_dict)),
             };
 
-            assert_eq!(py_weapon_interface.get_name().as_ref().unwrap().to_string(), "StaffOfHoma");
-            assert_eq!(py_weapon_interface.get_level().unwrap(), 90);
-            assert!(py_weapon_interface.get_ascend().unwrap());
-            assert_eq!(py_weapon_interface.get_refine().unwrap(), 5);
+            assert_eq!(py_weapon_interface.name.as_ref(py).to_string(), "StaffOfHoma");
+            assert_eq!(py_weapon_interface.level, 90);
+            assert!(py_weapon_interface.ascend);
+            assert_eq!(py_weapon_interface.refine, 5);
 
-            let params = py_weapon_interface.get_params().unwrap();
-            match params {
+            match &py_weapon_interface.params {
                 Some(value) => {
                     let py_dict = value.as_ref(py);
                     let params_dict = py_dict.get_item("StaffOfHoma").unwrap().downcast::<PyDict>().unwrap();
