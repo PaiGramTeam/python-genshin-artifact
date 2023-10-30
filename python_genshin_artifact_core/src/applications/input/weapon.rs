@@ -113,6 +113,10 @@ mod tests {
 
             let mona_weapon_interface: MonaWeaponInterface = py_weapon_interface.try_into().unwrap();
 
+            assert_eq!(mona_weapon_interface.name, WeaponName::StaffOfHoma );
+            assert_eq!(mona_weapon_interface.level, 90);
+            assert!(mona_weapon_interface.ascend);
+            assert_eq!(mona_weapon_interface.refine, 5);
 
             let character: Character<ComplicatedAttributeGraph> = Character::new(
                 CharacterName::HuTao,

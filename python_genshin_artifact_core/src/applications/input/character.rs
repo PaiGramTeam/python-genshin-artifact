@@ -89,60 +89,53 @@ mod tests {
     use mona::character::Character;
     use super::*;
 
-    const TEST_CHARACTER_NAME: &str = "HuTao";
-    const TEST_LEVEL: usize = 90;
-    const TEST_CONSTELLATION: i32 = 6;
-    const TEST_SKILL_VALUE: usize = 12;
-    const TEST_PARAM_VALUE: &str = "true";
-
     #[test]
     fn test_character_interface() {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
             let inner_dict = PyDict::new(py);
-            inner_dict.set_item("le_50", TEST_PARAM_VALUE).unwrap();
+            inner_dict.set_item("le_50", "true").unwrap();
 
             let outer_dict = PyDict::new(py);
-            outer_dict.set_item(TEST_CHARACTER_NAME, inner_dict).unwrap();
+            outer_dict.set_item("HuTao", inner_dict).unwrap();
 
             let py_character_interface = PyCharacterInterface {
-                name: TEST_CHARACTER_NAME.to_string(),
-                level: TEST_LEVEL,
+                name: "HuTao".to_string(),
+                level: 90,
                 ascend: true,
-                constellation: TEST_CONSTELLATION,
-                skill1: TEST_SKILL_VALUE,
-                skill2: TEST_SKILL_VALUE,
-                skill3: TEST_SKILL_VALUE,
+                constellation: 6,
+                skill1: 12,
+                skill2: 12,
+                skill3: 12,
                 params: Some(Py::from(outer_dict)),
             };
 
-            assert_eq!(py_character_interface.name, TEST_CHARACTER_NAME);
-            assert_eq!(py_character_interface.level, TEST_LEVEL);
+            assert_eq!(py_character_interface.name, "HuTao");
+            assert_eq!(py_character_interface.level, 90);
             assert!(py_character_interface.ascend);
-            assert_eq!(py_character_interface.constellation, TEST_CONSTELLATION);
-            assert_eq!(py_character_interface.skill1, TEST_SKILL_VALUE);
-            assert_eq!(py_character_interface.skill2, TEST_SKILL_VALUE);
-            assert_eq!(py_character_interface.skill3, TEST_SKILL_VALUE);
+            assert_eq!(py_character_interface.constellation, 6);
+            assert_eq!(py_character_interface.skill1, 12);
+            assert_eq!(py_character_interface.skill2, 12);
+            assert_eq!(py_character_interface.skill3, 12);
 
             match &py_character_interface.params {
                 Some(value) => {
                     let py_dict = value.as_ref(py);
                     let hutao_dict = py_dict.get_item("HuTao").unwrap().downcast::<PyDict>().unwrap();
-                    assert_eq!(hutao_dict.get_item("le_50").unwrap().extract::<&str>().unwrap(), TEST_PARAM_VALUE);
+                    assert_eq!(hutao_dict.get_item("le_50").unwrap().extract::<&str>().unwrap(), "true");
                 }
                 None => panic!("Expected PyDict, got None"),
             };
 
             let mona_character_interface: MonaCharacterInterface = py_character_interface.try_into().unwrap();
 
-            assert_eq!(mona_character_interface.name, TEST_CHARACTER_NAME);
-            assert_eq!(mona_character_interface.level, TEST_LEVEL);
+            assert_eq!(mona_character_interface.name, CharacterName::HuTao);
+            assert_eq!(mona_character_interface.level, 90);
             assert!(mona_character_interface.ascend);
-            assert_eq!(mona_character_interface.constellation, TEST_CONSTELLATION);
-            assert_eq!(mona_character_interface.skill1, TEST_SKILL_VALUE);
-            assert_eq!(mona_character_interface.skill2, TEST_SKILL_VALUE);
-            assert_eq!(mona_character_interface.skill3, TEST_SKILL_VALUE);
-
+            assert_eq!(mona_character_interface.constellation, 6);
+            assert_eq!(mona_character_interface.skill1, 12);
+            assert_eq!(mona_character_interface.skill2, 12);
+            assert_eq!(mona_character_interface.skill3, 12);
 
             let character: Character<ComplicatedAttributeGraph> = mona_character_interface.to_character();
             assert_eq!(character.common_data.name, CharacterName::HuTao);
