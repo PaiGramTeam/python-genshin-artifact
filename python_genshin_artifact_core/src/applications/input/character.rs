@@ -61,10 +61,12 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
         let name = CharacterName::from_str(&self.name).context("Failed to deserialize json")?;
         let mut params: CharacterConfig = CharacterConfig::NoConfig;
         if let Some(value) = self.params {
-            Python::with_gil(|py| {
+            let result: Result<(), anyhow::Error> = Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
                 params = depythonize(_dict).context("Failed to convert PyDict to CharacterConfig")?;
-            })
+                Ok(())
+            });
+            result?;
         }
         Ok(MonaCharacterInterface {
             name,
