@@ -1,9 +1,9 @@
 use anyhow::anyhow;
+use mona::weapon::{WeaponConfig, WeaponName};
 use mona_wasm::applications::common::WeaponInterface as MonaWeaponInterface;
 use pyo3::prelude::*;
-use pythonize::depythonize;
-use mona::weapon::{WeaponConfig, WeaponName};
 use pyo3::types::{PyDict, PyString};
+use pythonize::depythonize;
 
 #[pyclass(name = "WeaponInterface")]
 #[derive(Clone)]
@@ -40,7 +40,6 @@ impl PyWeaponInterface {
     }
 }
 
-
 impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
     type Error = anyhow::Error;
 
@@ -68,14 +67,12 @@ impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
+    use super::*;
     use mona::attribute::ComplicatedAttributeGraph;
     use mona::character::{Character, CharacterConfig, CharacterName};
     use mona::weapon::Weapon;
-    use super::*;
-
 
     #[test]
     fn test_weapon_interface() {
@@ -97,7 +94,10 @@ mod tests {
                 params: Some(Py::from(params_dict)),
             };
 
-            assert_eq!(py_weapon_interface.name.as_ref(py).to_string(), "StaffOfHoma");
+            assert_eq!(
+                py_weapon_interface.name.as_ref(py).to_string(),
+                "StaffOfHoma"
+            );
             assert_eq!(py_weapon_interface.level, 90);
             assert!(py_weapon_interface.ascend);
             assert_eq!(py_weapon_interface.refine, 5);
@@ -105,15 +105,27 @@ mod tests {
             match &py_weapon_interface.params {
                 Some(value) => {
                     let py_dict = value.as_ref(py);
-                    let params_dict = py_dict.get_item("StaffOfHoma").unwrap().downcast::<PyDict>().unwrap();
-                    assert_eq!(params_dict.get_item("be50_rate").unwrap().extract::<f64>().unwrap(), 1.0);
+                    let params_dict = py_dict
+                        .get_item("StaffOfHoma")
+                        .unwrap()
+                        .downcast::<PyDict>()
+                        .unwrap();
+                    assert_eq!(
+                        params_dict
+                            .get_item("be50_rate")
+                            .unwrap()
+                            .extract::<f64>()
+                            .unwrap(),
+                        1.0
+                    );
                 }
                 None => panic!("Expected PyDict, got None"),
             };
 
-            let mona_weapon_interface: MonaWeaponInterface = py_weapon_interface.try_into().unwrap();
+            let mona_weapon_interface: MonaWeaponInterface =
+                py_weapon_interface.try_into().unwrap();
 
-            assert_eq!(mona_weapon_interface.name, WeaponName::StaffOfHoma );
+            assert_eq!(mona_weapon_interface.name, WeaponName::StaffOfHoma);
             assert_eq!(mona_weapon_interface.level, 90);
             assert!(mona_weapon_interface.ascend);
             assert_eq!(mona_weapon_interface.refine, 5);
@@ -129,8 +141,8 @@ mod tests {
                 &CharacterConfig::HuTao { le_50: true },
             );
 
-
-            let weapon: Weapon<ComplicatedAttributeGraph> = mona_weapon_interface.to_weapon(&character);
+            let weapon: Weapon<ComplicatedAttributeGraph> =
+                mona_weapon_interface.to_weapon(&character);
 
             assert_eq!(weapon.common_data.name, WeaponName::StaffOfHoma);
 
@@ -138,8 +150,20 @@ mod tests {
                 Some(effect) => {
                     let mut attribute = ComplicatedAttributeGraph::default();
                     effect.apply(&weapon.common_data, &mut attribute);
-                    assert!(attribute.edges.iter().any(|item| item.key == "护摩之杖被动"), "Expected to find key '护摩之杖被动'");
-                    assert!(attribute.edges.iter().any(|item| item.key == "护摩之杖被动等效"), "Expected to find key '护摩之杖被动等效'");
+                    assert!(
+                        attribute
+                            .edges
+                            .iter()
+                            .any(|item| item.key == "护摩之杖被动"),
+                        "Expected to find key '护摩之杖被动'"
+                    );
+                    assert!(
+                        attribute
+                            .edges
+                            .iter()
+                            .any(|item| item.key == "护摩之杖被动等效"),
+                        "Expected to find key '护摩之杖被动等效'"
+                    );
                 }
                 None => panic!("Expected weapon.effect, got None"),
             }

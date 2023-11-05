@@ -1,8 +1,8 @@
 use anyhow::anyhow;
+use mona::buffs::buff_name::BuffName;
+use mona::buffs::BuffConfig;
 use pyo3::prelude::*;
 use pythonize::depythonize;
-use mona::buffs::BuffConfig;
-use mona::buffs::buff_name::BuffName;
 
 use pyo3::types::{PyDict, PyString};
 
@@ -20,14 +20,8 @@ pub struct PyBuffInterface {
 #[pymethods]
 impl PyBuffInterface {
     #[new]
-    pub fn py_new(
-        name: Py<PyString>,
-        config: Option<Py<PyDict>>,
-    ) -> PyResult<Self> {
-        Ok(Self {
-            name,
-            config,
-        })
+    pub fn py_new(name: Py<PyString>, config: Option<Py<PyDict>>) -> PyResult<Self> {
+        Ok(Self { name, config })
     }
 }
 
@@ -35,7 +29,7 @@ impl TryInto<MonaBuffInterface> for PyBuffInterface {
     type Error = anyhow::Error;
 
     fn try_into(self) -> Result<MonaBuffInterface, Self::Error> {
-        let name:BuffName = Python::with_gil(|py| {
+        let name: BuffName = Python::with_gil(|py| {
             let _string: &PyString = self.name.as_ref(py);
             depythonize(_string).map_err(|err| anyhow!("Failed to deserialize name: {}", err))
         })?;
@@ -49,11 +43,6 @@ impl TryInto<MonaBuffInterface> for PyBuffInterface {
             BuffConfig::NoConfig
         };
 
-        Ok(MonaBuffInterface {
-            name,
-            config,
-        })
+        Ok(MonaBuffInterface { name, config })
     }
 }
-
-

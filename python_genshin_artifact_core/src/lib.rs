@@ -10,8 +10,8 @@ use applications::generate::locale::gen_generate_locale_as_json;
 use applications::generate::weapon::gen_weapon_meta_as_json;
 use applications::wasm::{get_damage_analysis, get_transformative_damage};
 
-use crate::applications::input::calculator::CalculatorConfig;
 use crate::applications::input::buff::PyBuffInterface;
+use crate::applications::input::calculator::CalculatorConfig;
 use crate::applications::input::character::PyCharacterInterface;
 use crate::applications::input::weapon::PyWeaponInterface;
 use crate::applications::output::transformative_damage::PyTransformativeDamage;

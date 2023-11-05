@@ -1,7 +1,6 @@
 use mona::damage::transformative_damage::TransformativeDamage as MonaTransformativeDamage;
 use pyo3::prelude::*;
 
-
 #[pyclass(name = "TransformativeDamage")]
 #[derive(Clone)]
 pub struct PyTransformativeDamage {
@@ -32,7 +31,6 @@ pub struct PyTransformativeDamage {
     #[pyo3(get, set)]
     crystallize: f64,
 }
-
 
 #[pymethods]
 impl PyTransformativeDamage {
@@ -69,7 +67,6 @@ impl PyTransformativeDamage {
         })
     }
 }
-
 
 impl From<MonaTransformativeDamage> for PyTransformativeDamage {
     fn from(damage: MonaTransformativeDamage) -> Self {

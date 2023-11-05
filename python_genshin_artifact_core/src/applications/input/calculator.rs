@@ -1,6 +1,6 @@
+use crate::applications::input::buff::PyBuffInterface;
 use crate::applications::input::character::PyCharacterInterface;
 use crate::applications::input::weapon::PyWeaponInterface;
-use crate::applications::input::buff::PyBuffInterface;
 use pyo3::prelude::*;
 
 #[pyclass]
@@ -21,6 +21,10 @@ impl CalculatorConfig {
         weapon: PyWeaponInterface,
         buffs: Vec<PyBuffInterface>,
     ) -> PyResult<Self> {
-        Ok(Self { character, weapon, buffs })
+        Ok(Self {
+            character,
+            weapon,
+            buffs,
+        })
     }
 }

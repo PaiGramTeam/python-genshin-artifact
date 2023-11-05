@@ -1,8 +1,8 @@
 use anyhow::Context;
+use pyo3::prelude::*;
+use pyo3::types::PyDict;
 use pythonize::depythonize;
 use std::str::FromStr;
-use pyo3::types::PyDict;
-use pyo3::prelude::*;
 
 use mona::character::{CharacterConfig, CharacterName};
 use mona_wasm::applications::common::CharacterInterface as MonaCharacterInterface;
@@ -59,15 +59,14 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
 
     fn try_into(self) -> Result<MonaCharacterInterface, Self::Error> {
         let name = CharacterName::from_str(&self.name).context("Failed to deserialize json")?;
-        let mut params: CharacterConfig = CharacterConfig::NoConfig;
-        if let Some(value) = self.params {
-            let result: Result<(), anyhow::Error> = Python::with_gil(|py| {
+        let params: CharacterConfig = if let Some(value) = self.params {
+            Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
-                params = depythonize(_dict).context("Failed to convert PyDict to CharacterConfig")?;
-                Ok(())
-            });
-            result?;
-        }
+                depythonize(_dict).context("Failed to convert PyDict to CharacterConfig")
+            })?
+        } else {
+            CharacterConfig::NoConfig
+        };
         Ok(MonaCharacterInterface {
             name,
             level: self.level,
@@ -81,13 +80,12 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
 
+    use super::*;
     use mona::attribute::{Attribute, AttributeName, ComplicatedAttributeGraph};
     use mona::character::Character;
-    use super::*;
 
     #[test]
     fn test_character_interface() {
@@ -121,13 +119,25 @@ mod tests {
             match &py_character_interface.params {
                 Some(value) => {
                     let py_dict = value.as_ref(py);
-                    let hutao_dict = py_dict.get_item("HuTao").unwrap().downcast::<PyDict>().unwrap();
-                    assert_eq!(hutao_dict.get_item("le_50").unwrap().extract::<&str>().unwrap(), "true");
+                    let hutao_dict = py_dict
+                        .get_item("HuTao")
+                        .unwrap()
+                        .downcast::<PyDict>()
+                        .unwrap();
+                    assert_eq!(
+                        hutao_dict
+                            .get_item("le_50")
+                            .unwrap()
+                            .extract::<&str>()
+                            .unwrap(),
+                        "true"
+                    );
                 }
                 None => panic!("Expected PyDict, got None"),
             };
 
-            let mona_character_interface: MonaCharacterInterface = py_character_interface.try_into().unwrap();
+            let mona_character_interface: MonaCharacterInterface =
+                py_character_interface.try_into().unwrap();
 
             assert_eq!(mona_character_interface.name, CharacterName::HuTao);
             assert_eq!(mona_character_interface.level, 90);
@@ -137,7 +147,8 @@ mod tests {
             assert_eq!(mona_character_interface.skill2, 12);
             assert_eq!(mona_character_interface.skill3, 12);
 
-            let character: Character<ComplicatedAttributeGraph> = mona_character_interface.to_character();
+            let character: Character<ComplicatedAttributeGraph> =
+                mona_character_interface.to_character();
             assert_eq!(character.common_data.name, CharacterName::HuTao);
 
             match character.character_effect {
@@ -153,4 +164,3 @@ mod tests {
         });
     }
 }
-
