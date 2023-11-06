@@ -12,7 +12,7 @@ use applications::wasm::{get_damage_analysis, get_transformative_damage};
 
 use crate::applications::input::artifact::PyArtifact;
 use crate::applications::input::buff::PyBuffInterface;
-use crate::applications::input::calculator::CalculatorConfig;
+use crate::applications::input::calculator::PyCalculatorConfig;
 use crate::applications::input::character::PyCharacterInterface;
 use crate::applications::input::enemy::PyEnemyInterface;
 use crate::applications::input::skill::PySkillInterface;
@@ -30,7 +30,7 @@ fn _python_genshin_artifact(py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(gen_weapon_meta_as_json, m)?)?;
     m.add_function(wrap_pyfunction!(gen_artifact_meta_as_json, m)?)?;
     m.add_function(wrap_pyfunction!(gen_generate_locale_as_json, m)?)?;
-    m.add_class::<CalculatorConfig>()?;
+    m.add_class::<PyCalculatorConfig>()?;
     m.add_class::<PyCharacterInterface>()?;
     m.add_class::<PyBuffInterface>()?;
     m.add_class::<PyWeaponInterface>()?;

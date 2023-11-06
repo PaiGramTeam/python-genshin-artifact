@@ -8,8 +8,9 @@ use crate::applications::input::weapon::PyWeaponInterface;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
 
-#[pyclass]
-pub struct CalculatorConfig {
+#[pyclass(name = "CalculatorConfig")]
+#[derive(Clone)]
+pub struct PyCalculatorConfig {
     #[pyo3(get, set)]
     pub character: PyCharacterInterface,
     #[pyo3(get, set)]
@@ -27,7 +28,7 @@ pub struct CalculatorConfig {
 }
 
 #[pymethods]
-impl CalculatorConfig {
+impl PyCalculatorConfig {
     #[new]
     #[args(
         buffs = "None",
