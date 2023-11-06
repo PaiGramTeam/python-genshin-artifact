@@ -5,7 +5,7 @@ use pyo3::prelude::*;
 use pythonize::depythonize;
 
 
-#[pyclass(name = "CharacterInterface")]
+#[pyclass(name = "Artifact")]
 #[derive(Clone)]
 pub struct PyArtifact {
     #[pyo3(get, set)]
