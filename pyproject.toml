@@ -6,6 +6,32 @@ authors = [
     {name = 'luoshuijs', email = 'luoshuijs@outlook.com'},
     {name = 'kotori', email = 'minamiktr@outlook.com'}
 ]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Console',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3 :: Only',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Information Technology',
+    'Intended Audience :: System Administrators',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: POSIX :: Linux',
+    'Operating System :: Microsoft :: Windows',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: System :: Filesystems',
+    'Framework :: AnyIO',
+]
+dynamic = [
+    'license',
+    'readme',
+    'version'
+]
 
 [tool.maturin]
 module-name = "python_genshin_artifact._python_genshin_artifact"
@@ -15,3 +41,14 @@ bindings = 'pyo3'
 [build-system]
 requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
+
+[tool.pytest.ini_options]
+testpaths = 'tests'
+log_format = '%(name)s %(levelname)s: %(message)s'
+filterwarnings = 'error'
+timeout = 10
+
+[tool.black]
+include = '\.pyi?$'
+line-length = 120
+target-version = ['py38']
