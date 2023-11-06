@@ -109,6 +109,17 @@ class Artifact:
     main_stat: Tuple["StatName", float]
     id: int
 
+    def __new__(
+        cls,
+        set_name: str,
+        slot: str,
+        level: int,
+        star: int,
+        sub_stats: List[Tuple["StatName", float]],
+        main_stat: Tuple["StatName", float],
+        id: int,
+    ) -> "Artifact": ...
+
 class SkillInterface:
     index: int
     config: Optional[dict] = None
@@ -143,15 +154,15 @@ class CalculatorConfig:
     weapon: WeaponInterface
     buffs: List[BuffInterface] = []
     artifacts: List[Artifact] = []
-    skill: Optional[dict] = None
+    skill: SkillInterface
     enemy: Optional[EnemyInterface] = None
 
     def __new__(
         cls,
         character: CharacterInterface,
         weapon: WeaponInterface,
-        buffs: List[BuffInterface],
-        artifacts: List[Artifact],
-        skill: Optional[dict],
-        enemy: Optional[EnemyInterface],
+        skill: SkillInterface,
+        buffs: Optional[List[BuffInterface]] = None,
+        artifacts: Optional[List[Artifact]] = None,
+        enemy: Optional[EnemyInterface] = None,
     ) -> "CalculatorConfig": ...
