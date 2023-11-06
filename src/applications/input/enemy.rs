@@ -2,7 +2,6 @@ use pyo3::prelude::*;
 
 use mona::enemies::Enemy as MomaEnemy;
 
-
 #[pyclass(name = "EnemyInterface")]
 #[derive(Clone)]
 pub struct PyEnemyInterface {
@@ -40,7 +39,7 @@ impl PyEnemyInterface {
         dendro_res: f64,
         physical_res: f64,
     ) -> PyResult<Self> {
-        Ok( Self {
+        Ok(Self {
             level,
             electro_res,
             pyro_res,
@@ -67,8 +66,7 @@ impl TryInto<MomaEnemy> for PyEnemyInterface {
             geo_res: self.geo_res,
             anemo_res: self.anemo_res,
             dendro_res: self.dendro_res,
-            physical_res: self.physical_res
+            physical_res: self.physical_res,
         })
     }
 }
-

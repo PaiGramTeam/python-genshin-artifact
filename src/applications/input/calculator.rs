@@ -1,8 +1,8 @@
 use crate::applications::input::buff::PyBuffInterface;
 use crate::applications::input::character::PyCharacterInterface;
-use crate::applications::input::weapon::PyWeaponInterface;
 use crate::applications::input::enemy::PyEnemyInterface;
 use crate::applications::input::skill::PySkillInterface;
+use crate::applications::input::weapon::PyWeaponInterface;
 
 use pyo3::prelude::*;
 

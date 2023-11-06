@@ -6,7 +6,6 @@ use pythonize::depythonize;
 use mona::character::skill_config::CharacterSkillConfig;
 use mona_wasm::applications::common::SkillInterface as MonaSkillInterface;
 
-
 #[pyclass(name = "SkillInterface")]
 #[derive(Clone)]
 pub struct PySkillInterface {
@@ -20,13 +19,9 @@ pub struct PySkillInterface {
 impl PySkillInterface {
     #[new]
     fn new(index: usize, config: Option<Py<PyDict>>) -> PyResult<Self> {
-        Ok(Self {
-            index,
-            config,
-        })
+        Ok(Self { index, config })
     }
 }
-
 
 impl TryInto<MonaSkillInterface> for PySkillInterface {
     type Error = anyhow::Error;
@@ -46,4 +41,3 @@ impl TryInto<MonaSkillInterface> for PySkillInterface {
         })
     }
 }
-
