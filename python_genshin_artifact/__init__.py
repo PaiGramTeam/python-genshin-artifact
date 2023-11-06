@@ -9,6 +9,7 @@ from ._python_genshin_artifact import (
     CharacterInterface,
     WeaponInterface,
     BuffInterface,
+    SkillInterface,
     CalculatorConfig,
 )
 
@@ -23,5 +24,6 @@ __all__ = (
     "CharacterInterface",
     "WeaponInterface",
     "BuffInterface",
+    "SkillInterface",
     "CalculatorConfig",
 )

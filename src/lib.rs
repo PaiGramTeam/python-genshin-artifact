@@ -14,6 +14,7 @@ use crate::applications::input::buff::PyBuffInterface;
 use crate::applications::input::calculator::CalculatorConfig;
 use crate::applications::input::character::PyCharacterInterface;
 use crate::applications::input::enemy::PyEnemyInterface;
+use crate::applications::input::skill::PySkillInterface;
 use crate::applications::input::weapon::PyWeaponInterface;
 use crate::applications::output::transformative_damage::PyTransformativeDamage;
 
@@ -33,6 +34,7 @@ fn _python_genshin_artifact(py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<PyBuffInterface>()?;
     m.add_class::<PyWeaponInterface>()?;
     m.add_class::<PyTransformativeDamage>()?;
+    m.add_class::<PySkillInterface>()?;
     m.add_class::<PyEnemyInterface>()?;
     Ok(())
 }

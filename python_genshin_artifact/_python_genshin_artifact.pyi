@@ -42,6 +42,9 @@ class WeaponInterface:
 class BuffInterface:
     name: str
     config: str
+class SkillInterface:
+    index: int
+    config: Optional[dict] = None
 
 class EnemyInterface:
     level: int
@@ -58,4 +61,5 @@ class CalculatorConfig:
     character: CharacterInterface
     weapon: WeaponInterface
     buffs: List[BuffInterface] = []
+    skill: Optional[dict] = None
     enemy: Optional[EnemyInterface] = None
