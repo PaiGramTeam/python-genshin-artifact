@@ -1,12 +1,25 @@
 use pyo3::exceptions::PyValueError;
-use pyo3::{pyclass, PyErr};
+use pyo3::prelude::*;
+use pyo3::pyclass;
+use std::fmt;
 
-#[pyclass(extends=PyValueError)]
+#[pyclass(extends = PyValueError)]
 #[derive(Debug, Clone)]
-pub struct ValidationError  {}
+pub struct ValidationError {
+    #[pyo3(get)]
+    message: String,
+}
 
-impl ValidationError  {
-    pub(crate) fn new_err() -> PyErr {
-        PyErr::new::<Self, ()>(())
+#[pymethods]
+impl ValidationError {
+    #[new]
+    fn new(message: String) -> Self {
+        Self { message }
+    }
+}
+
+impl fmt::Display for ValidationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "ValidationError: {}", self.message)
     }
 }
