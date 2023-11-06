@@ -88,7 +88,7 @@ impl TryInto<MonaArtifact> for PyArtifact {
             slot,
             level: self.level,
             star: self.star,
-            sub_stats: sub_stats,
+            sub_stats,
             main_stat: (main_stat_name, self.main_stat.1),
             id: self.id,
         })
