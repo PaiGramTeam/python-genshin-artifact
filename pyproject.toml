@@ -6,6 +6,10 @@ authors = [
     {name = 'luoshuijs', email = 'luoshuijs@outlook.com'},
     {name = 'kotori', email = 'minamiktr@outlook.com'}
 ]
+dependencies = [
+    'pydantic^1.10.7',
+]
+# todo : about to be removed
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Console',
