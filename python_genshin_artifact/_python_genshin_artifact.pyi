@@ -154,6 +154,7 @@ class CalculatorConfig:
     weapon: WeaponInterface
     buffs: List[BuffInterface] = []
     artifacts: List[Artifact] = []
+    artifact_config: Optional[dict] = None
     skill: SkillInterface
     enemy: Optional[EnemyInterface] = None
 
@@ -164,5 +165,6 @@ class CalculatorConfig:
         skill: SkillInterface,
         buffs: Optional[List[BuffInterface]] = None,
         artifacts: Optional[List[Artifact]] = None,
+        artifact_config: Optional[dict] = None,
         enemy: Optional[EnemyInterface] = None,
     ) -> "CalculatorConfig": ...

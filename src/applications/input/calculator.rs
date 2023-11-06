@@ -6,6 +6,7 @@ use crate::applications::input::skill::PySkillInterface;
 use crate::applications::input::weapon::PyWeaponInterface;
 
 use pyo3::prelude::*;
+use pyo3::types::PyDict;
 
 #[pyclass]
 pub struct CalculatorConfig {
@@ -18,6 +19,8 @@ pub struct CalculatorConfig {
     #[pyo3(get, set)]
     pub artifacts: Vec<PyArtifact>,
     #[pyo3(get, set)]
+    pub artifact_config: Option<Py<PyDict>>,
+    #[pyo3(get, set)]
     pub skill: PySkillInterface,
     #[pyo3(get, set)]
     pub enemy: Option<PyEnemyInterface>,
@@ -29,6 +32,7 @@ impl CalculatorConfig {
     #[args(
         buffs = "None",
         artifacts = "None",
+        artifact_config = "None",
         enemy = "None"
     )]
     pub fn py_new(
@@ -37,6 +41,7 @@ impl CalculatorConfig {
         skill: PySkillInterface,
         buffs: Option<Vec<PyBuffInterface>>,
         artifacts: Option<Vec<PyArtifact>>,
+        artifact_config: Option<Py<PyDict>>,
         enemy: Option<PyEnemyInterface>,
     ) -> PyResult<Self> {
         Ok(Self {
@@ -44,6 +49,7 @@ impl CalculatorConfig {
             weapon,
             buffs: buffs.unwrap_or_default(),
             artifacts: artifacts.unwrap_or_default(),
+            artifact_config,
             skill,
             enemy,
         })
