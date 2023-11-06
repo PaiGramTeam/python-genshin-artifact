@@ -69,12 +69,26 @@ impl TryInto<MonaArtifact> for PyArtifact {
                 .map_err(|err| anyhow!("Failed to deserialize main stat name: {}", err))
         })?;
 
+        let sub_stats = Python::with_gil(|py| {
+            self.sub_stats
+                .iter()
+                .map(|s| {
+                    let name: Result<StatName, anyhow::Error> = depythonize(s.0.as_ref(py))
+                        .map_err(|err| anyhow!("Failed to deserialize sub stat name: {}", err));
+                    match name {
+                        Ok(n) => Ok((n, s.1)),
+                        Err(e) => Err(e),
+                    }
+                })
+                .collect::<Result<Vec<(StatName, f64)>, anyhow::Error>>()
+        })?;
+
         Ok(MonaArtifact {
             set_name: name,
             slot,
             level: self.level,
             star: self.star,
-            sub_stats: vec![],
+            sub_stats: sub_stats,
             main_stat: (main_stat_name, self.main_stat.1),
             id: self.id,
         })
