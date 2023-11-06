@@ -1,4 +1,4 @@
-from python_genshin_artifact import (
+from ._python_genshin_artifact import (
     get_damage_analysis,
     get_transformative_damage,
     gen_character_meta_as_json,
