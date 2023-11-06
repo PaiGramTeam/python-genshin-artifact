@@ -10,7 +10,7 @@ authors = [
 [tool.maturin]
 module-name = "python_genshin_artifact._python_genshin_artifact"
 bindings = 'pyo3'
-python-source = "python"
+#python-source = "python"
 
 [build-system]
 requires = ["maturin>=1.0,<2.0"]

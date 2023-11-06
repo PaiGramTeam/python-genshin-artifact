@@ -1,7 +1,7 @@
 import json
 from typing import Dict, Tuple, List
 
-from genshin_artifact_core import (
+from python_genshin_artifact import (
     gen_character_meta_as_json,
     gen_weapon_meta_as_json,
     gen_artifact_meta_as_json,

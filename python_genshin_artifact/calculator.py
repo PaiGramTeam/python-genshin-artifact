@@ -1,6 +1,6 @@
 from json import JSONDecodeError
 
-from genshin_artifact_core import (
+from python_genshin_artifact import (
     get_damage_analysis as _get_damage_analysis,
     get_transformative_damage as _get_transformative_damage,
 )
