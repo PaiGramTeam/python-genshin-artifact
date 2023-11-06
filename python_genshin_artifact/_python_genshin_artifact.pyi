@@ -22,6 +22,23 @@ class TransformativeDamage:
     burning: float
     crystallize: float
 
+    def __new__(
+        cls,
+        swirl_cryo: float,
+        swirl_hydro: float,
+        swirl_pyro: float,
+        swirl_electro: float,
+        overload: float,
+        electro_charged: float,
+        shatter: float,
+        super_conduct: float,
+        bloom: float,
+        hyper_bloom: float,
+        burgeon: float,
+        burning: float,
+        crystallize: float,
+    ) -> "TransformativeDamage": ...
+
 class CharacterInterface:
     name: str
     level: int
@@ -32,6 +49,18 @@ class CharacterInterface:
     skill3: int
     params: Optional[dict] = None
 
+    def __new__(
+        cls,
+        name: str,
+        level: int,
+        ascend: bool,
+        constellation: int,
+        skill1: int,
+        skill2: int,
+        skill3: int,
+        params: Optional[dict] = None,
+    ) -> "CharacterInterface": ...
+
 class WeaponInterface:
     name: str
     level: int
@@ -39,12 +68,19 @@ class WeaponInterface:
     refine: int
     params: Optional[dict] = None
 
+    def __new__(
+        cls, name: str, level: int, ascend: bool, refine: int, params: Optional[dict] = None
+    ) -> "WeaponInterface": ...
+
 class BuffInterface:
     name: str
-    config: str
+    config: Optional[dict] = None
+    def __new__(cls, name: str, config: Optional[dict] = None) -> "BuffInterface": ...
+
 class SkillInterface:
     index: int
     config: Optional[dict] = None
+    def __new__(cls, index: int, config: Optional[dict] = None) -> "SkillInterface": ...
 
 class EnemyInterface:
     level: int
@@ -57,9 +93,31 @@ class EnemyInterface:
     dendro_res: float
     physical_res: float
 
+    def __new__(
+        cls,
+        level: int,
+        electro_res: float,
+        pyro_res: float,
+        hydro_res: float,
+        cryo_res: float,
+        geo_res: float,
+        anemo_res: float,
+        dendro_res: float,
+        physical_res: float,
+    ) -> "EnemyInterface": ...
+
 class CalculatorConfig:
     character: CharacterInterface
     weapon: WeaponInterface
     buffs: List[BuffInterface] = []
     skill: Optional[dict] = None
     enemy: Optional[EnemyInterface] = None
+
+    def __new__(
+        cls,
+        character: CharacterInterface,
+        weapon: WeaponInterface,
+        buffs: List[BuffInterface],
+        skill: Optional[dict],
+        enemy: Optional[EnemyInterface],
+    ) -> "CalculatorConfig": ...
