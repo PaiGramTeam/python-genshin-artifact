@@ -19,7 +19,7 @@ use crate::applications::output::transformative_damage::PyTransformativeDamage;
 import_exception!(json, JSONDecodeError);
 
 #[pymodule]
-fn genshin_artifact_core(py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn _python_genshin_artifact(py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add("JSONDecodeError", py.get_type::<JSONDecodeError>())?;
     m.add_function(wrap_pyfunction!(get_damage_analysis, m)?)?;
     m.add_function(wrap_pyfunction!(get_transformative_damage, m)?)?;
