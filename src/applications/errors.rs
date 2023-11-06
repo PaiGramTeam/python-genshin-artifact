@@ -13,7 +13,7 @@ pub struct ValidationError {
 #[pymethods]
 impl ValidationError {
     #[new]
-    fn new(message: String) -> Self {
+    pub fn new_err(message: String) -> Self {
         Self { message }
     }
 }
