@@ -1,4 +1,27 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple, Literal, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    StatName = Literal[
+        "ATKFixed",
+        "ATKPercentage",
+        "HealingBonus",
+        "HPFixed",
+        "HPPercentage",
+        "DEFFixed",
+        "DEFPercentage",
+        "CriticalRate",
+        "CriticalDamage",
+        "ElementalMastery",
+        "Recharge",
+        "ElectroBonus",
+        "PyroBonus",
+        "HydroBonus",
+        "CryoBonus",
+        "AnemoBonus",
+        "GeoBonus",
+        "DendroBonus",
+        "PhysicalBonus",
+    ]
 
 def get_damage_analysis(value_str: str) -> str: ...
 def get_transformative_damage(value_str: str) -> str: ...
@@ -77,6 +100,15 @@ class BuffInterface:
     config: Optional[dict] = None
     def __new__(cls, name: str, config: Optional[dict] = None) -> "BuffInterface": ...
 
+class Artifact:
+    set_name: str
+    slot: str
+    level: int
+    star: int
+    sub_stats: List[Tuple["StatName", float]]
+    main_stat: Tuple["StatName", float]
+    id: int
+
 class SkillInterface:
     index: int
     config: Optional[dict] = None
@@ -110,6 +142,7 @@ class CalculatorConfig:
     character: CharacterInterface
     weapon: WeaponInterface
     buffs: List[BuffInterface] = []
+    artifacts: List[Artifact] = []
     skill: Optional[dict] = None
     enemy: Optional[EnemyInterface] = None
 
@@ -118,6 +151,7 @@ class CalculatorConfig:
         character: CharacterInterface,
         weapon: WeaponInterface,
         buffs: List[BuffInterface],
+        artifacts: List[Artifact],
         skill: Optional[dict],
         enemy: Optional[EnemyInterface],
     ) -> "CalculatorConfig": ...

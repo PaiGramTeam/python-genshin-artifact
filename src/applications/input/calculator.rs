@@ -1,3 +1,4 @@
+use crate::applications::input::artifact::PyArtifact;
 use crate::applications::input::buff::PyBuffInterface;
 use crate::applications::input::character::PyCharacterInterface;
 use crate::applications::input::enemy::PyEnemyInterface;
@@ -15,6 +16,8 @@ pub struct CalculatorConfig {
     #[pyo3(get, set)]
     pub buffs: Vec<PyBuffInterface>,
     #[pyo3(get, set)]
+    pub artifacts: Vec<PyArtifact>,
+    #[pyo3(get, set)]
     pub skill: PySkillInterface,
     #[pyo3(get, set)]
     pub enemy: Option<PyEnemyInterface>,
@@ -27,6 +30,7 @@ impl CalculatorConfig {
         character: PyCharacterInterface,
         weapon: PyWeaponInterface,
         buffs: Vec<PyBuffInterface>,
+        artifacts: Vec<PyArtifact>,
         skill: PySkillInterface,
         enemy: Option<PyEnemyInterface>,
     ) -> PyResult<Self> {
@@ -34,6 +38,7 @@ impl CalculatorConfig {
             character,
             weapon,
             buffs,
+            artifacts,
             skill,
             enemy,
         })
