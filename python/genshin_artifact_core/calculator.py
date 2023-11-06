@@ -7,7 +7,10 @@ from genshin_artifact_core import (
 
 from python_genshin_artifact.error import JsonParseException
 from python_genshin_artifact.models.calculator import CalculatorConfig
-from python_genshin_artifact.models.damage.analysis import DamageAnalysis, TransformativeDamage
+from python_genshin_artifact.models.damage.analysis import (
+    DamageAnalysis,
+    TransformativeDamage,
+)
 
 
 def get_damage_analysis(value: CalculatorConfig) -> DamageAnalysis:
