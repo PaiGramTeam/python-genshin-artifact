@@ -67,21 +67,19 @@ jobs:
       shell: bash
       run: |
         source activate_env.sh
-        cd python_genshin_artifact_core
         maturin develop
 
     - name: Export install file
       shell: bash
       run: |
         source activate_env.sh
-        cd python_genshin_artifact_core
         maturin build --out ./dist
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
         name: genshin-artifact-core
-        path: python_genshin_artifact_core/dist
+        path: ./dist
   
   upload-core:
     runs-on: ubuntu-latest
@@ -110,38 +108,3 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-
-  build-artifact:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: 3.11
-
-      - name: Install Poetry and Twine
-        run: |
-          pip install poetry twine
-
-      - name: Install dependencies
-        run: poetry install
-
-      - name: Build wheel
-        run: poetry build
-
-      - name: upload to pypi
-        if: startsWith(github.ref, 'refs/tags/')
-        run: twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-
-      - name: upload to artifact
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v3
-        with:
-          name: Python-Genshin-Artifact
-          path: dist/*.whl
