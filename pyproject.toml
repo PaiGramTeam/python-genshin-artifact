@@ -1,32 +1,17 @@
-[tool.poetry]
-name = "Python-Genshin-Artifact"
+[project]
+name = "python_genshin_artifact"
+requires-python = '>=3.8'
 version = "0.1.4"
-description = "A Python library that binds to Genshin Artifact damage calculation and analysis engine."
-authors = ["luoshuijs"]
-license = "MIT license"
-readme = "README.md"
-packages = [
-    { include = "python_genshin_artifact" },
+authors = [
+    {name = 'luoshuijs', email = 'luoshuijs@outlook.com'},
+    {name = 'kotori', email = 'minamiktr@outlook.com'}
 ]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-pydantic = "^1.10.7"
+[tool.maturin]
+module-name = "python_genshin_artifact._python_genshin_artifact"
+bindings = 'pyo3'
+python-source = "python"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-log_cli = true
-log_cli_level = "INFO"
-log_cli_format = "%(message)s"
-log_cli_date_format = "%Y-%m-%d %H:%M:%S"
-
-
-[tool.black]
-include = '\.pyi?$'
-line-length = 120
-target-version = ['py38']
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"

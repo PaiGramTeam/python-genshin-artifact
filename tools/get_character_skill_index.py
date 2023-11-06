@@ -14,6 +14,7 @@ def main():
         return
 
     locale = assets.locale.get("zh-cn")
+    print(locale[631])
 
     print(f"Character name {locale[character.get('name_locale')]}")
 
