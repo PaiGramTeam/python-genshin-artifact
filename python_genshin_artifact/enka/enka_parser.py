@@ -23,9 +23,7 @@ def is_ascend(level: int, promote_level: int) -> bool:
     return promote_level >= expected_promote_level
 
 
-def enka_parser(
-    data: dict, avatar_id: int
-) -> Tuple[CharacterInfo, WeaponInfo, List[ArtifactInfo]]:
+def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, List[ArtifactInfo]]:
     character_info = assets.get_character(avatar_id)
     if character_info is None:
         raise EnkaParseException(f"avatarId={avatar_id} is not found in assets")
@@ -83,9 +81,7 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
                 raise EnkaParseException(f"artifact_id is not found in {_flat['icon']}")
             set_name = artifacts_name_map.get(artifact_id)
             if set_name is None:
-                raise EnkaParseException(
-                    f"artifact_id={artifact_id} is not found in assets"
-                )
+                raise EnkaParseException(f"artifact_id={artifact_id} is not found in assets")
             _level = _reliquary["level"] - 1
             _reliquary_main_stat = _flat["reliquaryMainstat"]
             _main_prop_id = _reliquary_main_stat["mainPropId"]
@@ -115,16 +111,12 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
             weapon_id = _equip["itemId"]
             weapon_name = weapon_name_map.get(weapon_id)
             if weapon_name is None:
-                raise EnkaParseException(
-                    f"weapon_id={weapon_id} is not found in assets"
-                )
+                raise EnkaParseException(f"weapon_id={weapon_id} is not found in assets")
             _level = _weapon["level"]
             refinement_level = next(iter(_weapon["affixMap"].values())) + 1
             _promote_level = _weapon.get("promoteLevel")
             ascend = False
             if _promote_level is not None:
                 ascend = is_ascend(_level, _promote_level)
-            weapon = WeaponInfo(
-                level=_level, refine=refinement_level, ascend=ascend, name=weapon_name
-            )
+            weapon = WeaponInfo(level=_level, refine=refinement_level, ascend=ascend, name=weapon_name)
     return weapon, artifacts
