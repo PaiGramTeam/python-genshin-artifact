@@ -7,7 +7,7 @@ authors = [
     {name = 'kotori', email = 'minamiktr@outlook.com'}
 ]
 dependencies = [
-    'pydantic^1.10.7',
+    'pydantic~=1.10.7',
 ]
 # todo : about to be removed
 classifiers = [
