@@ -1,9 +1,9 @@
 use anyhow::anyhow;
 use mona::artifacts::{Artifact as MonaArtifact, ArtifactSetName, ArtifactSlotName};
-use pyo3::types::PyString;
+use mona::common::StatName;
 use pyo3::prelude::*;
+use pyo3::types::PyString;
 use pythonize::depythonize;
-
 
 #[pyclass(name = "Artifact")]
 #[derive(Clone)]
@@ -48,19 +48,25 @@ impl PyArtifact {
     }
 }
 
-
 impl TryInto<MonaArtifact> for PyArtifact {
     type Error = anyhow::Error;
 
     fn try_into(self) -> Result<MonaArtifact, Self::Error> {
         let name: ArtifactSetName = Python::with_gil(|py| {
-            let _string: &PyString = self.name.as_ref(py);
-            depythonize(_string).map_err(|err| anyhow!("Failed to deserialize name: {}", err))
+            let _string: &PyString = self.set_name.as_ref(py);
+            depythonize(_string)
+                .map_err(|err| anyhow!("Failed to deserialize artifact set name: {}", err))
         })?;
 
         let slot: ArtifactSlotName = Python::with_gil(|py| {
-            let _string: &PyString = self.name.as_ref(py);
-            depythonize(_string).map_err(|err| anyhow!("Failed to deserialize name: {}", err))
+            let _string: &PyString = self.slot.as_ref(py);
+            depythonize(_string)
+                .map_err(|err| anyhow!("Failed to deserialize artifact slot name: {}", err))
+        })?;
+
+        let main_stat_name: StatName = Python::with_gil(|py| {
+            depythonize(self.main_stat.0.as_ref(py))
+                .map_err(|err| anyhow!("Failed to deserialize main stat name: {}", err))
         })?;
 
         Ok(MonaArtifact {
@@ -69,7 +75,7 @@ impl TryInto<MonaArtifact> for PyArtifact {
             level: self.level,
             star: self.star,
             sub_stats: vec![],
-            main_stat: (StatName::ATKFixed, 0.0),
+            main_stat: (main_stat_name, self.main_stat.1),
             id: self.id,
         })
     }
