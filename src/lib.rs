@@ -9,6 +9,7 @@ use applications::generate::character::gen_character_meta_as_json;
 use applications::generate::locale::gen_generate_locale_as_json;
 use applications::generate::weapon::gen_weapon_meta_as_json;
 use applications::wasm::{get_damage_analysis, get_transformative_damage};
+use crate::applications::errors::ValidationError;
 
 use crate::applications::input::artifact::PyArtifact;
 use crate::applications::input::buff::PyBuffInterface;
@@ -38,5 +39,6 @@ fn _python_genshin_artifact(py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<PySkillInterface>()?;
     m.add_class::<PyEnemyInterface>()?;
     m.add_class::<PyArtifact>()?;
+    m.add_class::<ValidationError>()?;
     Ok(())
 }
