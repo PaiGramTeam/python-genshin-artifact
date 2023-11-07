@@ -30,12 +30,7 @@ pub struct PyCalculatorConfig {
 #[pymethods]
 impl PyCalculatorConfig {
     #[new]
-    #[args(
-        buffs = "None",
-        artifacts = "None",
-        artifact_config = "None",
-        enemy = "None"
-    )]
+    #[pyo3(signature=(character, weapon, skill, buffs = None, artifacts = None, artifact_config = None, enemy = None))]
     pub fn py_new(
         character: PyCharacterInterface,
         weapon: PyWeaponInterface,

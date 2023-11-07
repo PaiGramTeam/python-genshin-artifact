@@ -1,7 +1,7 @@
-use std::collections::HashMap;
-use pyo3::prelude::*;
 use crate::applications::output::damage_result::PyDamageResult;
 use mona::damage::DamageAnalysis as MonaDamageAnalysis;
+use pyo3::prelude::*;
+use std::collections::HashMap;
 
 #[pyclass(name = "DamageAnalysis")]
 #[derive(Clone)]

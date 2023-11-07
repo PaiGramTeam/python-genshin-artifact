@@ -1,5 +1,5 @@
-use pyo3::prelude::*;
 use mona::damage::damage_result::DamageResult as MonaDamageResult;
+use pyo3::prelude::*;
 
 #[pyclass(name = "DamageResult")]
 #[derive(Clone)]
@@ -24,11 +24,15 @@ impl PyDamageResult {
         non_critical: f64,
         expectation: f64,
         is_heal: bool,
-        is_shield: bool
+        is_shield: bool,
     ) -> PyResult<Self> {
-        Ok(
-            Self { critical, non_critical, expectation, is_heal, is_shield }
-        )
+        Ok(Self {
+            critical,
+            non_critical,
+            expectation,
+            is_heal,
+            is_shield,
+        })
     }
 }
 
@@ -39,7 +43,7 @@ impl From<MonaDamageResult> for PyDamageResult {
             non_critical: damage_result.non_critical,
             expectation: damage_result.expectation,
             is_heal: damage_result.is_heal,
-            is_shield: damage_result.is_shield
+            is_shield: damage_result.is_shield,
         }
     }
 }
