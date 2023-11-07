@@ -9,7 +9,7 @@ use applications::generate::artifact::gen_artifact_meta_as_json;
 use applications::generate::character::gen_character_meta_as_json;
 use applications::generate::locale::gen_generate_locale_as_json;
 use applications::generate::weapon::gen_weapon_meta_as_json;
-use applications::wasm::{get_damage_analysis, get_transformative_damage};
+use applications::analysis::{get_damage_analysis, get_transformative_damage};
 
 use crate::applications::input::artifact::PyArtifact;
 use crate::applications::input::buff::PyBuffInterface;
