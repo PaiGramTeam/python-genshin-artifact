@@ -22,7 +22,10 @@ impl PySkillInterface {
         Ok(Self { index, config })
     }
     pub fn __repr__(&self) -> PyResult<String> {
-        Ok(format!("SkillInterface(index: {}, config: {:?})", self.index, self.config))
+        Ok(format!(
+            "SkillInterface(index: {}, config: {:?})",
+            self.index, self.config
+        ))
     }
 
     #[getter]
@@ -36,7 +39,6 @@ impl PySkillInterface {
         }
         Ok(dict.into())
     }
-
 }
 
 impl TryInto<MonaSkillInterface> for PySkillInterface {
