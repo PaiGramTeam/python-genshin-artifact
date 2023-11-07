@@ -44,10 +44,10 @@ requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
 [tool.pytest.ini_options]
-testpaths = "tests"
-log_format = "%(name)s %(levelname)s: %(message)s"
-filterwarnings = "error"
-timeout = 10
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 
 [tool.black]
 include = '\.pyi?$'
