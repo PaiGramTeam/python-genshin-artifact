@@ -2,7 +2,7 @@ use anyhow::anyhow;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-use mona::artifacts::effect_config::ArtifactEffectConfig;
+use mona::artifacts::effect_config::{ArtifactConfigInterface, ArtifactEffectConfig};
 use mona::artifacts::{Artifact, ArtifactList};
 use mona::attribute::{AttributeUtils, ComplicatedAttributeGraph, SimpleAttributeGraph2};
 use mona::buffs::Buff;
@@ -40,12 +40,18 @@ pub fn get_damage_analysis(calculator_config: PyCalculatorConfig) -> PyResult<Py
         .collect::<Result<Vec<Artifact>, anyhow::Error>>()?;
     let artifacts = artifacts.iter().collect::<Vec<&Artifact>>();
 
-    let artifact_config: ArtifactEffectConfig =
+    let artifact_config_interface: Option<ArtifactConfigInterface> =
         if let Some(artifact_config) = calculator_config.artifact_config {
             Python::with_gil(|py| {
                 depythonize(artifact_config.as_ref(py))
                     .map_err(|err| anyhow!("Failed to deserialize artifact config: {}", err))
             })?
+        } else {
+            None
+        };
+    let artifact_config =
+        if let Some(artifact_config) = artifact_config_interface {
+            artifact_config.to_config()
         } else {
             ArtifactEffectConfig::default()
         };
@@ -109,12 +115,18 @@ pub fn get_transformative_damage(
         .collect::<Result<Vec<Artifact>, anyhow::Error>>()?;
     let artifacts = artifacts.iter().collect::<Vec<&Artifact>>();
 
-    let artifact_config: ArtifactEffectConfig =
+    let artifact_config_interface: Option<ArtifactConfigInterface> =
         if let Some(artifact_config) = calculator_config.artifact_config {
             Python::with_gil(|py| {
                 depythonize(artifact_config.as_ref(py))
                     .map_err(|err| anyhow!("Failed to deserialize artifact config: {}", err))
             })?
+        } else {
+            None
+        };
+    let artifact_config =
+        if let Some(artifact_config) = artifact_config_interface {
+            artifact_config.to_config()
         } else {
             ArtifactEffectConfig::default()
         };
