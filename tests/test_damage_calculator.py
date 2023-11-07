@@ -1,20 +1,18 @@
-import json
-from json import JSONDecodeError
-from pathlib import Path
-
-import pytest
-from python_genshin_artifact.calculator import get_damage_analysis
-from python_genshin_artifact.error import JsonParseException
-from python_genshin_artifact.models.calculator import CalculatorConfig
-
-
-TEST_DATA_DIR = Path(__file__).resolve().parent / "input"
+from python_genshin_artifact import (
+    CalculatorConfig,
+    get_damage_analysis,
+    CharacterInterface,
+    SkillInterface,
+    WeaponInterface,
+)
 
 
-def test_damage_analysis_exception():
-    """Test damage analysis raises expected exception on invalid input"""
-    with open(TEST_DATA_DIR / "invalid_enka_name.json") as f:
-        config = CalculatorConfig(**json.load(f))
-    with pytest.raises(JsonParseException) as exc_info:
-        get_damage_analysis(config)
-        assert type(exc_info.__cause__) is JSONDecodeError
+def test_damage_analysis():
+    character = CharacterInterface(
+        name="HuTao", level=90, ascend=False, constellation=6, skill1=12, skill2=12, skill3=12
+    )
+    skill = SkillInterface(index=1)
+    weapon = WeaponInterface(name="StaffOfHoma", level=90, ascend=False, refine=4)
+    calculator_config = CalculatorConfig(character=character, weapon=weapon, skill=skill)
+    damage_analysis = get_damage_analysis(calculator_config)
+    assert damage_analysis.is_heal == False
