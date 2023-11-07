@@ -18,6 +18,8 @@ use crate::applications::input::character::PyCharacterInterface;
 use crate::applications::input::enemy::PyEnemyInterface;
 use crate::applications::input::skill::PySkillInterface;
 use crate::applications::input::weapon::PyWeaponInterface;
+use crate::applications::output::damage_analysis::PyDamageAnalysis;
+use crate::applications::output::damage_result::PyDamageResult;
 use crate::applications::output::transformative_damage::PyTransformativeDamage;
 
 import_exception!(json, JSONDecodeError);
@@ -39,6 +41,8 @@ fn _python_genshin_artifact(py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<PySkillInterface>()?;
     m.add_class::<PyEnemyInterface>()?;
     m.add_class::<PyArtifact>()?;
+    m.add_class::<PyDamageResult>()?;
+    m.add_class::<PyDamageAnalysis>()?;
     m.add_class::<ValidationError>()?;
     Ok(())
 }
