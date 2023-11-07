@@ -58,6 +58,7 @@ impl PyArtifact {
         ))
     }
 
+    #[getter]
     pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
         let dict = PyDict::new(py);
         dict.set_item("set_name", self.set_name.as_ref(py))?;

@@ -1,7 +1,7 @@
 use anyhow::Context;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
-use pythonize::{depythonize ,pythonize};
+use pythonize::depythonize;
 use std::str::FromStr;
 
 use mona::character::{CharacterConfig, CharacterName};

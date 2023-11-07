@@ -52,6 +52,7 @@ impl PyWeaponInterface {
         ))
     }
 
+    #[getter]
     pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
         let dict = PyDict::new(py);
         dict.set_item("name", self.name.as_ref(py))?;

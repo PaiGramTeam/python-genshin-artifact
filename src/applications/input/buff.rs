@@ -33,6 +33,7 @@ impl PyBuffInterface {
         Ok(format!("BuffInterface(name={}, config={})", name, config_repr))
     }
 
+    #[getter]
     pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
         let dict = PyDict::new(py);
         let name_str = self.name.as_ref(py).to_str()?;

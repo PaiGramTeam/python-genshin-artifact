@@ -68,6 +68,7 @@ impl PyEnemyInterface {
         ))
     }
 
+    #[getter]
     pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
         let dict = PyDict::new(py);
         dict.set_item("level", self.level)?;
