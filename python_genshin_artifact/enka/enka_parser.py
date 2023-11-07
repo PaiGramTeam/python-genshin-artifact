@@ -4,12 +4,10 @@ from typing import Tuple, List, Optional
 from python_genshin_artifact.enka.artifacts import artifacts_name_map, equip_type_map
 from python_genshin_artifact.enka.assets import Assets
 from python_genshin_artifact.enka.characters import characters_map
-from python_genshin_artifact.enka.fight import fight_map, toFloat
+from python_genshin_artifact.enka.fight import fight_map, to_float
 from python_genshin_artifact.enka.weapon import weapon_name_map
 from python_genshin_artifact.error import EnkaParseException
-from python_genshin_artifact.models.artifact import ArtifactInfo
-from python_genshin_artifact.models.characterInfo import CharacterInfo
-from python_genshin_artifact.models.weapon import WeaponInfo
+from python_genshin_artifact import Artifact, CharacterInterface, WeaponInterface
 
 assets = Assets()
 
@@ -23,7 +21,7 @@ def is_ascend(level: int, promote_level: int) -> bool:
     return promote_level >= expected_promote_level
 
 
-def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, List[ArtifactInfo]]:
+def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInterface, WeaponInterface, List[Artifact]]:
     character_info = assets.get_character(avatar_id)
     if character_info is None:
         raise EnkaParseException(f"avatarId={avatar_id} is not found in assets")
@@ -51,7 +49,7 @@ def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, 
             if _value.endswith("02"):
                 skill_info["skill3"] += 3
     character_name = characters_map.get(avatar_id)
-    character = CharacterInfo(
+    character = CharacterInterface(
         name=character_name,
         level=level,
         constellation=len(talent_id_list),
@@ -66,9 +64,9 @@ def enka_parser(data: dict, avatar_id: int) -> Tuple[CharacterInfo, WeaponInfo, 
     return character, weapon, artifacts
 
 
-def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo]]:
-    weapon: Optional[WeaponInfo] = None
-    artifacts: List[ArtifactInfo] = []
+def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInterface, List[Artifact]]:
+    weapon: Optional[WeaponInterface] = None
+    artifacts: List[Artifact] = []
     for _equip in equip_list:
         _weapon = _equip.get("weapon")
         _reliquary = _equip.get("reliquary")
@@ -86,18 +84,18 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
             _reliquary_main_stat = _flat["reliquaryMainstat"]
             _main_prop_id = _reliquary_main_stat["mainPropId"]
             stat_name = fight_map[_main_prop_id]
-            stat_value = toFloat(_main_prop_id, _reliquary_main_stat["statValue"])
+            stat_value = to_float(_main_prop_id, _reliquary_main_stat["statValue"])
             _main_stat = (stat_name, stat_value)
             for _reliquary_sub_stats in _flat["reliquarySubstats"]:
                 _append_prop_id = _reliquary_sub_stats["appendPropId"]
                 stat_name = fight_map[_append_prop_id]
-                stat_value = toFloat(_append_prop_id, _reliquary_sub_stats["statValue"])
+                stat_value = to_float(_append_prop_id, _reliquary_sub_stats["statValue"])
                 _sub_stats = (stat_name, stat_value)
                 sub_stats.append(_sub_stats)
             slot = equip_type_map[_flat["equipType"]]
             star = _flat["rankLevel"]
             artifacts.append(
-                ArtifactInfo(
+                Artifact(
                     set_name=set_name,
                     id=artifact_id,
                     level=_level,
@@ -118,5 +116,5 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInfo, List[ArtifactInfo
             ascend = False
             if _promote_level is not None:
                 ascend = is_ascend(_level, _promote_level)
-            weapon = WeaponInfo(level=_level, refine=refinement_level, ascend=ascend, name=weapon_name)
+            weapon = WeaponInterface(level=_level, refine=refinement_level, ascend=ascend, name=weapon_name)
     return weapon, artifacts
