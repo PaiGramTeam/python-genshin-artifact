@@ -13,6 +13,8 @@ from ._python_genshin_artifact import (
     SkillInterface,
     EnemyInterface,
     CalculatorConfig,
+    DamageResult,
+    DamageAnalysis,
 )
 
 __all__ = (
@@ -30,4 +32,6 @@ __all__ = (
     "SkillInterface",
     "EnemyInterface",
     "CalculatorConfig",
+    "DamageResult",
+    "DamageAnalysis",
 )
