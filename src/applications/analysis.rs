@@ -125,7 +125,7 @@ pub fn get_transformative_damage(calculator_config: PyCalculatorConfig) -> PyRes
             Ok(b) => Ok(b.to_buff()),
             Err(e) => Err(e),
         })
-        .collect::<Result<Vec<Box<dyn Buff<ComplicatedAttributeGraph>>>, anyhow::Error>>()?;
+        .collect::<Result<Vec<Box<dyn Buff<SimpleAttributeGraph2>>>, anyhow::Error>>()?;
 
     let skill_config: SkillInterface = calculator_config
         .skill
