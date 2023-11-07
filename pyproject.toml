@@ -6,9 +6,6 @@ authors = [
     {name = "luoshuijs", email = "luoshuijs@outlook.com"},
     {name = "kotori", email = "minamiktr@outlook.com"}
 ]
-dependencies = [
-    "pydantic~=1.10.7",
-]
 dev-dependencies = [
     "black~=23.10.1"
 ]
