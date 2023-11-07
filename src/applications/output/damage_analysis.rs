@@ -14,7 +14,7 @@ pub struct PyDamageAnalysis {
     pub hp: HashMap<String, f64>,
     #[pyo3(get, set)]
     pub hp_ratio: HashMap<String, f64>,
-    #[pyo3(get, set)]
+    #[pyo3(get, set, name = "defense")]
     pub def: HashMap<String, f64>,
     #[pyo3(get, set)]
     pub def_ratio: HashMap<String, f64>,
