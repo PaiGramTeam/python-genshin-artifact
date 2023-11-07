@@ -15,4 +15,4 @@ def test_damage_analysis():
     weapon = WeaponInterface(name="StaffOfHoma", level=90, ascend=False, refine=4)
     calculator_config = CalculatorConfig(character=character, weapon=weapon, skill=skill)
     damage_analysis = get_damage_analysis(calculator_config)
-    assert damage_analysis.is_heal == False
+    assert damage_analysis.is_heal is False
