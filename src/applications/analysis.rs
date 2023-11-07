@@ -87,7 +87,9 @@ pub fn get_damage_analysis(calculator_config: PyCalculatorConfig) -> PyResult<Py
 }
 
 #[pyfunction]
-pub fn get_transformative_damage(calculator_config: PyCalculatorConfig) -> PyResult<PyTransformativeDamage> {
+pub fn get_transformative_damage(
+    calculator_config: PyCalculatorConfig,
+) -> PyResult<PyTransformativeDamage> {
     let character: CharacterInterface = calculator_config
         .character
         .try_into()
@@ -127,11 +129,6 @@ pub fn get_transformative_damage(calculator_config: PyCalculatorConfig) -> PyRes
         })
         .collect::<Result<Vec<Box<dyn Buff<SimpleAttributeGraph2>>>, anyhow::Error>>()?;
 
-    let skill_config: SkillInterface = calculator_config
-        .skill
-        .try_into()
-        .map_err(|e: anyhow::Error| PyValueError::new_err(e.to_string()))?;
-
     let enemy: Enemy = if let Some(enemy) = calculator_config.enemy {
         enemy.try_into()?
     } else {
@@ -158,4 +155,3 @@ pub fn get_transformative_damage(calculator_config: PyCalculatorConfig) -> PyRes
 
     Ok(PyTransformativeDamage::from(result))
 }
-
