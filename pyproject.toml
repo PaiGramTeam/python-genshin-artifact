@@ -1,46 +1,49 @@
 [project]
 name = "python_genshin_artifact"
-requires-python = '>=3.8'
+requires-python = ">=3.8"
 version = "0.1.4"
 authors = [
-    {name = 'luoshuijs', email = 'luoshuijs@outlook.com'},
-    {name = 'kotori', email = 'minamiktr@outlook.com'}
+    {name = "luoshuijs", email = "luoshuijs@outlook.com"},
+    {name = "kotori", email = "minamiktr@outlook.com"}
 ]
 dependencies = [
-    'pydantic~=1.10.7',
+    "pydantic~=1.10.7",
+]
+dev-dependencies = [
+    "black~=23.10.1"
 ]
 # todo : about to be removed
 classifiers = [
-    'Development Status :: 5 - Production/Stable',
-    'Environment :: Console',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.8',
-    'Programming Language :: Python :: 3.9',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Intended Audience :: Developers',
-    'Intended Audience :: Information Technology',
-    'Intended Audience :: System Administrators',
-    'License :: OSI Approved :: MIT License',
-    'Operating System :: POSIX :: Linux',
-    'Operating System :: Microsoft :: Windows',
-    'Operating System :: MacOS',
-    'Topic :: Software Development :: Libraries :: Python Modules',
-    'Topic :: System :: Filesystems',
-    'Framework :: AnyIO',
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Filesystems",
+    "Framework :: AnyIO",
 ]
 dynamic = [
-    'license',
-    'readme',
-    'version'
+    "license",
+    "readme",
+    "version"
 ]
 
 [tool.maturin]
 module-name = "python_genshin_artifact._python_genshin_artifact"
-bindings = 'pyo3'
+bindings = "pyo3"
 #python-source = "python"
 
 [build-system]
@@ -48,12 +51,12 @@ requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
 [tool.pytest.ini_options]
-testpaths = 'tests'
-log_format = '%(name)s %(levelname)s: %(message)s'
-filterwarnings = 'error'
+testpaths = "tests"
+log_format = "%(name)s %(levelname)s: %(message)s"
+filterwarnings = "error"
 timeout = 10
 
 [tool.black]
 include = '\.pyi?$'
 line-length = 120
-target-version = ['py38']
+target-version = ["py38"]
