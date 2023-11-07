@@ -1,7 +1,7 @@
 use anyhow::Context;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
-use pythonize::depythonize;
+use pythonize::{depythonize ,pythonize};
 use std::str::FromStr;
 
 use mona::character::{CharacterConfig, CharacterName};
@@ -51,6 +51,38 @@ impl PyCharacterInterface {
             skill3,
             params,
         })
+    }
+
+    pub fn __repr__(&self) -> PyResult<String> {
+        let params_repr = match &self.params {
+            Some(params) => format!("{:?}", params),
+            None => "None".to_string(),
+        };
+
+        Ok(format!(
+            "CharacterInterface(name='{}', level={}, ascend={}, constellation={}, skill1={}, skill2={}, skill3={}, params={})",
+            self.name, self.level, self.ascend, self.constellation, self.skill1, self.skill2, self.skill3, params_repr
+        ))
+    }
+
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+
+        dict.set_item("name", &self.name)?;
+        dict.set_item("level", self.level)?;
+        dict.set_item("ascend", self.ascend)?;
+        dict.set_item("constellation", self.constellation)?;
+        dict.set_item("skill1", self.skill1)?;
+        dict.set_item("skill2", self.skill2)?;
+        dict.set_item("skill3", self.skill3)?;
+
+        if let Some(params) = &self.params {
+            dict.set_item("params", params)?;
+        } else {
+            dict.set_item("params", py.None())?;
+        }
+
+        Ok(dict.into())
     }
 }
 

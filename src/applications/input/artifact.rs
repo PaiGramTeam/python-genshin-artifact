@@ -2,7 +2,7 @@ use anyhow::anyhow;
 use mona::artifacts::{Artifact as MonaArtifact, ArtifactSetName, ArtifactSlotName};
 use mona::common::StatName;
 use pyo3::prelude::*;
-use pyo3::types::PyString;
+use pyo3::types::{PyDict, PyList, PyString};
 use pythonize::depythonize;
 
 #[pyclass(name = "Artifact")]
@@ -45,6 +45,35 @@ impl PyArtifact {
             main_stat,
             id,
         })
+    }
+
+    pub fn __repr__(&self, py: Python) -> PyResult<String> {
+        let set_name = self.set_name.as_ref(py).to_str()?;
+        let slot = self.slot.as_ref(py).to_str()?;
+        let main_stat = self.main_stat.0.as_ref(py).to_str()?;
+        let main_stat_value = self.main_stat.1;
+        Ok(format!(
+            "PyArtifact(set_name='{}', slot='{}', level={}, star={}, main_stat=({}, {}), id={})",
+            set_name, slot, self.level, self.star, main_stat, main_stat_value, self.id
+        ))
+    }
+
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+        dict.set_item("set_name", self.set_name.as_ref(py))?;
+        dict.set_item("slot", self.slot.as_ref(py))?;
+        dict.set_item("level", self.level)?;
+        dict.set_item("star", self.star)?;
+        let sub_stats_pylist = PyList::new(py, self.sub_stats.iter().map(|(s, v)| {
+            let stat_str = s.as_ref(py).to_str().unwrap();
+            (stat_str, *v)
+        }));
+        dict.set_item("sub_stats", sub_stats_pylist)?;
+        let main_stat_tuple = (self.main_stat.0.as_ref(py), self.main_stat.1);
+        dict.set_item("main_stat", main_stat_tuple)?;
+        dict.set_item("id", self.id)?;
+
+        Ok(dict.into())
     }
 }
 

@@ -21,6 +21,21 @@ impl PySkillInterface {
     fn new(index: usize, config: Option<Py<PyDict>>) -> PyResult<Self> {
         Ok(Self { index, config })
     }
+    pub fn __repr__(&self) -> PyResult<String> {
+        Ok(format!("SkillInterface(index: {}, config: {:?})", self.index, self.config))
+    }
+
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+        dict.set_item("index", self.index)?;
+        if let Some(config) = &self.config {
+            dict.set_item("config", config.as_ref(py))?;
+        } else {
+            dict.set_item("config", py.None())?;
+        }
+        Ok(dict.into())
+    }
+
 }
 
 impl TryInto<MonaSkillInterface> for PySkillInterface {

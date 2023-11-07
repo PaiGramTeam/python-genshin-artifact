@@ -23,6 +23,27 @@ impl PyBuffInterface {
     pub fn py_new(name: Py<PyString>, config: Option<Py<PyDict>>) -> PyResult<Self> {
         Ok(Self { name, config })
     }
+
+    pub fn __repr__(&self, py: Python) -> PyResult<String> {
+        let name = self.name.as_ref(py).to_str()?;
+        let config_repr = match &self.config {
+            Some(config) => config.as_ref(py).repr()?.to_str()?.to_string(),
+            None => "None".to_string(),
+        };
+        Ok(format!("BuffInterface(name={}, config={})", name, config_repr))
+    }
+
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+        let name_str = self.name.as_ref(py).to_str()?;
+        dict.set_item("name", name_str)?;
+        if let Some(config) = &self.config {
+            dict.set_item("config", config.as_ref(py))?;
+        } else {
+            dict.set_item("config", py.None())?;
+        }
+        Ok(dict.into())
+    }
 }
 
 impl TryInto<MonaBuffInterface> for PyBuffInterface {

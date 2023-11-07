@@ -1,6 +1,7 @@
 use pyo3::prelude::*;
 
 use mona::enemies::Enemy as MomaEnemy;
+use pyo3::types::PyDict;
 
 #[pyclass(name = "EnemyInterface")]
 #[derive(Clone)]
@@ -50,6 +51,35 @@ impl PyEnemyInterface {
             dendro_res,
             physical_res,
         })
+    }
+
+    fn __repr__(&self) -> PyResult<String> {
+        Ok(format!(
+            "EnemyInterface(level={}, electro_res={}, pyro_res={}, hydro_res={}, cryo_res={}, geo_res={}, anemo_res={}, dendro_res={}, physical_res={})",
+            self.level,
+            self.electro_res,
+            self.pyro_res,
+            self.hydro_res,
+            self.cryo_res,
+            self.geo_res,
+            self.anemo_res,
+            self.dendro_res,
+            self.physical_res,
+        ))
+    }
+
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+        dict.set_item("level", self.level)?;
+        dict.set_item("electro_res", self.electro_res)?;
+        dict.set_item("pyro_res", self.pyro_res)?;
+        dict.set_item("hydro_res", self.hydro_res)?;
+        dict.set_item("cryo_res", self.cryo_res)?;
+        dict.set_item("geo_res", self.geo_res)?;
+        dict.set_item("anemo_res", self.anemo_res)?;
+        dict.set_item("dendro_res", self.dendro_res)?;
+        dict.set_item("physical_res", self.physical_res)?;
+        Ok(dict.into())
     }
 }
 

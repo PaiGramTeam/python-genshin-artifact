@@ -38,6 +38,33 @@ impl PyWeaponInterface {
             params,
         })
     }
+
+    pub fn __repr__(&self, py: Python) -> PyResult<String> {
+        let name = self.name.as_ref(py).to_str()?;
+        let params_repr = match &self.params {
+            Some(params) => params.as_ref(py).repr()?.to_str()?.to_string(),
+            None => "None".to_string(),
+        };
+
+        Ok(format!(
+            "WeaponInterface(name='{}', level={}, ascend={}, refine={}, params={})",
+            name, self.level, self.ascend, self.refine, params_repr
+        ))
+    }
+
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+        dict.set_item("name", self.name.as_ref(py))?;
+        dict.set_item("level", self.level)?;
+        dict.set_item("ascend", self.ascend)?;
+        dict.set_item("refine", self.refine)?;
+        if let Some(params) = &self.params {
+            dict.set_item("params", params.as_ref(py))?;
+        } else {
+            dict.set_item("params", py.None())?;
+        }
+        Ok(dict.into())
+    }
 }
 
 impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
