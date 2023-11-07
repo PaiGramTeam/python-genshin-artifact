@@ -1,7 +1,7 @@
 [project]
 name = "python_genshin_artifact"
 requires-python = ">=3.8"
-version = "1.0.0a"
+version = "0.1.4"
 authors = [
     {name = "luoshuijs", email = "luoshuijs@outlook.com"},
     {name = "kotori", email = "minamiktr@outlook.com"}
