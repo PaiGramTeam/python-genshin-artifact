@@ -30,7 +30,10 @@ impl PyBuffInterface {
             Some(config) => config.as_ref(py).repr()?.to_str()?.to_string(),
             None => "None".to_string(),
         };
-        Ok(format!("BuffInterface(name={}, config={})", name, config_repr))
+        Ok(format!(
+            "BuffInterface(name={}, config={})",
+            name, config_repr
+        ))
     }
 
     #[getter]

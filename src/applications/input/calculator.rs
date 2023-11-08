@@ -6,7 +6,7 @@ use crate::applications::input::skill::PySkillInterface;
 use crate::applications::input::weapon::PyWeaponInterface;
 
 use pyo3::prelude::*;
-use pyo3::types::PyDict;
+use pyo3::types::{PyDict, PyList};
 
 #[pyclass(name = "CalculatorConfig")]
 #[derive(Clone)]
@@ -49,5 +49,36 @@ impl PyCalculatorConfig {
             skill,
             enemy,
         })
+    }
+
+    #[getter]
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+        dict.set_item("character", self.character.__dict__(py)?)?;
+        dict.set_item("weapon", self.weapon.__dict__(py)?)?;
+        let buffs = self
+            .buffs
+            .iter()
+            .map(|b| b.__dict__(py))
+            .collect::<Result<Vec<PyObject>, PyErr>>()?;
+        dict.set_item("buffs", PyList::new(py, buffs))?;
+        let artifacts = self
+            .artifacts
+            .iter()
+            .map(|ar| ar.__dict__(py))
+            .collect::<Result<Vec<PyObject>, PyErr>>()?;
+        dict.set_item("artifacts", PyList::new(py, artifacts))?;
+        if let Some(artifact_config) = self.artifact_config.as_ref().map(|c| c.as_ref(py)) {
+            dict.set_item("artifact_config", artifact_config)?;
+        } else {
+            dict.set_item("artifact_config", py.None())?;
+        }
+        dict.set_item("skill", self.skill.__dict__(py)?)?;
+        if let Some(enemy) = self.enemy.as_ref().map(|e| e.__dict__(py)).transpose()? {
+            dict.set_item("enemy", enemy)?;
+        } else {
+            dict.set_item("enemy", py.None())?;
+        }
+        Ok(dict.into())
     }
 }

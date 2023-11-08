@@ -65,10 +65,13 @@ impl PyArtifact {
         dict.set_item("slot", self.slot.as_ref(py))?;
         dict.set_item("level", self.level)?;
         dict.set_item("star", self.star)?;
-        let sub_stats_pylist = PyList::new(py, self.sub_stats.iter().map(|(s, v)| {
-            let stat_str = s.as_ref(py).to_str().unwrap();
-            (stat_str, *v)
-        }));
+        let sub_stats_pylist = PyList::new(
+            py,
+            self.sub_stats.iter().map(|(s, v)| {
+                let stat_str = s.as_ref(py).to_str().unwrap();
+                (stat_str, *v)
+            }),
+        );
         dict.set_item("sub_stats", sub_stats_pylist)?;
         let main_stat_tuple = (self.main_stat.0.as_ref(py), self.main_stat.1);
         dict.set_item("main_stat", main_stat_tuple)?;

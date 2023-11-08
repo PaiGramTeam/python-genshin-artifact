@@ -49,12 +49,11 @@ pub fn get_damage_analysis(calculator_config: PyCalculatorConfig) -> PyResult<Py
         } else {
             None
         };
-    let artifact_config =
-        if let Some(artifact_config) = artifact_config_interface {
-            artifact_config.to_config()
-        } else {
-            ArtifactEffectConfig::default()
-        };
+    let artifact_config = if let Some(artifact_config) = artifact_config_interface {
+        artifact_config.to_config()
+    } else {
+        ArtifactEffectConfig::default()
+    };
 
     let buffs = calculator_config
         .buffs
@@ -124,12 +123,11 @@ pub fn get_transformative_damage(
         } else {
             None
         };
-    let artifact_config =
-        if let Some(artifact_config) = artifact_config_interface {
-            artifact_config.to_config()
-        } else {
-            ArtifactEffectConfig::default()
-        };
+    let artifact_config = if let Some(artifact_config) = artifact_config_interface {
+        artifact_config.to_config()
+    } else {
+        ArtifactEffectConfig::default()
+    };
 
     let buffs = calculator_config
         .buffs

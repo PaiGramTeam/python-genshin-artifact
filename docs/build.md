@@ -20,14 +20,13 @@
 
 ## Build
 
-- Navigate to core -> run cargo build
+- (Optional) Run cargo build
   ```
-  $ cd python_genshin_artifact_core
-  $ cargo build
+  $ cargo build --no-default-features
      ...
      Compiling pyo3-ffi v0.19.2
      Compiling pyo3 v0.19.2
-     Compiling genshin_artifact_core v0.1.1 (/home/kotori/projects/python/python-genshin-artifact/python_genshin_artifact_core)
+     Compiling python_genshin_artifact v0.1.1 (/home/kotori/projects/python/python-genshin-artifact/python_genshin_artifact_core)
       Finished dev [unoptimized + debuginfo] target(s) in 3.12s
   ```
 - Use maturin to install the rust library into a python library
@@ -35,20 +34,18 @@
   $ maturin develop
   ...
   📦 Built wheel for CPython 3.11 to /tmp/.tmpicGM3M/genshin_artifact_core-0.1.1-cp311-cp311-linux_x86_64.whl
-  🛠 Installed genshin_artifact_core-0.1.1
+  🛠 Installed python_genshin_artifact-0.1.1
   ```
-- Navigate back to project root and build with poetry:
+- Use maturin to build the wheel
   ```
-  $ poetry build
-  Building Python-Genshin-Artifact (0.1.1)
-    - Building sdist
-    - Built python_genshin_artifact-0.1.1.tar.gz
-    - Building wheel
-    - Built python_genshin_artifact-0.1.1-py3-none-any.whl
+  $ maturin build --out dist
+  ...
+      Finished dev [unoptimized + debuginfo] target(s) in 3.88s
+  📦 Built wheel for CPython 3.11 to dist/python_genshin_artifact-0.1.4-cp311-cp311-manylinux_2_34_x86_64.whl
   ```
 - Install the built wheel with pip:
   ```
-  $ pip install dist/python_genshin_artifact-0.1.1-py3-none-any.whl
+  $ pip install dist/python_genshin_artifact-xxx.whl
   ```
 
 
