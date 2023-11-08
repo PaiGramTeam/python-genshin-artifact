@@ -25,7 +25,7 @@ weapon_name_map: Dict[int, str] = {
     11413: "FesteringDesire",
     11414: "AmenomaKageuchi",
     11415: "CinnabarSpindle",
-    11416: "KagotsurubeIsshin",
+    11416: "CursedBlade",
     11417: "SapwoodBlade",
     11418: "XiphosMoonlight",
     11422: "ToukabouShigure",
