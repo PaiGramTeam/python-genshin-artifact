@@ -78,7 +78,7 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: genshin-artifact-core
+        name: python-genshin-artifact
         path: ./dist
   
   upload-core:
@@ -100,7 +100,7 @@ jobs:
       - name: get dist artifacts
         uses: actions/download-artifact@v3
         with:
-          name: genshin-artifact-core
+          name: python-genshin-artifact
           path: dist
 
       - name: upload to pypi
