@@ -111,7 +111,10 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInterface, List[Artifac
             if weapon_name is None:
                 raise EnkaParseException(f"weapon_id={weapon_id} is not found in assets")
             _level = _weapon["level"]
-            refinement_level = next(iter(_weapon["affixMap"].values())) + 1
+            affix_map = _weapon.get("affixMap")
+            refinement_level = 0
+            if affix_map is not None:
+                refinement_level = next(iter(affix_map.values())) + 1
             _promote_level = _weapon.get("promoteLevel")
             ascend = False
             if _promote_level is not None:
