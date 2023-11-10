@@ -1,5 +1,6 @@
 use mona::damage::transformative_damage::TransformativeDamage as MonaTransformativeDamage;
 use pyo3::prelude::*;
+use pyo3::types::PyDict;
 
 #[pyclass(name = "TransformativeDamage")]
 #[derive(Clone)]
@@ -65,6 +66,25 @@ impl PyTransformativeDamage {
             burning,
             crystallize,
         })
+    }
+
+    #[getter]
+    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+        let dict = PyDict::new(py);
+        dict.set_item("swirl_cryo", self.swirl_cryo)?;
+        dict.set_item("swirl_hydro", self.swirl_hydro)?;
+        dict.set_item("swirl_pyro", self.swirl_pyro)?;
+        dict.set_item("swirl_electro", self.swirl_electro)?;
+        dict.set_item("overload", self.overload)?;
+        dict.set_item("electro_charged", self.electro_charged)?;
+        dict.set_item("shatter", self.shatter)?;
+        dict.set_item("super_conduct", self.super_conduct)?;
+        dict.set_item("bloom", self.bloom)?;
+        dict.set_item("hyper_bloom", self.hyper_bloom)?;
+        dict.set_item("burgeon", self.burgeon)?;
+        dict.set_item("burning", self.burning)?;
+        dict.set_item("crystallize", self.crystallize)?;
+        Ok(dict.into())
     }
 }
 
