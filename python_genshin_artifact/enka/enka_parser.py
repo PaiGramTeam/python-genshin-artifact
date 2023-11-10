@@ -86,12 +86,14 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInterface, List[Artifac
             stat_name = fight_map[_main_prop_id]
             stat_value = to_float(_main_prop_id, _reliquary_main_stat["statValue"])
             _main_stat = (stat_name, stat_value)
-            for _reliquary_sub_stats in _flat["reliquarySubstats"]:
-                _append_prop_id = _reliquary_sub_stats["appendPropId"]
-                stat_name = fight_map[_append_prop_id]
-                stat_value = to_float(_append_prop_id, _reliquary_sub_stats["statValue"])
-                _sub_stats = (stat_name, stat_value)
-                sub_stats.append(_sub_stats)
+            reliquary_sub_stats = _flat.get("reliquarySubstats")
+            if reliquary_sub_stats is not None:
+                for _reliquary_sub_stats in reliquary_sub_stats:
+                    _append_prop_id = _reliquary_sub_stats["appendPropId"]
+                    stat_name = fight_map[_append_prop_id]
+                    stat_value = to_float(_append_prop_id, _reliquary_sub_stats["statValue"])
+                    _sub_stats = (stat_name, stat_value)
+                    sub_stats.append(_sub_stats)
             slot = equip_type_map[_flat["equipType"]]
             star = _flat["rankLevel"]
             artifacts.append(
