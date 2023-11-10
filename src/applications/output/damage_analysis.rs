@@ -75,7 +75,7 @@ pub struct PyDamageAnalysis {
 impl PyDamageAnalysis {
 
     #[getter]
-    fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    fn __dict__(&self, py: Python) -> PyResult<PyObject> { // skipcq: RS-R1000
         let dict = PyDict::new(py);
 
         fn insert_hashmap(dict: &PyDict, py: Python, key: &str, hashmap: &HashMap<String, f64>) -> PyResult<()> {
