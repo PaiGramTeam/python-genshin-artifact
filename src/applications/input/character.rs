@@ -114,7 +114,6 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
 
 #[cfg(test)]
 mod tests {
-
     use super::*;
     use mona::attribute::{Attribute, AttributeName, ComplicatedAttributeGraph};
     use mona::character::Character;
@@ -194,5 +193,20 @@ mod tests {
             }
             println!("PyCharacterInterface 测试成功 遥遥领先！");
         });
+    }
+
+    #[test]
+    fn test_character_name() -> PyResult<()> {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| {
+            let module = PyModule::import(py, "python_genshin_artifact.enka.characters")?;
+            let characters_map = module.getattr("characters_map")?.downcast::<PyDict>()?;
+            for (key, value) in characters_map.iter() {
+                let character_name_str = value.extract::<String>()?;
+                CharacterName::from_str(&character_name_str)
+                    .context(format!("Character name '{}' does not exist", character_name_str))?;
+            }
+            Ok(())
+        })
     }
 }
