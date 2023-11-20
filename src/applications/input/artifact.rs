@@ -127,3 +127,26 @@ impl TryInto<MonaArtifact> for PyArtifact {
         })
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use anyhow::Context;
+    use super::*;
+
+    #[test]
+    fn test_artifact_set_name() -> PyResult<()> {
+        pyo3::prepare_freethreaded_python();
+        Python::with_gil(|py| {
+            let module = PyModule::import(py, "python_genshin_artifact.enka.weapon")?;
+            let weapon_name_map = module.getattr("weapon_name_map")?.downcast::<PyDict>()?;
+            for (key, value) in weapon_name_map.iter() {
+                let weapon_name_str = value.extract::<String>()?;
+                println!("{:?}", weapon_name_str);
+                let name: ArtifactSetName = depythonize(&value).context(format!("Weapon name '{}' does not exist", weapon_name_str))?;
+            }
+            Ok(())
+        })
+    }
+}
+
