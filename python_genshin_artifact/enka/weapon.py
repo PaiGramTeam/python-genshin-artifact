@@ -75,7 +75,6 @@ weapon_name_map: Dict[int, str] = {
     12502: "WolfsGravestone",
     12503: "SongOfBrokenPines",
     12504: "TheUnforged",
-    12505: "PrimordialJadeGreatSword",
     12510: "RedhornStonethresher",
     12511: "BeaconOfTheReedSea",
     13101: "BeginnersProtector",
@@ -123,7 +122,7 @@ weapon_name_map: Dict[int, str] = {
     14407: "MappaMare",
     14408: "BlackcliffAgate",
     14409: "EyeOfPerception",
-    14410: "WineAndSong",
+    14410: "WindAndSong",  # WineAndSong
     14412: "Frostbearer",
     14413: "DodocoTales",
     14414: "HakushinRing",
@@ -167,7 +166,7 @@ weapon_name_map: Dict[int, str] = {
     15415: "Predator",
     15416: "MouunsMoon",
     15417: "KingsSquire",
-    15418: "EndOfTheLine",
+    15418: "ElegyOfTheEnd",  # EndOfTheLine
     15419: "IbisPiercer",
     15424: "ScionOfTheBlazingSun",
     15425: "SongOfStillness",
@@ -175,11 +174,17 @@ weapon_name_map: Dict[int, str] = {
     15501: "SkywardHarp",
     15502: "AmosBow",
     15503: "ElegyOfTheEnd",
-    15504: "KunwusWyrmbane",
     15505: "PrimordialJadeVista",
     15507: "PolarStar",
     15508: "AquaSimulacra",
     15509: "ThunderingPulse",
     15511: "HuntersPath",
     15512: "TheFirstGreatMagic",
+}
+
+
+test_weapon_name_map: Dict[int, str] = {
+    12505: "PrimordialJadeGreatSword",
+    15505: "PrimordialJadeVista",
+    15504: "KunwusWyrmbane",
 }
