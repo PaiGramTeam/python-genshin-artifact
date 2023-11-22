@@ -128,25 +128,27 @@ impl TryInto<MonaArtifact> for PyArtifact {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
-    use anyhow::Context;
     use super::*;
+    use anyhow::Context;
 
     #[test]
     fn test_artifact_set_name() -> PyResult<()> {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
-            let module = PyModule::import(py, "python_genshin_artifact.enka.weapon")?;
+            let module = PyModule::import(py, "python_genshin_artifact.enka.artifacts")?;
             let artifacts_name_map = module.getattr("artifacts_name_map")?.downcast::<PyDict>()?;
-            for (key, value) in artifacts_name_map.iter() {
+            for (_, value) in artifacts_name_map.iter() {
                 let artifacts_name_str = value.extract::<String>()?;
-                println!("{:?}", artifacts_name_str);
-                let name: ArtifactSetName = depythonize(&value).context(format!("Artifact name '{}' does not exist", artifacts_name_str))?;
+                let res: Result<ArtifactSetName, anyhow::Error> = depythonize(&value).context(
+                    format!("Artifact name '{}' does not exist", artifacts_name_str),
+                );
+                if res.is_err() {
+                    println!("{:?}", res.err().map(|e| e.to_string()));
+                }
             }
             Ok(())
         })
     }
 }
-

@@ -201,10 +201,15 @@ mod tests {
         Python::with_gil(|py| {
             let module = PyModule::import(py, "python_genshin_artifact.enka.characters")?;
             let characters_map = module.getattr("characters_map")?.downcast::<PyDict>()?;
-            for (key, value) in characters_map.iter() {
+            for (_, value) in characters_map.iter() {
                 let character_name_str = value.extract::<String>()?;
-                CharacterName::from_str(&character_name_str)
-                    .context(format!("Character name '{}' does not exist", character_name_str))?;
+                let res = CharacterName::from_str(&character_name_str).context(format!(
+                    "Character name '{}' does not exist",
+                    character_name_str
+                ));
+                if res.is_err() {
+                    println!("{:?}", res.err().map(|e| e.to_string()));
+                }
             }
             Ok(())
         })

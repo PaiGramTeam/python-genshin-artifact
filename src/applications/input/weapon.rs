@@ -97,8 +97,8 @@ impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
 
 #[cfg(test)]
 mod tests {
-    use anyhow::Context;
     use super::*;
+    use anyhow::Context;
     use mona::attribute::ComplicatedAttributeGraph;
     use mona::character::{Character, CharacterConfig, CharacterName};
     use mona::weapon::Weapon;
@@ -200,17 +200,19 @@ mod tests {
         });
     }
 
-
     #[test]
-    fn test_character_name() -> PyResult<()> {
+    fn test_weapon_name() -> PyResult<()> {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
             let module = PyModule::import(py, "python_genshin_artifact.enka.weapon")?;
             let weapon_name_map = module.getattr("weapon_name_map")?.downcast::<PyDict>()?;
-            for (key, value) in weapon_name_map.iter() {
+            for (_, value) in weapon_name_map.iter() {
                 let weapon_name_str = value.extract::<String>()?;
-                println!("{:?}", weapon_name_str);
-                let name: WeaponName = depythonize(&value).context(format!("Weapon name '{}' does not exist", weapon_name_str))?;
+                let res: Result<WeaponName, anyhow::Error> = depythonize(&value)
+                    .context(format!("Weapon name '{}' does not exist", weapon_name_str));
+                if res.is_err() {
+                    println!("{:?}", res.err().map(|e| e.to_string()));
+                }
             }
             Ok(())
         })

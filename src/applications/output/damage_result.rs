@@ -39,11 +39,7 @@ impl PyDamageResult {
     pub fn __repr__(&self) -> PyResult<String> {
         Ok(format!(
             "DamageResult(critical={}, non_critical={}, expectation={}, is_heal={}, is_shield={})",
-            self.critical,
-            self.non_critical,
-            self.expectation,
-            self.is_heal,
-            self.is_shield
+            self.critical, self.non_critical, self.expectation, self.is_heal, self.is_shield
         ))
     }
 
@@ -57,8 +53,6 @@ impl PyDamageResult {
         dict.set_item("is_shield", self.is_shield)?;
         Ok(dict.into())
     }
-
-
 }
 
 impl From<MonaDamageResult> for PyDamageResult {
