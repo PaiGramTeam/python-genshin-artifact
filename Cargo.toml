@@ -1,6 +1,6 @@
 [package]
 name = "python_genshin_artifact"
-version = "1.0.3"
+version = "1.0.4"
 edition = "2021"
 license = "MIT"
 include = [
