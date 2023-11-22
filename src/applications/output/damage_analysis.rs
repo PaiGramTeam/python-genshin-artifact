@@ -1,8 +1,8 @@
 use crate::applications::output::damage_result::PyDamageResult;
 use mona::damage::DamageAnalysis as MonaDamageAnalysis;
 use pyo3::prelude::*;
-use std::collections::HashMap;
 use pyo3::types::PyDict;
+use std::collections::HashMap;
 
 #[pyclass(name = "DamageAnalysis")]
 #[derive(Clone)]
@@ -70,15 +70,18 @@ pub struct PyDamageAnalysis {
     pub aggravate: Option<PyDamageResult>,
 }
 
-
 #[pymethods]
 impl PyDamageAnalysis {
-
     #[getter]
     fn __dict__(&self, py: Python) -> PyResult<PyObject> { // skipcq: RS-R1000
         let dict = PyDict::new(py);
 
-        fn insert_hashmap(dict: &PyDict, py: Python, key: &str, hashmap: &HashMap<String, f64>) -> PyResult<()> {
+        fn insert_hashmap(
+            dict: &PyDict,
+            py: Python,
+            key: &str,
+            hashmap: &HashMap<String, f64>,
+        ) -> PyResult<()> {
             let hashmap_dict = PyDict::new(py);
             for (k, &v) in hashmap.iter() {
                 hashmap_dict.set_item(k, v)?;
@@ -129,7 +132,12 @@ impl PyDamageAnalysis {
         } else {
             dict.set_item("spread", py.None())?;
         }
-        if let Some(aggravate) = self.aggravate.as_ref().map(|e| e.__dict__(py)).transpose()? {
+        if let Some(aggravate) = self
+            .aggravate
+            .as_ref()
+            .map(|e| e.__dict__(py))
+            .transpose()?
+        {
             dict.set_item("aggravate", aggravate)?;
         } else {
             dict.set_item("aggravate", py.None())?;
