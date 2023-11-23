@@ -1,4 +1,4 @@
-use anyhow::Context;
+use anyhow::{anyhow, Context};
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
 use pythonize::depythonize;
@@ -90,11 +90,19 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
     type Error = anyhow::Error;
 
     fn try_into(self) -> Result<MonaCharacterInterface, Self::Error> {
-        let name = CharacterName::from_str(&self.name).context("Failed to deserialize json")?;
+        let name = CharacterName::from_str(&self.name)
+            .context("Failed to name params into mona::character::CharacterName")?;
         let params: CharacterConfig = if let Some(value) = self.params {
             Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
-                depythonize(_dict).context("Failed to convert PyDict to CharacterConfig")
+                depythonize(_dict).map_err(|err| {
+                    let serialized_data = format!("{:?}", _dict);
+                    anyhow!(
+                        "Failed to deserialize params into mona::character::CharacterConfig: {}. Serialized data: \n{}",
+                        err,
+                        serialized_data
+                    )
+                })
             })?
         } else {
             CharacterConfig::NoConfig

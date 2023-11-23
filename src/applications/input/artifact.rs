@@ -87,27 +87,53 @@ impl TryInto<MonaArtifact> for PyArtifact {
     fn try_into(self) -> Result<MonaArtifact, Self::Error> {
         let name: ArtifactSetName = Python::with_gil(|py| {
             let _string: &PyString = self.set_name.as_ref(py);
-            depythonize(_string)
-                .map_err(|err| anyhow!("Failed to deserialize artifact set name: {}", err))
+            depythonize(_string).map_err(|err| {
+                let serialized_data = format!("{:?}", _string);
+                anyhow!(
+                    "Failed to deserialize name into mona::artifacts::ArtifactSetName: {}. Serialized data: \n{}",
+                    err,
+                    serialized_data
+                )
+            })
         })?;
 
         let slot: ArtifactSlotName = Python::with_gil(|py| {
             let _string: &PyString = self.slot.as_ref(py);
-            depythonize(_string)
-                .map_err(|err| anyhow!("Failed to deserialize artifact slot name: {}", err))
+            depythonize(_string).map_err(|err| {
+                let serialized_data = format!("{:?}", _string);
+                anyhow!(
+                    "Failed to deserialize slot name into mona::artifacts::ArtifactSlotName: {}. Serialized data: \n{}",
+                    err,
+                    serialized_data
+                )
+            })
         })?;
 
         let main_stat_name: StatName = Python::with_gil(|py| {
-            depythonize(self.main_stat.0.as_ref(py))
-                .map_err(|err| anyhow!("Failed to deserialize main stat name: {}", err))
+            let main_stat = self.main_stat.0.as_ref(py);
+            depythonize(self.main_stat.0.as_ref(py)).map_err(|err| {
+                let serialized_data = format!("{:?}", main_stat);
+                anyhow!(
+                    "Failed to deserialize main stat into mona::artifacts::StatName: {}. Serialized data: \n{}",
+                    err,
+                    serialized_data
+                )
+            })
         })?;
 
         let sub_stats = Python::with_gil(|py| {
             self.sub_stats
                 .iter()
                 .map(|s| {
-                    let name: Result<StatName, anyhow::Error> = depythonize(s.0.as_ref(py))
-                        .map_err(|err| anyhow!("Failed to deserialize sub stat name: {}", err));
+                    let sub_stats = s.0.as_ref(py);
+                    let name: Result<StatName, anyhow::Error> = depythonize(s.0.as_ref(py)).map_err(|err| {
+                        let serialized_data = format!("{:?}", sub_stats);
+                        anyhow!(
+                            "Failed to deserialize sub stats into mona::artifacts::StatName: {}. Serialized data: \n{}",
+                            err,
+                            serialized_data
+                        )
+                    });
                     match name {
                         Ok(n) => Ok((n, s.1)),
                         Err(e) => Err(e),
