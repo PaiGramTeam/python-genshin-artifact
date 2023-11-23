@@ -1,9 +1,11 @@
 use anyhow::anyhow;
-use mona::weapon::{WeaponConfig, WeaponName};
-use mona_wasm::applications::common::WeaponInterface as MonaWeaponInterface;
+
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyString};
 use pythonize::depythonize;
+
+use mona::weapon::{WeaponConfig, WeaponName};
+use mona_wasm::applications::common::WeaponInterface as MonaWeaponInterface;
 
 #[pyclass(name = "WeaponInterface")]
 #[derive(Clone)]

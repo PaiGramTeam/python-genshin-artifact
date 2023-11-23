@@ -1,9 +1,11 @@
 use anyhow::anyhow;
-use mona::artifacts::{Artifact as MonaArtifact, ArtifactSetName, ArtifactSlotName};
-use mona::common::StatName;
+
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyList, PyString};
 use pythonize::depythonize;
+
+use mona::artifacts::{Artifact as MonaArtifact, ArtifactSetName, ArtifactSlotName};
+use mona::common::StatName;
 
 #[pyclass(name = "Artifact")]
 #[derive(Clone)]

@@ -1,8 +1,9 @@
 use anyhow::{anyhow, Context};
+use std::str::FromStr;
+
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
 use pythonize::depythonize;
-use std::str::FromStr;
 
 use mona::character::{CharacterConfig, CharacterName};
 use mona_wasm::applications::common::CharacterInterface as MonaCharacterInterface;
