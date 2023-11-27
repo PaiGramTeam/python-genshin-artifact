@@ -1,4 +1,4 @@
-use anyhow::Context;
+use anyhow::anyhow;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
 use pythonize::depythonize;
@@ -48,7 +48,10 @@ impl TryInto<MonaSkillInterface> for PySkillInterface {
         let config: CharacterSkillConfig = if let Some(value) = self.config {
             Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
-                depythonize(_dict).context("Failed to convert PyDict to CharacterConfig")
+                depythonize(_dict).map_err(|err| {
+                    let serialized_data = format!("{:?}", _dict);
+                    anyhow!("Failed to deserialize config into mona::character::skill_config::CharacterSkillConfig: {}. Serialized data: \n{}", err, serialized_data)
+                })
             })?
         } else {
             CharacterSkillConfig::NoConfig

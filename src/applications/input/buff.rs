@@ -1,10 +1,11 @@
 use anyhow::anyhow;
-use mona::buffs::buff_name::BuffName;
-use mona::buffs::BuffConfig;
+
 use pyo3::prelude::*;
+use pyo3::types::{PyDict, PyString};
 use pythonize::depythonize;
 
-use pyo3::types::{PyDict, PyString};
+use mona::buffs::buff_name::BuffName;
+use mona::buffs::BuffConfig;
 
 use mona_wasm::applications::common::BuffInterface as MonaBuffInterface;
 
@@ -56,13 +57,27 @@ impl TryInto<MonaBuffInterface> for PyBuffInterface {
     fn try_into(self) -> Result<MonaBuffInterface, Self::Error> {
         let name: BuffName = Python::with_gil(|py| {
             let _string: &PyString = self.name.as_ref(py);
-            depythonize(_string).map_err(|err| anyhow!("Failed to deserialize name: {}", err))
+            depythonize(_string).map_err(|err| {
+                let serialized_data = format!("{:?}", _string);
+                anyhow!(
+                    "Failed to deserialize name into mona::buffs::buff_name::BuffName: {}. Serialized data: \n{}",
+                    err,
+                    serialized_data
+                )
+            })
         })?;
 
         let config: BuffConfig = if let Some(value) = self.config {
             Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
-                depythonize(_dict).map_err(|err| anyhow!("Failed to deserialize config: {}", err))
+                depythonize(_dict).map_err(|err| {
+                    let serialized_data = format!("{:?}", _dict);
+                    anyhow!(
+                        "Failed to deserialize config into mona::buffs::BuffConfig: {}. Serialized data: \n{}",
+                        err,
+                        serialized_data
+                    )
+                })
             })?
         } else {
             BuffConfig::NoConfig

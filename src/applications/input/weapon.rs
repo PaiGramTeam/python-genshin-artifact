@@ -1,9 +1,11 @@
 use anyhow::anyhow;
-use mona::weapon::{WeaponConfig, WeaponName};
-use mona_wasm::applications::common::WeaponInterface as MonaWeaponInterface;
+
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyString};
 use pythonize::depythonize;
+
+use mona::weapon::{WeaponConfig, WeaponName};
+use mona_wasm::applications::common::WeaponInterface as MonaWeaponInterface;
 
 #[pyclass(name = "WeaponInterface")]
 #[derive(Clone)]
@@ -74,13 +76,27 @@ impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
     fn try_into(self) -> Result<MonaWeaponInterface, Self::Error> {
         let name: WeaponName = Python::with_gil(|py| {
             let _string: &PyString = self.name.as_ref(py);
-            depythonize(_string).map_err(|err| anyhow!("Failed to deserialize name: {}", err))
+            depythonize(_string).map_err(|err| {
+                let serialized_data = format!("{:?}", _string);
+                anyhow!(
+                    "Failed to deserialize name into mona::weapon::WeaponName: {}. Serialized data: \n{}",
+                    err,
+                    serialized_data
+                )
+            })
         })?;
 
         let params: WeaponConfig = if let Some(value) = self.params {
             Python::with_gil(|py| {
                 let _dict: &PyDict = value.as_ref(py);
-                depythonize(_dict).map_err(|err| anyhow!("Failed to deserialize params: {}", err))
+                depythonize(_dict).map_err(|err| {
+                    let serialized_data = format!("{:?}", _dict);
+                    anyhow!(
+                        "Failed to deserialize params into mona::weapon::WeaponConfig: {}. Serialized data: \n{}",
+                        err,
+                        serialized_data
+                    )
+                })
             })?
         } else {
             WeaponConfig::NoConfig
