@@ -4,6 +4,7 @@ requires-python = ">=3.8"
 version = "1.0.4"
 authors = [
     {name = "luoshuijs", email = "luoshuijs@outlook.com"},
+    {name = "xtaodada", email = "xtao@xtaolink.cn"},
     {name = "kotori", email = "minamiktr@outlook.com"}
 ]
 classifiers = [
