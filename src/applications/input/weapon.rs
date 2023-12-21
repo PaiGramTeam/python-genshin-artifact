@@ -153,11 +153,13 @@ mod tests {
                     let params_dict = py_dict
                         .get_item("StaffOfHoma")
                         .unwrap()
+                        .unwrap()
                         .downcast::<PyDict>()
                         .unwrap();
                     assert_eq!(
                         params_dict
                             .get_item("be50_rate")
+                            .unwrap()
                             .unwrap()
                             .extract::<f64>()
                             .unwrap(),
