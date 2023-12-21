@@ -26,5 +26,3 @@ for skill_map3 in character.get("skill_map3"):
     print(f"skill_map3 index {index} locale {locale[locale_index]}")
 
 print(locale.index("夜兰"))
-
-
