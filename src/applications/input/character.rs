@@ -162,11 +162,13 @@ mod tests {
                     let hutao_dict = py_dict
                         .get_item("HuTao")
                         .unwrap()
+                        .unwrap()
                         .downcast::<PyDict>()
                         .unwrap();
                     assert_eq!(
                         hutao_dict
                             .get_item("le_50")
+                            .unwrap()
                             .unwrap()
                             .extract::<&str>()
                             .unwrap(),
