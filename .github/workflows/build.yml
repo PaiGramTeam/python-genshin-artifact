@@ -135,7 +135,7 @@ jobs:
       - name: get dist artifacts
         uses: actions/download-artifact@v3
         with:
-          name: python-genshin-artifact
+          name: wheels
           path: dist
 
       - name: upload to pypi
