@@ -1,6 +1,6 @@
 from typing import Dict, Final
 
-__version__: Final[str] = "4.3"
+__version__: Final[str] = "4.5"
 
 weapon_name_map: Dict[int, str] = {
     11101: "DullBlade",
@@ -44,6 +44,7 @@ weapon_name_map: Dict[int, str] = {
     11511: "KeyOfKhajNisut",
     11512: "LightOfFoliarIncision",
     11513: "SplendorOfTranquilWaters",
+    11514: "UrakuMisugiri",
     12101: "WasterGreatsword",
     12201: "OldMercsPal",
     12301: "FerrousShadow",
@@ -70,6 +71,7 @@ weapon_name_map: Dict[int, str] = {
     12418: "MailedFlower",
     12424: "TalkingStick",
     12425: "TidalShadow",
+    12426: "UltimateOverlordsMegaMagicSword",
     12427: "PortablePowerSaw",
     12501: "SkywardPride",
     12502: "WolfsGravestone",
@@ -99,6 +101,7 @@ weapon_name_map: Dict[int, str] = {
     13419: "MissiveWindspear",
     13424: "BalladOfTheFjords",
     13425: "RightfulReward",
+    13426: "DialoguesOfTheDesertSages",
     13427: "ProspectorsDrill",
     13501: "StaffOfHoma",
     13502: "SkywardSpine",
@@ -143,6 +146,7 @@ weapon_name_map: Dict[int, str] = {
     14512: "TulaytullahsRemembrance",
     14513: "CashflowSupervision",
     14514: "TomeOfTheEternalFlow",
+    14515: "CranesEchoingCall",
     15101: "HuntersBow",
     15201: "SeasonedHuntersBow",
     15301: "RavenBow",
