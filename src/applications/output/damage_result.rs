@@ -1,9 +1,12 @@
 use mona::damage::damage_result::DamageResult as MonaDamageResult;
 use pyo3::prelude::*;
-use pyo3::types::PyDict;
+use pyo3::types::{PyBytes, PyDict};
 
-#[pyclass(name = "DamageResult")]
-#[derive(Clone)]
+use serde::{Serialize, Deserialize};
+use bincode::{serialize, deserialize};
+
+#[pyclass(module = "python_genshin_artifact", name = "DamageResult")]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct PyDamageResult {
     #[pyo3(get, set)]
     pub critical: f64,
@@ -52,6 +55,25 @@ impl PyDamageResult {
         dict.set_item("is_heal", self.is_heal)?;
         dict.set_item("is_shield", self.is_shield)?;
         Ok(dict.into())
+    }
+
+    pub fn __setstate__(&mut self, state: &PyBytes) -> PyResult<()> {
+        *self = deserialize(state.as_bytes()).unwrap();
+        Ok(())
+    }
+
+    pub fn __getstate__<'py>(&self, py: Python<'py>) -> PyResult<&'py PyBytes> {
+        Ok(PyBytes::new(py, &serialize(&self).unwrap()))
+    }
+
+    pub fn __getnewargs__(&self) -> PyResult<(f64, f64, f64, bool, bool)> {
+        Ok((
+            self.critical,
+            self.non_critical,
+            self.expectation,
+            self.is_heal,
+            self.is_shield,
+        ))
     }
 }
 
