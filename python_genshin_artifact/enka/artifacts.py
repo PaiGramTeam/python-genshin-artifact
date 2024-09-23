@@ -1,6 +1,6 @@
 from typing import Dict, Final
 
-__version__: Final[str] = "4.6"
+__version__: Final[str] = "5.0"
 
 equip_type_map: Dict[str, str] = {
     "EQUIP_BRACER": "Flower",
@@ -62,4 +62,6 @@ artifacts_name_map: Dict[int, str] = {
     15034: "NighttimeWhispersInTheEchoingWoods",
     15035: "FragmentOfHarmonicWhimsy",
     15036: "UnfinishedReverie",
+    15037: "ScrollOfTheHeroOfCinderCity",
+    15038: "ObsidianCodex",
 }

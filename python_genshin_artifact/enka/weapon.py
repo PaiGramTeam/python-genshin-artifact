@@ -1,6 +1,6 @@
 from typing import Dict, Final
 
-__version__: Final[str] = "4.8"
+__version__: Final[str] = "5.0"
 
 weapon_name_map: Dict[int, str] = {
     11101: "DullBlade",
@@ -34,6 +34,7 @@ weapon_name_map: Dict[int, str] = {
     11426: "FleuveCendreFerryman",
     11427: "TheDockhandsAssistant",
     11428: "SwordOfNarzissenkreuz",
+    11431: "FluteOfEzpitzal",
     11501: "AquilaFavonia",
     11502: "SkywardBlade",
     11503: "FreedomSworn",
@@ -74,6 +75,7 @@ weapon_name_map: Dict[int, str] = {
     12425: "TidalShadow",
     12426: "UltimateOverlordsMegaMagicSword",
     12427: "PortablePowerSaw",
+    12431: "EarthShaker",
     12501: "SkywardPride",
     12502: "WolfsGravestone",
     12503: "SongOfBrokenPines",
@@ -81,6 +83,7 @@ weapon_name_map: Dict[int, str] = {
     12510: "RedhornStonethresher",
     12511: "BeaconOfTheReedSea",
     12512: "Verdict",
+    12513: "FangOfTheMountainKing",
     13101: "BeginnersProtector",
     13201: "IronPoint",
     13301: "WhiteTassel",
@@ -104,6 +107,7 @@ weapon_name_map: Dict[int, str] = {
     13425: "RightfulReward",
     13426: "DialoguesOfTheDesertSages",
     13427: "ProspectorsDrill",
+    13431: "FootprintOfTheRainbow",
     13501: "StaffOfHoma",
     13502: "SkywardSpine",
     13504: "VortexVanquisher",
@@ -139,6 +143,8 @@ weapon_name_map: Dict[int, str] = {
     14424: "SacrificialJade",
     14425: "FlowingPurity",
     14426: "BalladOfTheBoundlessBlue",
+    14427: "AshGravenDrinkingHorn",
+    14431: "RingOfYaxche",
     14501: "SkywardAtlas",
     14502: "LostPrayerToTheSacredWinds",
     14504: "MemoryOfDust",
@@ -150,6 +156,7 @@ weapon_name_map: Dict[int, str] = {
     14513: "CashflowSupervision",
     14514: "TomeOfTheEternalFlow",
     14515: "CranesEchoingCall",
+    14516: "SurfsUp",
     15101: "HuntersBow",
     15201: "SeasonedHuntersBow",
     15301: "RavenBow",
@@ -180,6 +187,7 @@ weapon_name_map: Dict[int, str] = {
     15425: "SongOfStillness",
     15426: "Cloudforged",
     15427: "RangeGauge",
+    15431: "ChainBreaker",
     15501: "SkywardHarp",
     15502: "AmosBow",
     15503: "ElegyOfTheEnd",
