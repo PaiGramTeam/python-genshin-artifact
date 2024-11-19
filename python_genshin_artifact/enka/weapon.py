@@ -1,6 +1,6 @@
 from typing import Dict, Final
 
-__version__: Final[str] = "5.0"
+__version__: Final[str] = "5.1"
 
 weapon_name_map: Dict[int, str] = {
     11101: "DullBlade",
@@ -34,6 +34,7 @@ weapon_name_map: Dict[int, str] = {
     11426: "FleuveCendreFerryman",
     11427: "TheDockhandsAssistant",
     11428: "SwordOfNarzissenkreuz",
+    11430: "SturdyBone",
     11431: "FluteOfEzpitzal",
     11501: "AquilaFavonia",
     11502: "SkywardBlade",
@@ -47,6 +48,7 @@ weapon_name_map: Dict[int, str] = {
     11513: "SplendorOfTranquilWaters",
     11514: "UrakuMisugiri",
     11515: "Absolution",
+    11516: "PeakPatrolSong",
     12101: "WasterGreatsword",
     12201: "OldMercsPal",
     12301: "FerrousShadow",
@@ -75,6 +77,7 @@ weapon_name_map: Dict[int, str] = {
     12425: "TidalShadow",
     12426: "UltimateOverlordsMegaMagicSword",
     12427: "PortablePowerSaw",
+    12430: "FruitfulHook",
     12431: "EarthShaker",
     12501: "SkywardPride",
     12502: "WolfsGravestone",
@@ -107,6 +110,7 @@ weapon_name_map: Dict[int, str] = {
     13425: "RightfulReward",
     13426: "DialoguesOfTheDesertSages",
     13427: "ProspectorsDrill",
+    13430: "MountainBracingBolt",
     13431: "FootprintOfTheRainbow",
     13501: "StaffOfHoma",
     13502: "SkywardSpine",
