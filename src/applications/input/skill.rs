@@ -12,13 +12,14 @@ pub struct PySkillInterface {
     #[pyo3(get, set)]
     pub index: usize,
     #[pyo3(get, set)]
-    pub config: Option<Bound<'_, PyDict>>,
+    pub config: Option<Py<PyDict>>,
 }
 
 #[pymethods]
 impl PySkillInterface {
     #[new]
-    fn new(index: usize, config: Option<Bound<'_, PyDict>>) -> PyResult<Self> {
+    #[pyo3(signature = (index, config=None))]
+    fn new(index: usize, config: Option<Py<PyDict>>) -> PyResult<Self> {
         Ok(Self { index, config })
     }
     pub fn __repr__(&self) -> PyResult<String> {
@@ -33,7 +34,7 @@ impl PySkillInterface {
         let dict = PyDict::new(py);
         dict.set_item("index", self.index)?;
         if let Some(config) = &self.config {
-            dict.set_item("config", config)?;
+            dict.set_item("config", config.bind(py))?;
         } else {
             dict.set_item("config", py.None())?;
         }
@@ -47,8 +48,9 @@ impl TryInto<MonaSkillInterface> for PySkillInterface {
     fn try_into(self) -> Result<MonaSkillInterface, Self::Error> {
         let config: CharacterSkillConfig = if let Some(value) = self.config {
             Python::with_gil(|py| {
-                depythonize(&*value).map_err(|err| {
-                    let serialized_data = format!("{:?}", value);
+                let _dict: &Bound<'_, PyDict> = value.bind(py);
+                depythonize(_dict).map_err(|err| {
+                    let serialized_data = format!("{:?}", _dict);
                     anyhow!("Failed to deserialize config into mona::character::skill_config::CharacterSkillConfig: {}. Serialized data: \n{}", err, serialized_data)
                 })
             })?

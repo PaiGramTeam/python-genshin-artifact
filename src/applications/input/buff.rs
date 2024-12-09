@@ -13,22 +13,23 @@ use mona_wasm::applications::common::BuffInterface as MonaBuffInterface;
 #[derive(Clone)]
 pub struct PyBuffInterface {
     #[pyo3(get, set)]
-    pub name: Bound<'_, PyString>,
+    pub name: Py<PyString>,
     #[pyo3(get, set)]
-    pub config: Option<Bound<'_, PyDict>>,
+    pub config: Option<Py<PyDict>>,
 }
 
 #[pymethods]
 impl PyBuffInterface {
     #[new]
-    pub fn py_new(name: Bound<'_, PyString>, config: Option<Bound<'_, PyDict>>) -> PyResult<Self> {
+    #[pyo3(signature = (name, config=None))]
+    pub fn py_new(name: Py<PyString>, config: Option<Py<PyDict>>) -> PyResult<Self> {
         Ok(Self { name, config })
     }
 
     pub fn __repr__(&self, py: Python) -> PyResult<String> {
-        let name = self.name.to_str()?;
+        let name = self.name.bind(py).to_str()?;
         let config_repr = match &self.config {
-            Some(config) => config.as_ref().repr()?.to_str()?.to_string(),
+            Some(config) => config.bind(py).repr()?.to_str()?.to_string(),
             None => "None".to_string(),
         };
         Ok(format!(
@@ -40,10 +41,10 @@ impl PyBuffInterface {
     #[getter]
     pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
         let dict = PyDict::new(py);
-        let name_str = self.name.to_str()?;
+        let name_str = self.name.bind(py).to_str()?;
         dict.set_item("name", name_str)?;
         if let Some(config) = &self.config {
-            dict.set_item("config", config)?;
+            dict.set_item("config", config.bind(py))?;
         } else {
             dict.set_item("config", py.None())?;
         }
@@ -56,8 +57,9 @@ impl TryInto<MonaBuffInterface> for PyBuffInterface {
 
     fn try_into(self) -> Result<MonaBuffInterface, Self::Error> {
         let name: BuffName = Python::with_gil(|py| {
-            depythonize(&*self.name).map_err(|err| {
-                let serialized_data = format!("{:?}", self.name);
+            let _string: &Bound<'_, PyString> = self.name.bind(py);
+            depythonize(_string).map_err(|err| {
+                let serialized_data = format!("{:?}", _string);
                 anyhow!(
                     "Failed to deserialize name into mona::buffs::buff_name::BuffName: {}. Serialized data: \n{}",
                     err,
@@ -68,8 +70,9 @@ impl TryInto<MonaBuffInterface> for PyBuffInterface {
 
         let config: BuffConfig = if let Some(value) = self.config {
             Python::with_gil(|py| {
-                depythonize(&*value).map_err(|err| {
-                    let serialized_data = format!("{:?}", value);
+                let _dict: &Bound<'_, PyDict> = value.bind(py);
+                depythonize(_dict).map_err(|err| {
+                    let serialized_data = format!("{:?}", _dict);
                     anyhow!(
                         "Failed to deserialize config into mona::buffs::BuffConfig: {}. Serialized data: \n{}",
                         err,

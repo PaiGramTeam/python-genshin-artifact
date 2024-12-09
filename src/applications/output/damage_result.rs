@@ -2,8 +2,8 @@ use mona::damage::damage_result::DamageResult as MonaDamageResult;
 use pyo3::prelude::*;
 use pyo3::types::{PyBytes, PyDict};
 
-use serde::{Serialize, Deserialize};
-use bincode::{serialize, deserialize};
+use bincode::{deserialize, serialize};
+use serde::{Deserialize, Serialize};
 
 #[pyclass(module = "python_genshin_artifact", name = "DamageResult")]
 #[derive(Clone, Deserialize, Serialize)]
@@ -62,7 +62,7 @@ impl PyDamageResult {
         Ok(())
     }
 
-    pub fn __getstate__<'py>(&self, py: Python<'py>) -> PyResult<Bound<PyBytes>> {
+    pub fn __getstate__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyBytes>> {
         Ok(PyBytes::new(py, &serialize(&self).unwrap()))
     }
 

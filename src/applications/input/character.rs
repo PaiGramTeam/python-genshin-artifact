@@ -26,12 +26,13 @@ pub struct PyCharacterInterface {
     #[pyo3(get, set)]
     pub skill3: usize,
     #[pyo3(get, set)]
-    pub params: Option<Bound<'_, PyDict>>,
+    pub params: Option<Py<PyDict>>,
 }
 
 #[pymethods]
 impl PyCharacterInterface {
     #[new]
+    #[pyo3(signature = (name, level, ascend, constellation, skill1, skill2, skill3, params=None))]
     pub fn py_new(
         name: String,
         level: usize,
@@ -40,7 +41,7 @@ impl PyCharacterInterface {
         skill1: usize,
         skill2: usize,
         skill3: usize,
-        params: Option<Bound<'_, PyDict>>,
+        params: Option<Py<PyDict>>,
     ) -> PyResult<Self> {
         Ok(Self {
             name,
@@ -95,8 +96,9 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
             .context("Failed to name params into mona::character::CharacterName")?;
         let params: CharacterConfig = if let Some(value) = self.params {
             Python::with_gil(|py| {
-                depythonize(&value).map_err(|err| {
-                    let serialized_data = format!("{:?}", value);
+                let _dict: &Bound<'_, PyDict> = value.bind(py);
+                depythonize(_dict).map_err(|err| {
+                    let serialized_data = format!("{:?}", _dict);
                     anyhow!(
                         "Failed to deserialize params into mona::character::CharacterConfig: {}. Serialized data: \n{}",
                         err,
@@ -144,7 +146,7 @@ mod tests {
                 skill1: 12,
                 skill2: 12,
                 skill3: 12,
-                params: Option::from(outer_dict),
+                params: Some(Py::from(outer_dict)),
             };
 
             assert_eq!(py_character_interface.name, "HuTao");
@@ -157,12 +159,9 @@ mod tests {
 
             match &py_character_interface.params {
                 Some(value) => {
-                    let py_dict = value.as_ref();
-                    let hutao_dict = py_dict
-                        .get_item("HuTao")
-                        .unwrap()
-                        .downcast::<PyDict>()
-                        .unwrap();
+                    let py_dict = value.bind(py);
+                    let hutao_dict = py_dict.get_item("HuTao").unwrap().unwrap();
+                    let hutao_dict = hutao_dict.downcast::<PyDict>().unwrap();
                     assert_eq!(
                         hutao_dict
                             .get_item("le_50")
@@ -209,7 +208,8 @@ mod tests {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
             let module = PyModule::import(py, "python_genshin_artifact.enka.characters")?;
-            let characters_map = module.getattr("characters_map")?.downcast::<PyDict>()?;
+            let characters_map = module.getattr("characters_map")?;
+            let characters_map = characters_map.downcast::<PyDict>()?;
             for (_, value) in characters_map.iter() {
                 let character_name_str = value.extract::<String>()?;
                 let res = CharacterName::from_str(&character_name_str).context(format!(

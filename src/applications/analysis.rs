@@ -43,7 +43,7 @@ pub fn get_damage_analysis(calculator_config: PyCalculatorConfig) -> PyResult<Py
     let artifact_config_interface: Option<ArtifactConfigInterface> =
         if let Some(artifact_config) = calculator_config.artifact_config {
             Python::with_gil(|py| {
-                depythonize(artifact_config.as_ref(py))
+                depythonize(artifact_config.bind(py))
                     .map_err(|err| anyhow!("Failed to deserialize artifact config: {}", err))
             })?
         } else {
@@ -117,7 +117,7 @@ pub fn get_transformative_damage(
     let artifact_config_interface: Option<ArtifactConfigInterface> =
         if let Some(artifact_config) = calculator_config.artifact_config {
             Python::with_gil(|py| {
-                depythonize(artifact_config.as_ref(py))
+                depythonize(artifact_config.bind(py))
                     .map_err(|err| anyhow!("Failed to deserialize artifact config: {}", err))
             })?
         } else {

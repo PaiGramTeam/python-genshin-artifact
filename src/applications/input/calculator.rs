@@ -20,7 +20,7 @@ pub struct PyCalculatorConfig {
     #[pyo3(get, set)]
     pub artifacts: Vec<PyArtifact>,
     #[pyo3(get, set)]
-    pub artifact_config: Option<Bound<'_, PyDict>>,
+    pub artifact_config: Option<Py<PyDict>>,
     #[pyo3(get, set)]
     pub skill: PySkillInterface,
     #[pyo3(get, set)]
@@ -37,7 +37,7 @@ impl PyCalculatorConfig {
         skill: PySkillInterface,
         buffs: Option<Vec<PyBuffInterface>>,
         artifacts: Option<Vec<PyArtifact>>,
-        artifact_config: Option<Bound<'_, PyDict>>,
+        artifact_config: Option<Py<PyDict>>,
         enemy: Option<PyEnemyInterface>,
     ) -> PyResult<Self> {
         Ok(Self {
@@ -68,7 +68,7 @@ impl PyCalculatorConfig {
             .map(|ar| ar.__dict__(py))
             .collect::<Result<Vec<PyObject>, PyErr>>()?;
         dict.set_item("artifacts", PyList::new(py, artifacts)?)?;
-        if let Some(artifact_config) = self.artifact_config.as_ref().map(|c| c.as_ref(py)) {
+        if let Some(artifact_config) = self.artifact_config.as_ref().map(|c| c.bind(py)) {
             dict.set_item("artifact_config", artifact_config)?;
         } else {
             dict.set_item("artifact_config", py.None())?;
