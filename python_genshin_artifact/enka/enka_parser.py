@@ -1,13 +1,13 @@
 import re
-from typing import Tuple, List, Optional
+from typing import List, Optional, Tuple
 
+from python_genshin_artifact import Artifact, CharacterInterface, WeaponInterface
 from python_genshin_artifact.enka.artifacts import artifacts_name_map, equip_type_map
 from python_genshin_artifact.enka.assets import Assets
 from python_genshin_artifact.enka.characters import characters_map
 from python_genshin_artifact.enka.fight import fight_map, to_float
 from python_genshin_artifact.enka.weapon import weapon_name_map
 from python_genshin_artifact.error import EnkaParseException
-from python_genshin_artifact import Artifact, CharacterInterface, WeaponInterface
 
 assets = Assets()
 
@@ -75,8 +75,8 @@ def de_equip_list(equip_list: list[dict]) -> Tuple[WeaponInterface, List[Artifac
             _flat = _equip["flat"]
             try:
                 artifact_id = int(re.findall(r"\d+", _flat["icon"])[0])
-            except IndexError:
-                raise EnkaParseException(f"artifact_id is not found in {_flat['icon']}")
+            except IndexError as exc:
+                raise EnkaParseException(f"artifact_id is not found in {_flat['icon']}") from exc
             set_name = artifacts_name_map.get(artifact_id)
             if set_name is None:
                 raise EnkaParseException(f"artifact_id={artifact_id} is not found in assets")

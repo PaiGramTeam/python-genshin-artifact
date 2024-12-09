@@ -1,5 +1,5 @@
 import sys
-from typing import List, Optional, Tuple, TYPE_CHECKING, Dict, final
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, final
 
 if sys.version_info < (3, 11):
     from typing_extensions import Literal

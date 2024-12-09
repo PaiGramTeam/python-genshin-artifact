@@ -44,6 +44,11 @@ bindings = "pyo3"
 requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
+[dependency-groups]
+linting = [
+    'ruff',
+]
+
 [tool.pytest.ini_options]
 log_cli = true
 log_cli_level = "INFO"
@@ -54,3 +59,22 @@ log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 include = '\.pyi?$'
 line-length = 120
 target-version = ["py38"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+extend-select = [
+    "Q", # flake8-quotes
+    "C90", # complex-structure
+    "I", # isort
+    "F",  # pyflakes
+    "B",  # flake8-bugbear
+    "C4",  # flake8-comprehensions
+]
+extend-ignore = [
+    "E721",  # using type() instead of isinstance() - we use this in tests
+]
+mccabe = { max-complexity = 13 }
+isort = { known-first-party = ["python_genshin_artifact", "tests"] }
+

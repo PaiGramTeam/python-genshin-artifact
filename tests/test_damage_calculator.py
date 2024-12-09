@@ -1,9 +1,9 @@
 from python_genshin_artifact import (
     CalculatorConfig,
-    get_damage_analysis,
     CharacterInterface,
     SkillInterface,
     WeaponInterface,
+    get_damage_analysis,
 )
 
 
