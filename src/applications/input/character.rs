@@ -26,7 +26,7 @@ pub struct PyCharacterInterface {
     #[pyo3(get, set)]
     pub skill3: usize,
     #[pyo3(get, set)]
-    pub params: Option<Py<PyDict>>,
+    pub params: Option<Bound<'_, PyDict>>,
 }
 
 #[pymethods]
@@ -40,7 +40,7 @@ impl PyCharacterInterface {
         skill1: usize,
         skill2: usize,
         skill3: usize,
-        params: Option<Py<PyDict>>,
+        params: Option<Bound<'_, PyDict>>,
     ) -> PyResult<Self> {
         Ok(Self {
             name,
@@ -95,9 +95,8 @@ impl TryInto<MonaCharacterInterface> for PyCharacterInterface {
             .context("Failed to name params into mona::character::CharacterName")?;
         let params: CharacterConfig = if let Some(value) = self.params {
             Python::with_gil(|py| {
-                let _dict: &PyDict = value.as_ref(py);
-                depythonize(_dict).map_err(|err| {
-                    let serialized_data = format!("{:?}", _dict);
+                depythonize(&value).map_err(|err| {
+                    let serialized_data = format!("{:?}", value);
                     anyhow!(
                         "Failed to deserialize params into mona::character::CharacterConfig: {}. Serialized data: \n{}",
                         err,
@@ -145,7 +144,7 @@ mod tests {
                 skill1: 12,
                 skill2: 12,
                 skill3: 12,
-                params: Some(Py::from(outer_dict)),
+                params: Option::from(outer_dict),
             };
 
             assert_eq!(py_character_interface.name, "HuTao");
@@ -158,10 +157,9 @@ mod tests {
 
             match &py_character_interface.params {
                 Some(value) => {
-                    let py_dict = value.as_ref(py);
+                    let py_dict = value.as_ref();
                     let hutao_dict = py_dict
                         .get_item("HuTao")
-                        .unwrap()
                         .unwrap()
                         .downcast::<PyDict>()
                         .unwrap();

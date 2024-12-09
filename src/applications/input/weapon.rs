@@ -11,7 +11,7 @@ use mona_wasm::applications::common::WeaponInterface as MonaWeaponInterface;
 #[derive(Clone)]
 pub struct PyWeaponInterface {
     #[pyo3(get, set)]
-    pub name: Py<PyString>,
+    pub name: Bound<'_, PyString>,
     #[pyo3(get, set)]
     pub level: i32,
     #[pyo3(get, set)]
@@ -19,7 +19,7 @@ pub struct PyWeaponInterface {
     #[pyo3(get, set)]
     pub refine: i32,
     #[pyo3(get, set)]
-    pub params: Option<Py<PyDict>>,
+    pub params: Bound<'_, PyDict>,
 }
 
 #[pymethods]
@@ -41,10 +41,10 @@ impl PyWeaponInterface {
         })
     }
 
-    pub fn __repr__(&self, py: Python) -> PyResult<String> {
-        let name = self.name.as_ref(py).to_str()?;
+    pub fn __repr__(&self) -> PyResult<String> {
+        let name = self.name.as_ref().to_str()?;
         let params_repr = match &self.params {
-            Some(params) => params.as_ref(py).repr()?.to_str()?.to_string(),
+            Some(params) => params.as_ref().repr()?.to_str()?.to_string(),
             None => "None".to_string(),
         };
 
@@ -57,12 +57,12 @@ impl PyWeaponInterface {
     #[getter]
     pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
         let dict = PyDict::new(py);
-        dict.set_item("name", self.name.as_ref(py))?;
+        dict.set_item("name", self.name.as_ref())?;
         dict.set_item("level", self.level)?;
         dict.set_item("ascend", self.ascend)?;
         dict.set_item("refine", self.refine)?;
         if let Some(params) = &self.params {
-            dict.set_item("params", params.as_ref(py))?;
+            dict.set_item("params", params.as_ref())?;
         } else {
             dict.set_item("params", py.None())?;
         }
@@ -75,9 +75,8 @@ impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
 
     fn try_into(self) -> Result<MonaWeaponInterface, Self::Error> {
         let name: WeaponName = Python::with_gil(|py| {
-            let _string: &PyString = self.name.as_ref(py);
-            depythonize(_string).map_err(|err| {
-                let serialized_data = format!("{:?}", _string);
+            depythonize(&self.name).map_err(|err| {
+                let serialized_data = format!("{:?}", self.name);
                 anyhow!(
                     "Failed to deserialize name into mona::weapon::WeaponName: {}. Serialized data: \n{}",
                     err,
@@ -132,15 +131,15 @@ mod tests {
             let name = PyString::new(py, "StaffOfHoma");
 
             let py_weapon_interface = PyWeaponInterface {
-                name: Py::from(name),
+                name: name,
                 level: 90,
                 ascend: true,
                 refine: 5,
-                params: Some(Py::from(params_dict)),
+                params: params_dict,
             };
 
             assert_eq!(
-                py_weapon_interface.name.as_ref(py).to_string(),
+                py_weapon_interface.name.as_ref().to_string(),
                 "StaffOfHoma"
             );
             assert_eq!(py_weapon_interface.level, 90);
@@ -149,7 +148,7 @@ mod tests {
 
             match &py_weapon_interface.params {
                 Some(value) => {
-                    let py_dict = value.as_ref(py);
+                    let py_dict = value.as_ref();
                     let params_dict = py_dict
                         .get_item("StaffOfHoma")
                         .unwrap()

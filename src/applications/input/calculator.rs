@@ -20,7 +20,7 @@ pub struct PyCalculatorConfig {
     #[pyo3(get, set)]
     pub artifacts: Vec<PyArtifact>,
     #[pyo3(get, set)]
-    pub artifact_config: Option<Py<PyDict>>,
+    pub artifact_config: Option<Bound<'_, PyDict>>,
     #[pyo3(get, set)]
     pub skill: PySkillInterface,
     #[pyo3(get, set)]
@@ -37,7 +37,7 @@ impl PyCalculatorConfig {
         skill: PySkillInterface,
         buffs: Option<Vec<PyBuffInterface>>,
         artifacts: Option<Vec<PyArtifact>>,
-        artifact_config: Option<Py<PyDict>>,
+        artifact_config: Option<Bound<'_, PyDict>>,
         enemy: Option<PyEnemyInterface>,
     ) -> PyResult<Self> {
         Ok(Self {
@@ -61,13 +61,13 @@ impl PyCalculatorConfig {
             .iter()
             .map(|b| b.__dict__(py))
             .collect::<Result<Vec<PyObject>, PyErr>>()?;
-        dict.set_item("buffs", PyList::new(py, buffs))?;
+        dict.set_item("buffs", PyList::new(py, buffs)?)?;
         let artifacts = self
             .artifacts
             .iter()
             .map(|ar| ar.__dict__(py))
             .collect::<Result<Vec<PyObject>, PyErr>>()?;
-        dict.set_item("artifacts", PyList::new(py, artifacts))?;
+        dict.set_item("artifacts", PyList::new(py, artifacts)?)?;
         if let Some(artifact_config) = self.artifact_config.as_ref().map(|c| c.as_ref(py)) {
             dict.set_item("artifact_config", artifact_config)?;
         } else {
