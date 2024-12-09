@@ -93,4 +93,6 @@ characters_map: Dict[int, str] = {
     10000101: "Kinich",
     10000102: "Mualani",
     10000103: "Xilonen",
+    10000104: "Chasca",
+    10000105: "Ororon",
 }

@@ -36,6 +36,7 @@ weapon_name_map: Dict[int, str] = {
     11428: "SwordOfNarzissenkreuz",
     11430: "SturdyBone",
     11431: "FluteOfEzpitzal",
+    11432: "CalamityOfEshu",
     11501: "AquilaFavonia",
     11502: "SkywardBlade",
     11503: "FreedomSworn",
@@ -148,6 +149,7 @@ weapon_name_map: Dict[int, str] = {
     14425: "FlowingPurity",
     14426: "BalladOfTheBoundlessBlue",
     14427: "AshGravenDrinkingHorn",
+    14430: "WaveridingWhirl",
     14431: "RingOfYaxche",
     14501: "SkywardAtlas",
     14502: "LostPrayerToTheSacredWinds",
@@ -191,6 +193,7 @@ weapon_name_map: Dict[int, str] = {
     15425: "SongOfStillness",
     15426: "Cloudforged",
     15427: "RangeGauge",
+    15430: "FlowerWreathedFeathers ",
     15431: "ChainBreaker",
     15501: "SkywardHarp",
     15502: "AmosBow",
@@ -202,6 +205,7 @@ weapon_name_map: Dict[int, str] = {
     15511: "HuntersPath",
     15512: "TheFirstGreatMagic",
     15513: "SilvershowerHeartstrings",
+    15514: "AstralVulturesCrimsonPlumage ",
 }
 
 
