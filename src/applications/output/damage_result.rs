@@ -2,8 +2,8 @@ use mona::damage::damage_result::DamageResult as MonaDamageResult;
 use pyo3::prelude::*;
 use pyo3::types::{PyBytes, PyDict};
 
-use serde::{Serialize, Deserialize};
-use bincode::{serialize, deserialize};
+use bincode::{deserialize, serialize};
+use serde::{Deserialize, Serialize};
 
 #[pyclass(module = "python_genshin_artifact", name = "DamageResult")]
 #[derive(Clone, Deserialize, Serialize)]
@@ -47,22 +47,22 @@ impl PyDamageResult {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("critical", self.critical)?;
         dict.set_item("non_critical", self.non_critical)?;
         dict.set_item("expectation", self.expectation)?;
         dict.set_item("is_heal", self.is_heal)?;
         dict.set_item("is_shield", self.is_shield)?;
-        Ok(dict.into())
+        Ok(dict)
     }
 
-    pub fn __setstate__(&mut self, state: &PyBytes) -> PyResult<()> {
+    pub fn __setstate__(&mut self, state: Bound<'_, PyBytes>) -> PyResult<()> {
         *self = deserialize(state.as_bytes()).unwrap();
         Ok(())
     }
 
-    pub fn __getstate__<'py>(&self, py: Python<'py>) -> PyResult<&'py PyBytes> {
+    pub fn __getstate__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyBytes>> {
         Ok(PyBytes::new(py, &serialize(&self).unwrap()))
     }
 

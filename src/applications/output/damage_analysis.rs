@@ -73,11 +73,12 @@ pub struct PyDamageAnalysis {
 #[pymethods]
 impl PyDamageAnalysis {
     #[getter]
-    fn __dict__(&self, py: Python) -> PyResult<PyObject> { // skipcq: RS-R1000
+    fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
+        // skipcq: RS-R1000
         let dict = PyDict::new(py);
 
         fn insert_hashmap(
-            dict: &PyDict,
+            dict: &Bound<PyDict>,
             py: Python,
             key: &str,
             hashmap: &HashMap<String, f64>,
@@ -90,27 +91,27 @@ impl PyDamageAnalysis {
             Ok(())
         }
 
-        insert_hashmap(dict, py, "atk", &self.atk)?;
-        insert_hashmap(dict, py, "atk_ratio", &self.atk_ratio)?;
-        insert_hashmap(dict, py, "hp", &self.hp)?;
-        insert_hashmap(dict, py, "hp_ratio", &self.hp_ratio)?;
-        insert_hashmap(dict, py, "defense", &self.def)?;
-        insert_hashmap(dict, py, "def_ratio", &self.def_ratio)?;
-        insert_hashmap(dict, py, "em", &self.em)?;
-        insert_hashmap(dict, py, "em_ratio", &self.em_ratio)?;
-        insert_hashmap(dict, py, "extra_damage", &self.extra_damage)?;
-        insert_hashmap(dict, py, "bonus", &self.bonus)?;
-        insert_hashmap(dict, py, "critical", &self.critical)?;
-        insert_hashmap(dict, py, "critical_damage", &self.critical_damage)?;
-        insert_hashmap(dict, py, "melt_enhance", &self.melt_enhance)?;
-        insert_hashmap(dict, py, "vaporize_enhance", &self.vaporize_enhance)?;
-        insert_hashmap(dict, py, "healing_bonus", &self.healing_bonus)?;
-        insert_hashmap(dict, py, "shield_strength", &self.shield_strength)?;
-        insert_hashmap(dict, py, "spread_compose", &self.spread_compose)?;
-        insert_hashmap(dict, py, "aggravate_compose", &self.aggravate_compose)?;
-        insert_hashmap(dict, py, "def_minus", &self.def_minus)?;
-        insert_hashmap(dict, py, "def_penetration", &self.def_penetration)?;
-        insert_hashmap(dict, py, "res_minus", &self.res_minus)?;
+        insert_hashmap(&dict, py, "atk", &self.atk)?;
+        insert_hashmap(&dict, py, "atk_ratio", &self.atk_ratio)?;
+        insert_hashmap(&dict, py, "hp", &self.hp)?;
+        insert_hashmap(&dict, py, "hp_ratio", &self.hp_ratio)?;
+        insert_hashmap(&dict, py, "defense", &self.def)?;
+        insert_hashmap(&dict, py, "def_ratio", &self.def_ratio)?;
+        insert_hashmap(&dict, py, "em", &self.em)?;
+        insert_hashmap(&dict, py, "em_ratio", &self.em_ratio)?;
+        insert_hashmap(&dict, py, "extra_damage", &self.extra_damage)?;
+        insert_hashmap(&dict, py, "bonus", &self.bonus)?;
+        insert_hashmap(&dict, py, "critical", &self.critical)?;
+        insert_hashmap(&dict, py, "critical_damage", &self.critical_damage)?;
+        insert_hashmap(&dict, py, "melt_enhance", &self.melt_enhance)?;
+        insert_hashmap(&dict, py, "vaporize_enhance", &self.vaporize_enhance)?;
+        insert_hashmap(&dict, py, "healing_bonus", &self.healing_bonus)?;
+        insert_hashmap(&dict, py, "shield_strength", &self.shield_strength)?;
+        insert_hashmap(&dict, py, "spread_compose", &self.spread_compose)?;
+        insert_hashmap(&dict, py, "aggravate_compose", &self.aggravate_compose)?;
+        insert_hashmap(&dict, py, "def_minus", &self.def_minus)?;
+        insert_hashmap(&dict, py, "def_penetration", &self.def_penetration)?;
+        insert_hashmap(&dict, py, "res_minus", &self.res_minus)?;
 
         dict.set_item("element", &self.element)?;
         dict.set_item("is_heal", self.is_heal)?;
@@ -143,7 +144,7 @@ impl PyDamageAnalysis {
             dict.set_item("aggravate", py.None())?;
         }
 
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 

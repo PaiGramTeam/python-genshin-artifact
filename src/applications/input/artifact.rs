@@ -50,9 +50,9 @@ impl PyArtifact {
     }
 
     pub fn __repr__(&self, py: Python) -> PyResult<String> {
-        let set_name = self.set_name.as_ref(py).to_str()?;
-        let slot = self.slot.as_ref(py).to_str()?;
-        let main_stat = self.main_stat.0.as_ref(py).to_str()?;
+        let set_name = self.set_name.bind(py).to_str()?;
+        let slot = self.slot.bind(py).to_str()?;
+        let main_stat = self.main_stat.0.bind(py).to_str()?;
         let main_stat_value = self.main_stat.1;
         Ok(format!(
             "PyArtifact(set_name='{}', slot='{}', level={}, star={}, main_stat=({}, {}), id={})",
@@ -61,25 +61,25 @@ impl PyArtifact {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
-        dict.set_item("set_name", self.set_name.as_ref(py))?;
-        dict.set_item("slot", self.slot.as_ref(py))?;
+        dict.set_item("set_name", self.set_name.bind(py))?;
+        dict.set_item("slot", self.slot.bind(py))?;
         dict.set_item("level", self.level)?;
         dict.set_item("star", self.star)?;
         let sub_stats_pylist = PyList::new(
             py,
             self.sub_stats.iter().map(|(s, v)| {
-                let stat_str = s.as_ref(py).to_str().unwrap();
+                let stat_str = s.bind(py).to_str().unwrap();
                 (stat_str, *v)
             }),
-        );
+        )?;
         dict.set_item("sub_stats", sub_stats_pylist)?;
-        let main_stat_tuple = (self.main_stat.0.as_ref(py), self.main_stat.1);
+        let main_stat_tuple = (self.main_stat.0.bind(py), self.main_stat.1);
         dict.set_item("main_stat", main_stat_tuple)?;
         dict.set_item("id", self.id)?;
 
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 
@@ -88,7 +88,7 @@ impl TryInto<MonaArtifact> for PyArtifact {
 
     fn try_into(self) -> Result<MonaArtifact, Self::Error> {
         let name: ArtifactSetName = Python::with_gil(|py| {
-            let _string: &PyString = self.set_name.as_ref(py);
+            let _string: &Bound<'_, PyString> = self.set_name.bind(py);
             depythonize(_string).map_err(|err| {
                 let serialized_data = format!("{:?}", _string);
                 anyhow!(
@@ -100,7 +100,7 @@ impl TryInto<MonaArtifact> for PyArtifact {
         })?;
 
         let slot: ArtifactSlotName = Python::with_gil(|py| {
-            let _string: &PyString = self.slot.as_ref(py);
+            let _string: &Bound<'_, PyString> = self.slot.bind(py);
             depythonize(_string).map_err(|err| {
                 let serialized_data = format!("{:?}", _string);
                 anyhow!(
@@ -112,8 +112,8 @@ impl TryInto<MonaArtifact> for PyArtifact {
         })?;
 
         let main_stat_name: StatName = Python::with_gil(|py| {
-            let main_stat = self.main_stat.0.as_ref(py);
-            depythonize(self.main_stat.0.as_ref(py)).map_err(|err| {
+            let main_stat = self.main_stat.0.bind(py);
+            depythonize(self.main_stat.0.bind(py)).map_err(|err| {
                 let serialized_data = format!("{:?}", main_stat);
                 anyhow!(
                     "Failed to deserialize main stat into mona::artifacts::StatName: {}. Serialized data: \n{}",
@@ -127,8 +127,8 @@ impl TryInto<MonaArtifact> for PyArtifact {
             self.sub_stats
                 .iter()
                 .map(|s| {
-                    let sub_stats = s.0.as_ref(py);
-                    let name: Result<StatName, anyhow::Error> = depythonize(s.0.as_ref(py)).map_err(|err| {
+                    let sub_stats = s.0.bind(py);
+                    let name: Result<StatName, anyhow::Error> = depythonize(s.0.bind(py)).map_err(|err| {
                         let serialized_data = format!("{:?}", sub_stats);
                         anyhow!(
                             "Failed to deserialize sub stats into mona::artifacts::StatName: {}. Serialized data: \n{}",
@@ -166,7 +166,8 @@ mod tests {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
             let module = PyModule::import(py, "python_genshin_artifact.enka.artifacts")?;
-            let artifacts_name_map = module.getattr("artifacts_name_map")?.downcast::<PyDict>()?;
+            let artifacts_name_map = module.getattr("artifacts_name_map")?;
+            let artifacts_name_map = artifacts_name_map.downcast::<PyDict>()?;
             for (_, value) in artifacts_name_map.iter() {
                 let artifacts_name_str = value.extract::<String>()?;
                 let res: Result<ArtifactSetName, anyhow::Error> = depythonize(&value).context(

@@ -21,14 +21,15 @@ pub struct PyBuffInterface {
 #[pymethods]
 impl PyBuffInterface {
     #[new]
+    #[pyo3(signature = (name, config=None))]
     pub fn py_new(name: Py<PyString>, config: Option<Py<PyDict>>) -> PyResult<Self> {
         Ok(Self { name, config })
     }
 
     pub fn __repr__(&self, py: Python) -> PyResult<String> {
-        let name = self.name.as_ref(py).to_str()?;
+        let name = self.name.bind(py).to_str()?;
         let config_repr = match &self.config {
-            Some(config) => config.as_ref(py).repr()?.to_str()?.to_string(),
+            Some(config) => config.bind(py).repr()?.to_str()?.to_string(),
             None => "None".to_string(),
         };
         Ok(format!(
@@ -38,16 +39,16 @@ impl PyBuffInterface {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
-        let name_str = self.name.as_ref(py).to_str()?;
+        let name_str = self.name.bind(py).to_str()?;
         dict.set_item("name", name_str)?;
         if let Some(config) = &self.config {
-            dict.set_item("config", config.as_ref(py))?;
+            dict.set_item("config", config.bind(py))?;
         } else {
             dict.set_item("config", py.None())?;
         }
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 
@@ -56,7 +57,7 @@ impl TryInto<MonaBuffInterface> for PyBuffInterface {
 
     fn try_into(self) -> Result<MonaBuffInterface, Self::Error> {
         let name: BuffName = Python::with_gil(|py| {
-            let _string: &PyString = self.name.as_ref(py);
+            let _string: &Bound<'_, PyString> = self.name.bind(py);
             depythonize(_string).map_err(|err| {
                 let serialized_data = format!("{:?}", _string);
                 anyhow!(
@@ -69,7 +70,7 @@ impl TryInto<MonaBuffInterface> for PyBuffInterface {
 
         let config: BuffConfig = if let Some(value) = self.config {
             Python::with_gil(|py| {
-                let _dict: &PyDict = value.as_ref(py);
+                let _dict: &Bound<'_, PyDict> = value.bind(py);
                 depythonize(_dict).map_err(|err| {
                     let serialized_data = format!("{:?}", _dict);
                     anyhow!(

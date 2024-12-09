@@ -25,6 +25,7 @@ pub struct PyWeaponInterface {
 #[pymethods]
 impl PyWeaponInterface {
     #[new]
+    #[pyo3(signature = (name, level, ascend, refine, params=None))]
     pub fn py_new(
         name: Py<PyString>,
         level: i32,
@@ -42,9 +43,9 @@ impl PyWeaponInterface {
     }
 
     pub fn __repr__(&self, py: Python) -> PyResult<String> {
-        let name = self.name.as_ref(py).to_str()?;
+        let name = self.name.bind(py).to_str()?;
         let params_repr = match &self.params {
-            Some(params) => params.as_ref(py).repr()?.to_str()?.to_string(),
+            Some(params) => params.bind(py).repr()?.to_str()?.to_string(),
             None => "None".to_string(),
         };
 
@@ -55,18 +56,18 @@ impl PyWeaponInterface {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
-        dict.set_item("name", self.name.as_ref(py))?;
+        dict.set_item("name", self.name.bind(py))?;
         dict.set_item("level", self.level)?;
         dict.set_item("ascend", self.ascend)?;
         dict.set_item("refine", self.refine)?;
         if let Some(params) = &self.params {
-            dict.set_item("params", params.as_ref(py))?;
+            dict.set_item("params", params.bind(py))?;
         } else {
             dict.set_item("params", py.None())?;
         }
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 
@@ -75,7 +76,7 @@ impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
 
     fn try_into(self) -> Result<MonaWeaponInterface, Self::Error> {
         let name: WeaponName = Python::with_gil(|py| {
-            let _string: &PyString = self.name.as_ref(py);
+            let _string: &Bound<'_, PyString> = self.name.bind(py);
             depythonize(_string).map_err(|err| {
                 let serialized_data = format!("{:?}", _string);
                 anyhow!(
@@ -88,7 +89,7 @@ impl TryInto<MonaWeaponInterface> for PyWeaponInterface {
 
         let params: WeaponConfig = if let Some(value) = self.params {
             Python::with_gil(|py| {
-                let _dict: &PyDict = value.as_ref(py);
+                let _dict: &Bound<'_, PyDict> = value.bind(py);
                 depythonize(_dict).map_err(|err| {
                     let serialized_data = format!("{:?}", _dict);
                     anyhow!(
@@ -139,23 +140,16 @@ mod tests {
                 params: Some(Py::from(params_dict)),
             };
 
-            assert_eq!(
-                py_weapon_interface.name.as_ref(py).to_string(),
-                "StaffOfHoma"
-            );
+            assert_eq!(py_weapon_interface.name.bind(py).to_string(), "StaffOfHoma");
             assert_eq!(py_weapon_interface.level, 90);
             assert!(py_weapon_interface.ascend);
             assert_eq!(py_weapon_interface.refine, 5);
 
             match &py_weapon_interface.params {
                 Some(value) => {
-                    let py_dict = value.as_ref(py);
-                    let params_dict = py_dict
-                        .get_item("StaffOfHoma")
-                        .unwrap()
-                        .unwrap()
-                        .downcast::<PyDict>()
-                        .unwrap();
+                    let py_dict = value.bind(py);
+                    let params_dict = py_dict.get_item("StaffOfHoma").unwrap().unwrap();
+                    let params_dict = params_dict.downcast::<PyDict>().unwrap();
                     assert_eq!(
                         params_dict
                             .get_item("be50_rate")
@@ -223,7 +217,8 @@ mod tests {
         pyo3::prepare_freethreaded_python();
         Python::with_gil(|py| {
             let module = PyModule::import(py, "python_genshin_artifact.enka.weapon")?;
-            let weapon_name_map = module.getattr("weapon_name_map")?.downcast::<PyDict>()?;
+            let weapon_name_map = module.getattr("weapon_name_map")?;
+            let weapon_name_map = weapon_name_map.downcast::<PyDict>()?;
             for (_, value) in weapon_name_map.iter() {
                 let weapon_name_str = value.extract::<String>()?;
                 let res: Result<WeaponName, anyhow::Error> = depythonize(&value)
