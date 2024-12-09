@@ -69,7 +69,7 @@ impl PyTransformativeDamage {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("swirl_cryo", self.swirl_cryo)?;
         dict.set_item("swirl_hydro", self.swirl_hydro)?;
@@ -84,7 +84,7 @@ impl PyTransformativeDamage {
         dict.set_item("burgeon", self.burgeon)?;
         dict.set_item("burning", self.burning)?;
         dict.set_item("crystallize", self.crystallize)?;
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 

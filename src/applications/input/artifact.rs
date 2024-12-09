@@ -61,7 +61,7 @@ impl PyArtifact {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("set_name", self.set_name.bind(py))?;
         dict.set_item("slot", self.slot.bind(py))?;
@@ -79,7 +79,7 @@ impl PyArtifact {
         dict.set_item("main_stat", main_stat_tuple)?;
         dict.set_item("id", self.id)?;
 
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 

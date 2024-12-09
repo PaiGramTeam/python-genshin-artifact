@@ -73,7 +73,7 @@ pub struct PyDamageAnalysis {
 #[pymethods]
 impl PyDamageAnalysis {
     #[getter]
-    fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         // skipcq: RS-R1000
         let dict = PyDict::new(py);
 
@@ -144,7 +144,7 @@ impl PyDamageAnalysis {
             dict.set_item("aggravate", py.None())?;
         }
 
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 

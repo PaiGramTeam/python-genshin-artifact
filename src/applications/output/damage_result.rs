@@ -47,14 +47,14 @@ impl PyDamageResult {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("critical", self.critical)?;
         dict.set_item("non_critical", self.non_critical)?;
         dict.set_item("expectation", self.expectation)?;
         dict.set_item("is_heal", self.is_heal)?;
         dict.set_item("is_shield", self.is_shield)?;
-        Ok(dict.into())
+        Ok(dict)
     }
 
     pub fn __setstate__(&mut self, state: Bound<'_, PyBytes>) -> PyResult<()> {

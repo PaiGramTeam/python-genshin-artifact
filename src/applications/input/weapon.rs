@@ -56,7 +56,7 @@ impl PyWeaponInterface {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("name", self.name.bind(py))?;
         dict.set_item("level", self.level)?;
@@ -67,7 +67,7 @@ impl PyWeaponInterface {
         } else {
             dict.set_item("params", py.None())?;
         }
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 

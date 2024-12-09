@@ -39,7 +39,7 @@ impl PyBuffInterface {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         let name_str = self.name.bind(py).to_str()?;
         dict.set_item("name", name_str)?;
@@ -48,7 +48,7 @@ impl PyBuffInterface {
         } else {
             dict.set_item("config", py.None())?;
         }
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 

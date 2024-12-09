@@ -69,7 +69,7 @@ impl PyEnemyInterface {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("level", self.level)?;
         dict.set_item("electro_res", self.electro_res)?;
@@ -80,7 +80,7 @@ impl PyEnemyInterface {
         dict.set_item("anemo_res", self.anemo_res)?;
         dict.set_item("dendro_res", self.dendro_res)?;
         dict.set_item("physical_res", self.physical_res)?;
-        Ok(dict.into())
+        Ok(dict)
     }
 }
 

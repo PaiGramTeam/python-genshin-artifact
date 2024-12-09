@@ -52,7 +52,7 @@ impl PyCalculatorConfig {
     }
 
     #[getter]
-    pub fn __dict__(&self, py: Python) -> PyResult<PyObject> {
+    pub fn __dict__<'py>(&self, py: Python<'py>) -> PyResult<Bound<'py, PyDict>> {
         let dict = PyDict::new(py);
         dict.set_item("character", self.character.__dict__(py)?)?;
         dict.set_item("weapon", self.weapon.__dict__(py)?)?;
@@ -60,13 +60,13 @@ impl PyCalculatorConfig {
             .buffs
             .iter()
             .map(|b| b.__dict__(py))
-            .collect::<Result<Vec<PyObject>, PyErr>>()?;
+            .collect::<Result<Vec<Bound<PyDict>>, PyErr>>()?;
         dict.set_item("buffs", PyList::new(py, buffs)?)?;
         let artifacts = self
             .artifacts
             .iter()
             .map(|ar| ar.__dict__(py))
-            .collect::<Result<Vec<PyObject>, PyErr>>()?;
+            .collect::<Result<Vec<Bound<PyDict>>, PyErr>>()?;
         dict.set_item("artifacts", PyList::new(py, artifacts)?)?;
         if let Some(artifact_config) = self.artifact_config.as_ref().map(|c| c.bind(py)) {
             dict.set_item("artifact_config", artifact_config)?;
@@ -79,6 +79,6 @@ impl PyCalculatorConfig {
         } else {
             dict.set_item("enemy", py.None())?;
         }
-        Ok(dict.into())
+        Ok(dict)
     }
 }
