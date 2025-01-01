@@ -1,6 +1,6 @@
 from typing import Dict, Final
 
-__version__: Final[str] = "5.1"
+__version__: Final[str] = "5.3"
 
 weapon_name_map: Dict[int, str] = {
     11101: "DullBlade",
@@ -88,6 +88,7 @@ weapon_name_map: Dict[int, str] = {
     12511: "BeaconOfTheReedSea",
     12512: "Verdict",
     12513: "FangOfTheMountainKing",
+    12514: "AThousandBlazingSuns",
     13101: "BeginnersProtector",
     13201: "IronPoint",
     13301: "WhiteTassel",
@@ -163,6 +164,7 @@ weapon_name_map: Dict[int, str] = {
     14514: "TomeOfTheEternalFlow",
     14515: "CranesEchoingCall",
     14516: "SurfsUp",
+    14517: "StarcallersWatch",
     15101: "HuntersBow",
     15201: "SeasonedHuntersBow",
     15301: "RavenBow",
