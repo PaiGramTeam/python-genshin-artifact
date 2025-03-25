@@ -1,10 +1,10 @@
 [project]
 name = "python_genshin_artifact"
 requires-python = ">=3.9"
-version = "1.0.12"
+version = "1.0.13"
 authors = [
     {name = "luoshuijs", email = "luoshuijs@outlook.com"},
-    {name = "xtaodada", email = "xtao@xtaolink.cn"},
+    {name = "xtaodada", email = "xtao@xtao.de"},
     {name = "kotori", email = "minamiktr@outlook.com"}
 ]
 classifiers = [
