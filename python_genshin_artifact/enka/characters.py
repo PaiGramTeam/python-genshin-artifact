@@ -1,6 +1,6 @@
 from typing import Dict, Final
 
-__version__: Final[str] = "5.4"
+__version__: Final[str] = "5.5"
 
 characters_map: Dict[int, str] = {
     10000002: "KamisatoAyaka",
@@ -98,4 +98,6 @@ characters_map: Dict[int, str] = {
     10000106: "Mavuika",
     10000108: "Lanyan",
     10000109: "YumemizukiMizuki",
+    10000110: "Iansan",
+    10000111: "Varesa",
 }
