@@ -1,13 +1,15 @@
 import sys
 from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, final
 
+from typing_extensions import TypeAlias
+
 if sys.version_info < (3, 11):
     from typing_extensions import Literal
 else:
     from typing import Literal
 
 if TYPE_CHECKING:
-    StatName = Literal[
+    StatName: TypeAlias = Literal[
         "ATKFixed",
         "ATKPercentage",
         "HealingBonus",
@@ -31,12 +33,13 @@ if TYPE_CHECKING:
 else:
     StatName = str
 
-def get_damage_analysis(calculator_config: "CalculatorConfig") -> "DamageAnalysis": ...
-def get_transformative_damage(calculator_config: "CalculatorConfig") -> "TransformativeDamage": ...
+def get_damage_analysis(calculator_config: CalculatorConfig) -> DamageAnalysis: ...
+def get_transformative_damage(calculator_config: CalculatorConfig) -> TransformativeDamage: ...
 def gen_character_meta_as_json() -> str: ...
 def gen_weapon_meta_as_json() -> str: ...
 def gen_artifact_meta_as_json() -> str: ...
 def gen_generate_locale_as_json(loc: str) -> str: ...
+
 @final
 class TransformativeDamage:
     swirl_cryo: float
@@ -68,7 +71,7 @@ class TransformativeDamage:
         burgeon: float,
         burning: float,
         crystallize: float,
-    ) -> "TransformativeDamage": ...
+    ) -> TransformativeDamage: ...
 
 @final
 class DamageResult:
@@ -80,7 +83,7 @@ class DamageResult:
 
     def __new__(
         cls, critical: float, non_critical: float, expectation: float, is_heal: bool, is_shield: bool
-    ) -> "DamageResult": ...
+    ) -> DamageResult: ...
 
 @final
 class DamageAnalysis:
@@ -138,7 +141,7 @@ class CharacterInterface:
         skill2: int,
         skill3: int,
         params: Optional[dict] = None,
-    ) -> "CharacterInterface": ...
+    ) -> CharacterInterface: ...
 
 @final
 class WeaponInterface:
@@ -150,14 +153,14 @@ class WeaponInterface:
 
     def __new__(
         cls, name: str, level: int, ascend: bool, refine: int, params: Optional[dict] = None
-    ) -> "WeaponInterface": ...
+    ) -> WeaponInterface: ...
 
 @final
 class BuffInterface:
     name: str
     config: Optional[dict] = None
 
-    def __new__(cls, name: str, config: Optional[dict] = None) -> "BuffInterface": ...
+    def __new__(cls, name: str, config: Optional[dict] = None) -> BuffInterface: ...
 
 @final
 class Artifact:
@@ -178,14 +181,14 @@ class Artifact:
         sub_stats: List[Tuple[StatName, float]],
         main_stat: Tuple[StatName, float],
         id: int,
-    ) -> "Artifact": ...
+    ) -> Artifact: ...
 
 @final
 class SkillInterface:
     index: int
     config: Optional[dict] = None
 
-    def __new__(cls, index: int, config: Optional[dict] = None) -> "SkillInterface": ...
+    def __new__(cls, index: int, config: Optional[dict] = None) -> SkillInterface: ...
 
 @final
 class EnemyInterface:
@@ -210,7 +213,7 @@ class EnemyInterface:
         anemo_res: float,
         dendro_res: float,
         physical_res: float,
-    ) -> "EnemyInterface": ...
+    ) -> EnemyInterface: ...
 
 @final
 class CalculatorConfig:
@@ -231,4 +234,4 @@ class CalculatorConfig:
         artifacts: Optional[List[Artifact]] = None,
         artifact_config: Optional[dict] = None,
         enemy: Optional[EnemyInterface] = None,
-    ) -> "CalculatorConfig": ...
+    ) -> CalculatorConfig: ...
